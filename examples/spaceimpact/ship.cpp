@@ -13,8 +13,8 @@ void Ship::initializeGL(GLuint program) {
   m_translationLoc = abcg::glGetUniformLocation(m_program, "translation");
 
   m_rotation = 0.0f;
-  m_translation = glm::vec2{-.8f, 0};
-  m_velocity = glm::vec2(0);
+  m_translation = glm::vec2{0, -.8f};
+  m_velocity = glm::vec2{0, .5f};
 
   std::array<glm::vec2, 24> positions{
       // Ship body
