@@ -144,6 +144,8 @@ void Ship::terminateGL() {
 }
 
 void Ship::update(const GameData &gameData, float deltaTime) {
+  m_velocity.y = m_velocity.y + deltaTime * .1;
+
   if (m_movimentCoolDownTimer.elapsed() < 40.0 / 1000.0) {
     return;
   }
