@@ -101,8 +101,10 @@ Asteroids::Asteroid Asteroids::createAsteroid(glm::vec2 translation,
   asteroid.m_angularVelocity = m_randomDist(re);
 
   // Choose a random direction
-  glm::vec2 direction{m_randomDist(re), m_randomDist(re)};
-  asteroid.m_velocity = glm::normalize(direction) / 7.0f;
+  // glm::vec2 direction{m_randomDist(re), m_randomDist(re)};
+  // asteroid.m_velocity = glm::normalize(direction) / 7.0f;
+  asteroid.m_velocity = glm::vec2(0);
+
 
   // Create geometry
   std::vector<glm::vec2> positions(0);

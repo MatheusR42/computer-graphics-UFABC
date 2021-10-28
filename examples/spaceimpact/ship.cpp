@@ -144,11 +144,28 @@ void Ship::terminateGL() {
 }
 
 void Ship::update(const GameData &gameData, float deltaTime) {
+  if (m_movimentCoolDownTimer.elapsed() < 40.0 / 1000.0) {
+    return;
+  }
+
+  m_movimentCoolDownTimer.restart();
+
   // Rotate
-  if (gameData.m_input[static_cast<size_t>(Input::Left)])
-    m_rotation = glm::wrapAngle(m_rotation + 4.0f * deltaTime);
-  if (gameData.m_input[static_cast<size_t>(Input::Right)])
-    m_rotation = glm::wrapAngle(m_rotation - 4.0f * deltaTime);
+  if (gameData.m_input[static_cast<size_t>(Input::Left)]) {
+    if (m_translation.x > -1) {
+      m_translation.x = m_translation.x - .1;
+    }
+    // m_translation = glm::vec2{-.3f, 0};
+  }
+
+  // m_rotation = glm::wrapAngle(m_rotation + 4.0f * deltaTime);
+  if (gameData.m_input[static_cast<size_t>(Input::Right)]) {
+    if (m_translation.x < 1) {
+      m_translation.x = m_translation.x + .1;
+    }
+  }
+
+    // m_translation = glm::vec2{.3f, 0};
 
   // Apply thrust
   if (gameData.m_input[static_cast<size_t>(Input::Up)] &&
