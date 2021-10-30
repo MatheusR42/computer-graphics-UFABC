@@ -26,7 +26,7 @@ void Asteroids::initializeGL(GLuint program, int quantity) {
     // Make sure the asteroid won't collide with the ship
     do {
       asteroid.m_translation = {m_randomDist(m_randomEngine),
-                                m_randomDist(m_randomEngine)};
+                                1.5};
     } while (glm::length(asteroid.m_translation) < 0.5f);
   }
 }
@@ -41,14 +41,10 @@ void Asteroids::paintGL() {
     abcg::glUniform1f(m_scaleLoc, asteroid.m_scale);
     abcg::glUniform1f(m_rotationLoc, asteroid.m_rotation);
 
-    for (auto i : {-2, 0, 2}) {
-      for (auto j : {-2, 0, 2}) {
-        abcg::glUniform2f(m_translationLoc, asteroid.m_translation.x + j,
-                          asteroid.m_translation.y + i);
+    abcg::glUniform2f(m_translationLoc, asteroid.m_translation.x,
+                          asteroid.m_translation.y);
 
-        abcg::glDrawArrays(GL_TRIANGLE_FAN, 0, asteroid.m_polygonSides + 2);
-      }
-    }
+    abcg::glDrawArrays(GL_TRIANGLE_FAN, 0, asteroid.m_polygonSides + 2);
 
     abcg::glBindVertexArray(0);
   }
@@ -65,17 +61,18 @@ void Asteroids::terminateGL() {
 
 void Asteroids::update(const Ship &ship, float deltaTime) {
   for (auto &asteroid : m_asteroids) {
+    if (asteroid.m_translation.y < -1.5) {
+      asteroid.m_hit = true;
+    }
+    
     asteroid.m_translation -= ship.m_velocity * deltaTime;
     asteroid.m_rotation = glm::wrapAngle(
         asteroid.m_rotation + asteroid.m_angularVelocity * deltaTime);
     asteroid.m_translation += asteroid.m_velocity * deltaTime;
-
-    // Wrap-around
-    if (asteroid.m_translation.x < -1.0f) asteroid.m_translation.x += 2.0f;
-    if (asteroid.m_translation.x > +1.0f) asteroid.m_translation.x -= 2.0f;
-    if (asteroid.m_translation.y < -1.0f) asteroid.m_translation.y += 2.0f;
-    if (asteroid.m_translation.y > +1.0f) asteroid.m_translation.y -= 2.0f;
   }
+
+  m_asteroids.remove_if(
+      [](const Asteroids::Asteroid &a) { return a.m_hit; });
 }
 
 Asteroids::Asteroid Asteroids::createAsteroid(glm::vec2 translation,
