@@ -60,11 +60,15 @@ void OpenGLWindow::initializeGL() {
   // Load a new font
   ImGuiIO &io{ImGui::GetIO()};
   const auto filename{getAssetsPath() + "Inconsolata-Medium.ttf"};
-  m_font = io.Fonts->AddFontFromFileTTF(filename.c_str(), 60.0f);
-  if (m_font == nullptr) {
+  m_font_final = io.Fonts->AddFontFromFileTTF(filename.c_str(), 60.0f);
+  if (m_font_final == nullptr) {
     throw abcg::Exception{abcg::Exception::Runtime("Cannot load font file")};
   }
 
+  m_font_points = io.Fonts->AddFontFromFileTTF(filename.c_str(), 24.0f);
+  if (m_font_points == nullptr) {
+    throw abcg::Exception{abcg::Exception::Runtime("Cannot load font file")};
+  }
   // Create program to render the stars
   m_starsProgram = createProgramFromFile(getAssetsPath() + "stars.vert",
                                          getAssetsPath() + "stars.frag");
@@ -139,7 +143,7 @@ void OpenGLWindow::paintUI() {
                            ImGuiWindowFlags_NoTitleBar |
                            ImGuiWindowFlags_NoInputs};
     ImGui::Begin(" ", nullptr, flags);
-    ImGui::PushFont(m_font);
+    ImGui::PushFont(m_font_final);
 
     if (m_gameData.m_state == State::GameOver) {
       ImGui::Text("Game Over!");
@@ -150,6 +154,28 @@ void OpenGLWindow::paintUI() {
     ImGui::PopFont();
     ImGui::End();
   }
+
+  const auto position{ImVec2((m_viewportWidth - 174),
+                               (16))};
+  ImGui::SetNextWindowSize(ImVec2(150, 100));
+  ImGui::SetNextWindowPos(position);
+  auto flags{ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize};
+  ImGui::Begin("-", nullptr, flags);
+  {
+
+    // Menu Bar
+    if (ImGui::BeginMenuBar()) {
+      // File menu
+      ImGui::EndMenuBar();
+    }
+
+    ImGui::PushFont(m_font_points);
+
+    ImGui::Text("Points: %d", 123);
+    ImGui::PopFont();
+  }
+  ImGui::End();
+  
 }
 
 void OpenGLWindow::resizeGL(int width, int height) {
