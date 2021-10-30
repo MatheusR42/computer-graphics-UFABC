@@ -57,10 +57,15 @@ void Asteroids::terminateGL() {
 }
 
 void Asteroids::update(const Ship &ship, float deltaTime) {
-  if (m_createCoolDownTimer.elapsed() > 2) {
+  float time = m_randomCreateTime(m_randomEngine);
+  
+  if (m_createCoolDownTimer.elapsed() >= time) {
     m_createCoolDownTimer.restart();
+
+    float scale = m_randomScale(m_randomEngine);
+
     std::generate_n(std::back_inserter(m_asteroids), 1, [&]() {
-          return createAsteroid({m_randomDist(m_randomEngine),1.5});
+          return createAsteroid({m_randomDist(m_randomEngine),1.5}, scale);
         });
   }
 
