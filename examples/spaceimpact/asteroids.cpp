@@ -23,11 +23,8 @@ void Asteroids::initializeGL(GLuint program, int quantity) {
   for (auto &asteroid : m_asteroids) {
     asteroid = createAsteroid();
 
-    // Make sure the asteroid won't collide with the ship
-    do {
-      asteroid.m_translation = {m_randomDist(m_randomEngine),
-                                1.5};
-    } while (glm::length(asteroid.m_translation) < 0.5f);
+    asteroid.m_translation = {m_randomDist(m_randomEngine),
+                              1.5};
   }
 }
 
@@ -60,6 +57,13 @@ void Asteroids::terminateGL() {
 }
 
 void Asteroids::update(const Ship &ship, float deltaTime) {
+  if (m_createCoolDownTimer.elapsed() > 2) {
+    m_createCoolDownTimer.restart();
+    std::generate_n(std::back_inserter(m_asteroids), 1, [&]() {
+          return createAsteroid({m_randomDist(m_randomEngine),1.5});
+        });
+  }
+
   for (auto &asteroid : m_asteroids) {
     if (asteroid.m_translation.y < -1.5) {
       asteroid.m_hit = true;

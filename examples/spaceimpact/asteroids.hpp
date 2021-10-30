@@ -48,6 +48,8 @@ class Asteroids {
 
   Asteroids::Asteroid createAsteroid(glm::vec2 translation = glm::vec2(0),
                                      float scale = 0.25f);
+
+  abcg::ElapsedTimer m_createCoolDownTimer;
 };
 
 #endif
