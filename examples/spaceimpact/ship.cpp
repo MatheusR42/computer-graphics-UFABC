@@ -16,7 +16,7 @@ void Ship::initializeGL(GLuint program) {
   m_translation = glm::vec2{0, -.8f};
   m_velocity = glm::vec2{0, .5f};
 
-  std::array<glm::vec2, 22> positions{
+  std::array<glm::vec2, 30> positions{
       // Ship body
       glm::vec2{-02.5f, +17.5f}, // 0
       glm::vec2{+02.5f, +17.5f}, // 1
@@ -29,13 +29,13 @@ void Ship::initializeGL(GLuint program) {
       glm::vec2{+06.0f, +04.5f}, // 8
       glm::vec2{-10.0f, +02.5f}, // 9
       glm::vec2{+10.0f, +02.5f}, // 10
-      glm::vec2{00.0f, -06.5f}, // 11
+      glm::vec2{00.1f, -06.5f}, // 11
       glm::vec2{00.0f, -06.5f}, // 12
-      glm::vec2{00.0f, -08.5f}, // 13
+      glm::vec2{00.1f, -08.5f}, // 13
       glm::vec2{00.0f, -08.5f}, // 14
-      glm::vec2{00.0f, -09.5f}, // 15
+      glm::vec2{00.1f, -09.5f}, // 15
       glm::vec2{00.0f, -09.5f}, // 16
-      glm::vec2{00.0f, -11.5f}, // 17
+      glm::vec2{00.1f, -11.5f}, // 17
       glm::vec2{00.0f, -11.5f}, // 18
       glm::vec2{-03.0f, -19.5f}, // 19
       glm::vec2{+03.0f, -19.5f}, // 20
@@ -44,7 +44,7 @@ void Ship::initializeGL(GLuint program) {
 
   // Normalize
   for (auto &position : positions) {
-    position /= glm::vec2{19.5f, 19.5f};
+    position /= glm::vec2{20.0f, 20.0f};
   }
 
   const std::array indices{2, 1, 0,
@@ -110,23 +110,7 @@ void Ship::paintGL(const GameData &gameData) {
   abcg::glUniform1f(m_rotationLoc, m_rotation);
   abcg::glUniform2fv(m_translationLoc, 1, &m_translation.x);
 
-  // Restart thruster blink timer every 100 ms
-  if (m_trailBlinkTimer.elapsed() > 1.0 / 1000.0) m_trailBlinkTimer.restart();
 
-  if (gameData.m_input[static_cast<size_t>(Input::Up)]) {
-    // Show thruster trail during 50 ms
-    if (m_trailBlinkTimer.elapsed() < 500.0 / 1000.0) {
-      abcg::glEnable(GL_BLEND);
-      abcg::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-      // 50% transparent
-      abcg::glUniform4f(m_colorLoc, 1, 1, 1, 0.5f);
-
-      abcg::glDrawElements(GL_TRIANGLES, 14 * 3, GL_UNSIGNED_INT, nullptr);
-
-      abcg::glDisable(GL_BLEND);
-    }
-  }
 
   abcg::glUniform4fv(m_colorLoc, 1, &m_color.r);
   abcg::glDrawElements(GL_TRIANGLES, 12 * 3, GL_UNSIGNED_INT, nullptr);

@@ -49,7 +49,7 @@ class Asteroids {
   std::uniform_real_distribution<float> m_randomCreateTime{0.9f, 2.0f};
   std::uniform_real_distribution<float> m_randomScale{0.15f, .35f};
 
-  Asteroids::Asteroid createAsteroid(glm::vec2 translation = glm::vec2(0),
+  Asteroids::Asteroid createTrash(glm::vec2 translation = glm::vec2(0),
                                      float scale = 0.25f);
 
   abcg::ElapsedTimer m_createCoolDownTimer;

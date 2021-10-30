@@ -76,7 +76,7 @@ void OpenGLWindow::initializeGL() {
   m_objectsProgram = createProgramFromFile(getAssetsPath() + "objects.vert",
                                            getAssetsPath() + "objects.frag");
 
-  abcg::glClearColor(0, 0.42, 0.592, 1);
+  abcg::glClearColor(0, 0.32, 0.492, 1);
 
 #if !defined(__EMSCRIPTEN__)
   abcg::glEnable(GL_PROGRAM_POINT_SIZE);
@@ -235,7 +235,7 @@ void OpenGLWindow::checkCollisions() {
         std::generate_n(std::back_inserter(m_asteroids.m_asteroids), 2, [&]() {
           const glm::vec2 offset{m_randomDist(m_randomEngine),
                                  m_randomDist(m_randomEngine)};
-          return m_asteroids.createAsteroid(
+          return m_asteroids.createTrash(
               asteroid.m_translation + offset * asteroid.m_scale * 0.5f,
               asteroid.m_scale * 0.5f);
         });

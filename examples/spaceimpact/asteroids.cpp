@@ -21,7 +21,7 @@ void Asteroids::initializeGL(GLuint program, int quantity) {
   m_asteroids.resize(quantity);
 
   for (auto &asteroid : m_asteroids) {
-    asteroid = createAsteroid();
+    asteroid = createTrash();
 
     asteroid.m_translation = {m_randomDist(m_randomEngine),
                               1.5};
@@ -65,7 +65,7 @@ void Asteroids::update(const Ship &ship, float deltaTime, GameData &gameData) {
     float scale = m_randomScale(m_randomEngine);
 
     std::generate_n(std::back_inserter(m_asteroids), 1, [&]() {
-          return createAsteroid({m_randomDist(m_randomEngine),1.5}, scale);
+          return createTrash({m_randomDist(m_randomEngine),1.5}, scale);
         });
   }
 
@@ -89,7 +89,7 @@ void Asteroids::update(const Ship &ship, float deltaTime, GameData &gameData) {
       [](const Asteroids::Asteroid &a) { return a.m_hit; });
 }
 
-Asteroids::Asteroid Asteroids::createAsteroid(glm::vec2 translation,
+Asteroids::Asteroid Asteroids::createTrash(glm::vec2 translation,
                                               float scale) {
   Asteroid asteroid;
 
@@ -101,7 +101,7 @@ Asteroids::Asteroid Asteroids::createAsteroid(glm::vec2 translation,
 
   // Choose a random color (actually, a grayscale)
   std::uniform_real_distribution<float> randomIntensity(0.5f, 1.0f);
-  asteroid.m_color = glm::vec4(3) * randomIntensity(re);
+  asteroid.m_color = glm::vec4(0, 1, 1, 1) * randomIntensity(re);
 
   asteroid.m_color.a = 0.5f;
   asteroid.m_rotation = 0.0f;
