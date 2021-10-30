@@ -3,6 +3,8 @@ ABCg
 
 Development framework accompanying the course MCTA008-17 Computer Graphics at [UFABC](https://www.ufabc.edu.br/).
 
+![shark draw image](public/shark.jpeg)
+
 ----
 
 ### Credits

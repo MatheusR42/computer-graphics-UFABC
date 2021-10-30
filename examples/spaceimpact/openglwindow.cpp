@@ -47,13 +47,13 @@ void OpenGLWindow::handleEvent(SDL_Event &event) {
 void OpenGLWindow::initializeGL() {
   // Load a new font
   ImGuiIO &io{ImGui::GetIO()};
-  const auto filename{getAssetsPath() + "Inconsolata-Medium.ttf"};
-  m_font_final = io.Fonts->AddFontFromFileTTF(filename.c_str(), 60.0f);
+  const auto filename{getAssetsPath() + "Findet-Nemo.ttf"};
+  m_font_final = io.Fonts->AddFontFromFileTTF(filename.c_str(), 30.0f);
   if (m_font_final == nullptr) {
     throw abcg::Exception{abcg::Exception::Runtime("Cannot load font file")};
   }
 
-  m_font_points = io.Fonts->AddFontFromFileTTF(filename.c_str(), 24.0f);
+  m_font_points = io.Fonts->AddFontFromFileTTF(filename.c_str(), 28.0f);
   if (m_font_points == nullptr) {
     throw abcg::Exception{abcg::Exception::Runtime("Cannot load font file")};
   }
@@ -123,7 +123,7 @@ void OpenGLWindow::paintUI() {
   abcg::OpenGLWindow::paintUI();
 
   {
-    const auto size{ImVec2(300, 85)};
+    const auto size{ImVec2(340, 85)};
     const auto position{ImVec2((m_viewportWidth - size.x) / 2.0f,
                                (m_viewportHeight - size.y) / 2.0f)};
     ImGui::SetNextWindowPos(position);
@@ -135,7 +135,7 @@ void OpenGLWindow::paintUI() {
     ImGui::PushFont(m_font_final);
 
     if (m_gameData.m_state == State::GameOver) {
-      ImGui::Text("SE FODEU");
+      ImGui::Text("      Game Over\nContinue a nadar.");
     } else if (m_gameData.m_state == State::Win) {
       ImGui::Text("*You Win!*");
     }
@@ -146,7 +146,7 @@ void OpenGLWindow::paintUI() {
 
   const auto position{ImVec2((m_viewportWidth - 174),
                                (16))};
-  ImGui::SetNextWindowSize(ImVec2(150, 100));
+  ImGui::SetNextWindowSize(ImVec2(170, 100));
   ImGui::SetNextWindowPos(position);
   auto flags{ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize};
   ImGui::Begin("-", nullptr, flags);
