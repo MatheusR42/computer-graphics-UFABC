@@ -56,7 +56,7 @@ void Asteroids::terminateGL() {
   }
 }
 
-void Asteroids::update(const Ship &ship, float deltaTime) {
+void Asteroids::update(const Ship &ship, float deltaTime, GameData &gameData) {
   float time = m_randomCreateTime(m_randomEngine);
   
   if (m_createCoolDownTimer.elapsed() >= time) {
@@ -72,6 +72,11 @@ void Asteroids::update(const Ship &ship, float deltaTime) {
   for (auto &asteroid : m_asteroids) {
     if (asteroid.m_translation.y < -1.5) {
       asteroid.m_hit = true;
+    }
+
+    if (!asteroid.m_point && asteroid.m_translation.y < -1.2) {
+      asteroid.m_point = true;
+      gameData.points = gameData.points + 1;
     }
     
     asteroid.m_translation -= ship.m_velocity * deltaTime;

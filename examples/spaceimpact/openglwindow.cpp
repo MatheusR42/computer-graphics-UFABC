@@ -110,7 +110,7 @@ void OpenGLWindow::update() {
 
   m_ship.update(m_gameData, deltaTime);
   m_starLayers.update(m_ship, deltaTime);
-  m_asteroids.update(m_ship, deltaTime);
+  m_asteroids.update(m_ship, deltaTime, m_gameData);
   m_bullets.update(m_ship, m_gameData, deltaTime);
 
   if (m_gameData.m_state == State::Playing) {
@@ -171,7 +171,7 @@ void OpenGLWindow::paintUI() {
 
     ImGui::PushFont(m_font_points);
 
-    ImGui::Text("Points: %d", 123);
+    ImGui::Text("Points: %d", m_gameData.points);
     ImGui::PopFont();
   }
   ImGui::End();

@@ -16,7 +16,7 @@ class Asteroids {
   void paintGL();
   void terminateGL();
 
-  void update(const Ship &ship, float deltaTime);
+  void update(const Ship &ship, float deltaTime, GameData &gameData);
 
  private:
   friend OpenGLWindow;
@@ -34,6 +34,7 @@ class Asteroids {
     float m_angularVelocity{};
     glm::vec4 m_color{1};
     bool m_hit{false};
+    bool m_point{false};
     int m_polygonSides{};
     float m_rotation{};
     float m_scale{};
