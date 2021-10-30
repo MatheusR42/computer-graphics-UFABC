@@ -111,7 +111,6 @@ void OpenGLWindow::update() {
 
   if (m_gameData.m_state == State::Playing) {
     checkCollisions();
-    checkWinCondition();
   }
 }
 
@@ -219,12 +218,5 @@ void OpenGLWindow::checkCollisions() {
 
     m_asteroids.m_asteroids.remove_if(
         [](const Asteroids::Asteroid &a) { return a.m_hit; });
-  }
-}
-
-void OpenGLWindow::checkWinCondition() {
-  if (m_asteroids.m_asteroids.empty()) {
-    m_gameData.m_state = State::Win;
-    m_restartWaitTimer.restart();
   }
 }

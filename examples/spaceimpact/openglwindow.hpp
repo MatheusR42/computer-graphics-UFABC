@@ -41,7 +41,6 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   std::default_random_engine m_randomEngine;
 
   void checkCollisions();
-  void checkWinCondition();
 
   void restart();
   void update();
