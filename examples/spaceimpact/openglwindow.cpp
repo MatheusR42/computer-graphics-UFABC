@@ -56,6 +56,7 @@ void OpenGLWindow::initializeGL() {
 void OpenGLWindow::restart() {
   m_gameData.m_state = State::Playing;
   m_gameData.points = 0;
+  m_gameData.lifes = 3;
 
   m_starLayers.initializeGL(m_starsProgram, 25);
   m_shark.initializeGL(m_objectsProgram);
@@ -117,13 +118,13 @@ void OpenGLWindow::paintUI() {
     ImGui::End();
   }
 
-  const auto position{ImVec2((m_viewportWidth - 174),
-                               (16))};
-  ImGui::SetNextWindowSize(ImVec2(170, 100));
-  ImGui::SetNextWindowPos(position);
-  auto flags{ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize};
-  ImGui::Begin("-", nullptr, flags);
   {
+    const auto position{ImVec2((m_viewportWidth - 170),
+                                (16))};
+    ImGui::SetNextWindowSize(ImVec2(190, 100));
+    ImGui::SetNextWindowPos(position);
+    auto flags{ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize};
+    ImGui::Begin("points", nullptr, flags);
 
     // Menu Bar
     if (ImGui::BeginMenuBar()) {
@@ -135,8 +136,29 @@ void OpenGLWindow::paintUI() {
 
     ImGui::Text("Points: %d", m_gameData.points);
     ImGui::PopFont();
+    ImGui::End();
   }
-  ImGui::End();
+
+  {
+    const auto position{ImVec2((16),
+                                (16))};
+    ImGui::SetNextWindowSize(ImVec2(190, 100));
+    ImGui::SetNextWindowPos(position);
+    auto flags{ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize};
+    ImGui::Begin("lifes", nullptr, flags);
+
+    // Menu Bar
+    if (ImGui::BeginMenuBar()) {
+      // File menu
+      ImGui::EndMenuBar();
+    }
+
+    ImGui::PushFont(m_font_points);
+
+    ImGui::Text("Lifes: %d", m_gameData.lifes);
+    ImGui::PopFont();
+    ImGui::End();
+  }
   
 }
 
@@ -157,15 +179,26 @@ void OpenGLWindow::terminateGL() {
 }
 
 void OpenGLWindow::checkCollisions() {
-  // Check collision between shark and corais
+  if (m_gameData.m_lifeCooldown.elapsed() < 1) {
+    m_shark.m_nodamage = false;
+    return;
+  }
+
+  m_shark.m_nodamage = true;
+
   for (const auto &coral : m_corals.m_corals) {
     const auto coralTranslation{coral.m_translation};
     const auto distance{
         glm::distance(m_shark.m_translation, coralTranslation)};
 
     if (distance < m_shark.m_scale * 0.6f + coral.m_scale * 0.6f) {
-      m_gameData.m_state = State::GameOver;
-      m_restartWaitTimer.restart();
+      m_gameData.lifes--;
+      m_gameData.m_lifeCooldown.restart();
+
+      if (m_gameData.lifes == 0) {
+        m_gameData.m_state = State::GameOver;
+        m_restartWaitTimer.restart();
+      }
     }
   }
 }
