@@ -59,7 +59,7 @@ void OpenGLWindow::restart() {
 
   m_starLayers.initializeGL(m_starsProgram, 25);
   m_shark.initializeGL(m_objectsProgram);
-  m_asteroids.initializeGL(m_objectsProgram, 1);
+  m_corals.initializeGL(m_objectsProgram, 1);
 }
 
 void OpenGLWindow::update() {
@@ -74,7 +74,7 @@ void OpenGLWindow::update() {
 
   m_shark.update(m_gameData, deltaTime);
   m_starLayers.update(m_shark, deltaTime);
-  m_asteroids.update(m_shark, deltaTime, m_gameData);
+  m_corals.update(m_shark, deltaTime, m_gameData);
 
   if (m_gameData.m_state == State::Playing) {
     checkCollisions();
@@ -88,7 +88,7 @@ void OpenGLWindow::paintGL() {
   abcg::glViewport(0, 0, m_viewportWidth, m_viewportHeight);
 
   m_starLayers.paintGL();
-  m_asteroids.paintGL();
+  m_corals.paintGL();
   m_shark.paintGL(m_gameData);
 }
 
@@ -151,19 +151,19 @@ void OpenGLWindow::terminateGL() {
   abcg::glDeleteProgram(m_starsProgram);
   abcg::glDeleteProgram(m_objectsProgram);
 
-  m_asteroids.terminateGL();
+  m_corals.terminateGL();
   m_shark.terminateGL();
   m_starLayers.terminateGL();
 }
 
 void OpenGLWindow::checkCollisions() {
   // Check collision between shark and corais
-  for (const auto &asteroid : m_asteroids.m_asteroids) {
-    const auto asteroidTranslation{asteroid.m_translation};
+  for (const auto &coral : m_corals.m_corals) {
+    const auto coralTranslation{coral.m_translation};
     const auto distance{
-        glm::distance(m_shark.m_translation, asteroidTranslation)};
+        glm::distance(m_shark.m_translation, coralTranslation)};
 
-    if (distance < m_shark.m_scale * 0.9f + asteroid.m_scale * 0.85f) {
+    if (distance < m_shark.m_scale * 0.9f + coral.m_scale * 0.85f) {
       m_gameData.m_state = State::GameOver;
       m_restartWaitTimer.restart();
     }

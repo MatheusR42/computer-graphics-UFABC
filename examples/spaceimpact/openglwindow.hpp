@@ -6,7 +6,7 @@
 #include <random>
 
 #include "abcg.hpp"
-#include "asteroids.hpp"
+#include "corals.hpp"
 #include "shark.hpp"
 #include "starlayers.hpp"
 
@@ -28,7 +28,7 @@ class OpenGLWindow : public abcg::OpenGLWindow {
 
   GameData m_gameData;
 
-  Asteroids m_asteroids;
+  Corals m_corals;
   Shark m_shark;
   StarLayers m_starLayers;
 

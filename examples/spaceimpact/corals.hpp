@@ -1,5 +1,5 @@
-#ifndef ASTEROIDS_HPP_
-#define ASTEROIDS_HPP_
+#ifndef CORALS_HPP_
+#define CORALS_HPP_
 
 #include <list>
 #include <random>
@@ -10,7 +10,7 @@
 
 class OpenGLWindow;
 
-class Asteroids {
+class Corals {
  public:
   void initializeGL(GLuint program, int quantity);
   void paintGL();
@@ -27,7 +27,7 @@ class Asteroids {
   GLint m_translationLoc{};
   GLint m_scaleLoc{};
 
-  struct Asteroid {
+  struct Coral {
     GLuint m_vao{};
     GLuint m_vbo{};
 
@@ -42,14 +42,14 @@ class Asteroids {
     glm::vec2 m_velocity{glm::vec2(0)};
   };
 
-  std::list<Asteroid> m_asteroids;
+  std::list<Coral> m_corals;
 
   std::default_random_engine m_randomEngine;
   std::uniform_real_distribution<float> m_randomDist{-1.0f, 1.0f};
   std::uniform_real_distribution<float> m_randomCreateTime{0.9f, 2.0f};
   std::uniform_real_distribution<float> m_randomScale{0.15f, .35f};
 
-  Asteroids::Asteroid createTrash(glm::vec2 translation = glm::vec2(0),
+  Corals::Coral createTrash(glm::vec2 translation = glm::vec2(0),
                                      float scale = 0.25f);
 
   abcg::ElapsedTimer m_createCoolDownTimer;
