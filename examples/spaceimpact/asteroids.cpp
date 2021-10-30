@@ -86,13 +86,13 @@ Asteroids::Asteroid Asteroids::createAsteroid(glm::vec2 translation,
 
   // Randomly choose the number of sides
   std::uniform_int_distribution<int> randomSides(6, 20);
-  asteroid.m_polygonSides = randomSides(re);
+  asteroid.m_polygonSides = 20;
 
   // Choose a random color (actually, a grayscale)
   std::uniform_real_distribution<float> randomIntensity(0.5f, 1.0f);
-  asteroid.m_color = glm::vec4(1) * randomIntensity(re);
+  asteroid.m_color = glm::vec4(3) * randomIntensity(re);
 
-  asteroid.m_color.a = 1.0f;
+  asteroid.m_color.a = 0.5f;
   asteroid.m_rotation = 0.0f;
   asteroid.m_scale = scale;
   asteroid.m_translation = translation;

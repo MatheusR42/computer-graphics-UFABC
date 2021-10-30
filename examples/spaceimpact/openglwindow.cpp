@@ -71,7 +71,7 @@ void OpenGLWindow::initializeGL() {
   m_objectsProgram = createProgramFromFile(getAssetsPath() + "objects.vert",
                                            getAssetsPath() + "objects.frag");
 
-  abcg::glClearColor(0, 0, 0, 1);
+  abcg::glClearColor(0, 0.42, 0.592, 1);
 
 #if !defined(__EMSCRIPTEN__)
   abcg::glEnable(GL_PROGRAM_POINT_SIZE);
@@ -142,7 +142,7 @@ void OpenGLWindow::paintUI() {
     ImGui::PushFont(m_font);
 
     if (m_gameData.m_state == State::GameOver) {
-      ImGui::Text("Game Over!");
+      ImGui::Text("SE FODEU");
     } else if (m_gameData.m_state == State::Win) {
       ImGui::Text("*You Win!*");
     }
@@ -196,7 +196,7 @@ void OpenGLWindow::checkCollisions() {
 
           if (distance < m_bullets.m_scale + asteroid.m_scale * 0.85f) {
             asteroid.m_hit = true;
-            bullet.m_dead = true;
+            bullet.m_dead = false;
           }
         }
       }
@@ -206,7 +206,7 @@ void OpenGLWindow::checkCollisions() {
     for (const auto &asteroid : m_asteroids.m_asteroids) {
       if (asteroid.m_hit && asteroid.m_scale > 0.10f) {
         std::uniform_real_distribution<float> m_randomDist{-1.0f, 1.0f};
-        std::generate_n(std::back_inserter(m_asteroids.m_asteroids), 3, [&]() {
+        std::generate_n(std::back_inserter(m_asteroids.m_asteroids), 2, [&]() {
           const glm::vec2 offset{m_randomDist(m_randomEngine),
                                  m_randomDist(m_randomEngine)};
           return m_asteroids.createAsteroid(

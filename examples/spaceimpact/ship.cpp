@@ -16,54 +16,53 @@ void Ship::initializeGL(GLuint program) {
   m_translation = glm::vec2(0);
   m_velocity = glm::vec2(0);
 
-  std::array<glm::vec2, 24> positions{
+  std::array<glm::vec2, 22> positions{
       // Ship body
-      glm::vec2{-02.5f, +12.5f}, glm::vec2{-15.5f, +02.5f},
-      glm::vec2{-15.5f, -12.5f}, glm::vec2{-09.5f, -07.5f},
-      glm::vec2{-03.5f, -12.5f}, glm::vec2{+03.5f, -12.5f},
-      glm::vec2{+09.5f, -07.5f}, glm::vec2{+15.5f, -12.5f},
-      glm::vec2{+15.5f, +02.5f}, glm::vec2{+02.5f, +12.5f},
-
-      // Cannon left
-      glm::vec2{-12.5f, +10.5f}, glm::vec2{-12.5f, +04.0f},
-      glm::vec2{-09.5f, +04.0f}, glm::vec2{-09.5f, +10.5f},
-
-      // Cannon right
-      glm::vec2{+09.5f, +10.5f}, glm::vec2{+09.5f, +04.0f},
-      glm::vec2{+12.5f, +04.0f}, glm::vec2{+12.5f, +10.5f},
-      
-      // Thruster trail (left)
-      glm::vec2{-12.0f, -07.5f}, 
-      glm::vec2{-09.5f, -18.0f}, 
-      glm::vec2{-07.0f, -07.5f},
-
-      // Thruster trail (right)
-      glm::vec2{+07.0f, -07.5f}, 
-      glm::vec2{+09.5f, -18.0f}, 
-      glm::vec2{+12.0f, -07.5f},
+      glm::vec2{-02.5f, +17.5f}, // 0
+      glm::vec2{+02.5f, +17.5f}, // 1
+      glm::vec2{00.0f, -13.0f}, // 2 - Body - Central
+      glm::vec2{-04.5f, +03.5f}, // 3 - Body - Left
+      glm::vec2{+04.5f, +03.5f}, // 4 - Body - Right
+      glm::vec2{-05.0f, +09.5f}, // 5 - Body - "Shoulder" Left
+      glm::vec2{+05.0f, +09.5f}, // 6 - Body - "Shoulder" Right
+      glm::vec2{-06.0f, +04.5f}, // 7
+      glm::vec2{+06.0f, +04.5f}, // 8
+      glm::vec2{-10.0f, +02.5f}, // 9
+      glm::vec2{+10.0f, +02.5f}, // 10
+      glm::vec2{00.0f, -06.5f}, // 11
+      glm::vec2{00.0f, -06.5f}, // 12
+      glm::vec2{00.0f, -08.5f}, // 13
+      glm::vec2{00.0f, -08.5f}, // 14
+      glm::vec2{00.0f, -09.5f}, // 15
+      glm::vec2{00.0f, -09.5f}, // 16
+      glm::vec2{00.0f, -11.5f}, // 17
+      glm::vec2{00.0f, -11.5f}, // 18
+      glm::vec2{-03.0f, -19.5f}, // 19
+      glm::vec2{+03.0f, -19.5f}, // 20
+      glm::vec2{00.0f, -17.5f}, // 21
       };
 
   // Normalize
   for (auto &position : positions) {
-    position /= glm::vec2{15.5f, 15.5f};
+    position /= glm::vec2{19.5f, 19.5f};
   }
 
-  const std::array indices{0, 1, 3,
-                           1, 2, 3,
-                           0, 3, 4,
-                           0, 4, 5,
-                           9, 0, 5,
-                           9, 5, 6,
-                           9, 6, 8,
-                           8, 6, 7,
-                           // Cannons
-                           10, 11, 12,
-                           10, 12, 13,
-                           14, 15, 16,
-                           14, 16, 17,
-                           // Thruster trails
-                           18, 19, 20,
-                           21, 22, 23};
+  const std::array indices{2, 1, 0,
+                            2, 3, 0,
+                            2, 4, 1,
+                            3, 5, 0,
+                            4, 6, 1,
+                            3, 7, 5,
+                            4, 8, 6,
+                            7, 9, 5,
+                            8, 10, 6,
+                            13, 15, 11,
+                            14, 16, 12,
+                            2, 17, 19,
+                            2, 18, 20,
+                            2, 19, 21,
+                            2, 20, 21,
+                            };
 
   // Generate VBO
   abcg::glGenBuffers(1, &m_vbo);
@@ -112,11 +111,11 @@ void Ship::paintGL(const GameData &gameData) {
   abcg::glUniform2fv(m_translationLoc, 1, &m_translation.x);
 
   // Restart thruster blink timer every 100 ms
-  if (m_trailBlinkTimer.elapsed() > 100.0 / 1000.0) m_trailBlinkTimer.restart();
+  if (m_trailBlinkTimer.elapsed() > 1.0 / 1000.0) m_trailBlinkTimer.restart();
 
   if (gameData.m_input[static_cast<size_t>(Input::Up)]) {
     // Show thruster trail during 50 ms
-    if (m_trailBlinkTimer.elapsed() < 50.0 / 1000.0) {
+    if (m_trailBlinkTimer.elapsed() < 500.0 / 1000.0) {
       abcg::glEnable(GL_BLEND);
       abcg::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
