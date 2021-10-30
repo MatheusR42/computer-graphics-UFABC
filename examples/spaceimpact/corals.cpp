@@ -63,7 +63,13 @@ void Corals::update(const Shark &shark, float deltaTime, GameData &gameData) {
     m_createCoolDownTimer.restart();
 
     float scale = m_randomScale(m_randomEngine);
-    int quantity = (gameData.points/10 + 1) > 3 ? 3 :  (gameData.points/10 + 1);
+    int quantity = gameData.points/10 + 1;
+    quantity = quantity > 4 ? 4 :  quantity;
+
+    if (gameData.points > 100)  {
+      quantity = 5;
+    }
+
     std::generate_n(std::back_inserter(m_corals), quantity, [&]() {
           return createCorals({m_randomDist(m_randomEngine),m_randomDistY(m_randomEngine)}, scale);
         });
