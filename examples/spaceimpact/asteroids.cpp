@@ -74,7 +74,7 @@ void Asteroids::update(const Ship &ship, float deltaTime, GameData &gameData) {
       asteroid.m_hit = true;
     }
 
-    if (!asteroid.m_point && asteroid.m_translation.y < -1.2) {
+    if (gameData.m_state == State::Playing && !asteroid.m_point && asteroid.m_translation.y < -1.2) {
       asteroid.m_point = true;
       gameData.points = gameData.points + 1;
     }
