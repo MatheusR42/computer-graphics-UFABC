@@ -16,7 +16,7 @@ class Asteroids {
   void paintGL();
   void terminateGL();
 
-  void update(const Ship &ship, float deltaTime);
+  void update(const Ship &ship, float deltaTime, GameData &gameData);
 
  private:
   friend OpenGLWindow;
@@ -34,6 +34,7 @@ class Asteroids {
     float m_angularVelocity{};
     glm::vec4 m_color{1};
     bool m_hit{false};
+    bool m_point{false};
     int m_polygonSides{};
     float m_rotation{};
     float m_scale{};
@@ -45,9 +46,13 @@ class Asteroids {
 
   std::default_random_engine m_randomEngine;
   std::uniform_real_distribution<float> m_randomDist{-1.0f, 1.0f};
+  std::uniform_real_distribution<float> m_randomCreateTime{0.9f, 2.0f};
+  std::uniform_real_distribution<float> m_randomScale{0.15f, .35f};
 
   Asteroids::Asteroid createAsteroid(glm::vec2 translation = glm::vec2(0),
                                      float scale = 0.25f);
+
+  abcg::ElapsedTimer m_createCoolDownTimer;
 };
 
 #endif

@@ -23,11 +23,8 @@ void Asteroids::initializeGL(GLuint program, int quantity) {
   for (auto &asteroid : m_asteroids) {
     asteroid = createAsteroid();
 
-    // Make sure the asteroid won't collide with the ship
-    do {
-      asteroid.m_translation = {m_randomDist(m_randomEngine),
-                                m_randomDist(m_randomEngine)};
-    } while (glm::length(asteroid.m_translation) < 0.5f);
+    asteroid.m_translation = {m_randomDist(m_randomEngine),
+                              1.5};
   }
 }
 
@@ -41,14 +38,10 @@ void Asteroids::paintGL() {
     abcg::glUniform1f(m_scaleLoc, asteroid.m_scale);
     abcg::glUniform1f(m_rotationLoc, asteroid.m_rotation);
 
-    for (auto i : {-2, 0, 2}) {
-      for (auto j : {-2, 0, 2}) {
-        abcg::glUniform2f(m_translationLoc, asteroid.m_translation.x + j,
-                          asteroid.m_translation.y + i);
+    abcg::glUniform2f(m_translationLoc, asteroid.m_translation.x,
+                          asteroid.m_translation.y);
 
-        abcg::glDrawArrays(GL_TRIANGLE_FAN, 0, asteroid.m_polygonSides + 2);
-      }
-    }
+    abcg::glDrawArrays(GL_TRIANGLE_FAN, 0, asteroid.m_polygonSides + 2);
 
     abcg::glBindVertexArray(0);
   }
@@ -63,19 +56,37 @@ void Asteroids::terminateGL() {
   }
 }
 
-void Asteroids::update(const Ship &ship, float deltaTime) {
+void Asteroids::update(const Ship &ship, float deltaTime, GameData &gameData) {
+  float time = m_randomCreateTime(m_randomEngine);
+  
+  if (m_createCoolDownTimer.elapsed() >= time) {
+    m_createCoolDownTimer.restart();
+
+    float scale = m_randomScale(m_randomEngine);
+
+    std::generate_n(std::back_inserter(m_asteroids), 1, [&]() {
+          return createAsteroid({m_randomDist(m_randomEngine),1.5}, scale);
+        });
+  }
+
   for (auto &asteroid : m_asteroids) {
+    if (asteroid.m_translation.y < -1.5) {
+      asteroid.m_hit = true;
+    }
+
+    if (gameData.m_state == State::Playing && !asteroid.m_point && asteroid.m_translation.y < -1.2) {
+      asteroid.m_point = true;
+      gameData.points = gameData.points + 1;
+    }
+    
     asteroid.m_translation -= ship.m_velocity * deltaTime;
     asteroid.m_rotation = glm::wrapAngle(
         asteroid.m_rotation + asteroid.m_angularVelocity * deltaTime);
     asteroid.m_translation += asteroid.m_velocity * deltaTime;
-
-    // Wrap-around
-    if (asteroid.m_translation.x < -1.0f) asteroid.m_translation.x += 2.0f;
-    if (asteroid.m_translation.x > +1.0f) asteroid.m_translation.x -= 2.0f;
-    if (asteroid.m_translation.y < -1.0f) asteroid.m_translation.y += 2.0f;
-    if (asteroid.m_translation.y > +1.0f) asteroid.m_translation.y -= 2.0f;
   }
+
+  m_asteroids.remove_if(
+      [](const Asteroids::Asteroid &a) { return a.m_hit; });
 }
 
 Asteroids::Asteroid Asteroids::createAsteroid(glm::vec2 translation,
@@ -101,8 +112,10 @@ Asteroids::Asteroid Asteroids::createAsteroid(glm::vec2 translation,
   asteroid.m_angularVelocity = m_randomDist(re);
 
   // Choose a random direction
-  glm::vec2 direction{m_randomDist(re), m_randomDist(re)};
-  asteroid.m_velocity = glm::normalize(direction) / 7.0f;
+  // glm::vec2 direction{m_randomDist(re), m_randomDist(re)};
+  // asteroid.m_velocity = glm::normalize(direction) / 7.0f;
+  asteroid.m_velocity = glm::vec2(0);
+
 
   // Create geometry
   std::vector<glm::vec2> positions(0);

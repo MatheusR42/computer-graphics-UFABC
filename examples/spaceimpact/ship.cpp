@@ -13,8 +13,8 @@ void Ship::initializeGL(GLuint program) {
   m_translationLoc = abcg::glGetUniformLocation(m_program, "translation");
 
   m_rotation = 0.0f;
-  m_translation = glm::vec2(0);
-  m_velocity = glm::vec2(0);
+  m_translation = glm::vec2{0, -.8f};
+  m_velocity = glm::vec2{0, .5f};
 
   std::array<glm::vec2, 22> positions{
       // Ship body
@@ -143,11 +143,30 @@ void Ship::terminateGL() {
 }
 
 void Ship::update(const GameData &gameData, float deltaTime) {
+  m_velocity.y = m_velocity.y + deltaTime * .1;
+
+  if (m_movimentCoolDownTimer.elapsed() < 35.0 / 1000.0) {
+    return;
+  }
+
+  m_movimentCoolDownTimer.restart();
+
   // Rotate
-  if (gameData.m_input[static_cast<size_t>(Input::Left)])
-    m_rotation = glm::wrapAngle(m_rotation + 4.0f * deltaTime);
-  if (gameData.m_input[static_cast<size_t>(Input::Right)])
-    m_rotation = glm::wrapAngle(m_rotation - 4.0f * deltaTime);
+  if (gameData.m_input[static_cast<size_t>(Input::Left)]) {
+    if (m_translation.x > -1) {
+      m_translation.x = m_translation.x - .1;
+    }
+    // m_translation = glm::vec2{-.3f, 0};
+  }
+
+  // m_rotation = glm::wrapAngle(m_rotation + 4.0f * deltaTime);
+  if (gameData.m_input[static_cast<size_t>(Input::Right)]) {
+    if (m_translation.x < 1) {
+      m_translation.x = m_translation.x + .1;
+    }
+  }
+
+    // m_translation = glm::vec2{.3f, 0};
 
   // Apply thrust
   if (gameData.m_input[static_cast<size_t>(Input::Up)] &&

@@ -42,6 +42,7 @@ class Ship {
 
   abcg::ElapsedTimer m_trailBlinkTimer;
   abcg::ElapsedTimer m_bulletCoolDownTimer;
+  abcg::ElapsedTimer m_movimentCoolDownTimer;
 };
 
 #endif

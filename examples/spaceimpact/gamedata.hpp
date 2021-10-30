@@ -8,6 +8,7 @@ enum class State { Playing, GameOver, Win };
 
 struct GameData {
   State m_state{State::Playing};
+  int points{0};
   std::bitset<5> m_input;  // [fire, up, down, left, right]
 };
 
