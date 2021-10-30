@@ -32,7 +32,7 @@ class Shark {
   GLuint m_vbo{};
   GLuint m_ebo{};
 
-  glm::vec4 m_color{0, 1, 1, 1};
+  glm::vec4 m_color{0.6f, 0.6f, 0.6f, 1};
   float m_rotation{};
   float m_scale{0.125f};
   glm::vec2 m_translation{glm::vec2(0)};

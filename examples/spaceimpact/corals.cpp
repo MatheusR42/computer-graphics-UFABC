@@ -101,7 +101,7 @@ Corals::Coral Corals::createCorals(glm::vec2 translation,
 
   // Choose a random color (actually, a grayscale)
   std::uniform_real_distribution<float> randomIntensity(0.5f, 1.0f);
-  coral.m_color = glm::vec4(0, 1, 1, 1) * randomIntensity(re);
+  coral.m_color = glm::vec4(1.0f, 0.6f, 0.6f, 1) * randomIntensity(re);
 
   coral.m_color.a = 0.5f;
   coral.m_rotation = 0.0f;
