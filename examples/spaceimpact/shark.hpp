@@ -1,5 +1,5 @@
-#ifndef SHIP_HPP_
-#define SHIP_HPP_
+#ifndef SHARK_HPP_
+#define SHARK_HPP_
 
 #include "abcg.hpp"
 #include "gamedata.hpp"
@@ -8,7 +8,7 @@ class Asteroids;
 class OpenGLWindow;
 class StarLayers;
 
-class Ship {
+class Shark {
  public:
   void initializeGL(GLuint program);
   void paintGL(const GameData &gameData);
@@ -39,7 +39,6 @@ class Ship {
   glm::vec2 m_velocity{glm::vec2(0)};
 
   abcg::ElapsedTimer m_trailBlinkTimer;
-  abcg::ElapsedTimer m_bulletCoolDownTimer;
   abcg::ElapsedTimer m_movimentCoolDownTimer;
 };
 

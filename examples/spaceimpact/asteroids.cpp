@@ -56,7 +56,7 @@ void Asteroids::terminateGL() {
   }
 }
 
-void Asteroids::update(const Ship &ship, float deltaTime, GameData &gameData) {
+void Asteroids::update(const Shark &shark, float deltaTime, GameData &gameData) {
   float time = m_randomCreateTime(m_randomEngine);
   
   if (m_createCoolDownTimer.elapsed() >= time) {
@@ -79,7 +79,7 @@ void Asteroids::update(const Ship &ship, float deltaTime, GameData &gameData) {
       gameData.points = gameData.points + 1;
     }
     
-    asteroid.m_translation -= ship.m_velocity * deltaTime;
+    asteroid.m_translation -= shark.m_velocity * deltaTime;
     asteroid.m_rotation = glm::wrapAngle(
         asteroid.m_rotation + asteroid.m_angularVelocity * deltaTime);
     asteroid.m_translation += asteroid.m_velocity * deltaTime;

@@ -1,9 +1,9 @@
-#include "ship.hpp"
+#include "shark.hpp"
 
 #include <glm/gtx/fast_trigonometry.hpp>
 #include <glm/gtx/rotate_vector.hpp>
 
-void Ship::initializeGL(GLuint program) {
+void Shark::initializeGL(GLuint program) {
   terminateGL();
 
   m_program = program;
@@ -17,7 +17,7 @@ void Ship::initializeGL(GLuint program) {
   m_velocity = glm::vec2{0, .5f};
 
   std::array<glm::vec2, 30> positions{
-      // Ship body
+      // Shark body
       glm::vec2{-02.5f, +17.5f}, // 0
       glm::vec2{+02.5f, +17.5f}, // 1
       glm::vec2{00.0f, -13.0f}, // 2 - Body - Central
@@ -99,7 +99,7 @@ void Ship::initializeGL(GLuint program) {
   abcg::glBindVertexArray(0);
 }
 
-void Ship::paintGL(const GameData &gameData) {
+void Shark::paintGL(const GameData &gameData) {
   if (gameData.m_state != State::Playing) return;
 
   abcg::glUseProgram(m_program);
@@ -120,13 +120,13 @@ void Ship::paintGL(const GameData &gameData) {
   abcg::glUseProgram(0);
 }
 
-void Ship::terminateGL() {
+void Shark::terminateGL() {
   abcg::glDeleteBuffers(1, &m_vbo);
   abcg::glDeleteBuffers(1, &m_ebo);
   abcg::glDeleteVertexArrays(1, &m_vao);
 }
 
-void Ship::update(const GameData &gameData, float deltaTime) {
+void Shark::update(const GameData &gameData, float deltaTime) {
   m_velocity.y = m_velocity.y + deltaTime * .1;
 
   if (m_movimentCoolDownTimer.elapsed() < 35.0 / 1000.0) {
