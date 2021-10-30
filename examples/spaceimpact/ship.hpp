@@ -5,7 +5,6 @@
 #include "gamedata.hpp"
 
 class Asteroids;
-class Bullets;
 class OpenGLWindow;
 class StarLayers;
 
@@ -20,7 +19,6 @@ class Ship {
 
  private:
   friend Asteroids;
-  friend Bullets;
   friend OpenGLWindow;
   friend StarLayers;
 
