@@ -21,7 +21,7 @@ void Corals::initializeGL(GLuint program, int quantity) {
   m_corals.resize(quantity);
 
   for (auto &coral : m_corals) {
-    coral = createTrash();
+    coral = createCorals();
 
     coral.m_translation = {m_randomDist(m_randomEngine),
                               1.5};
@@ -57,15 +57,15 @@ void Corals::terminateGL() {
 }
 
 void Corals::update(const Shark &shark, float deltaTime, GameData &gameData) {
-  float time = m_randomCreateTime(m_randomEngine);
+  float time = m_randomCreateTime(m_randomEngine) * 0.8;
   
   if (m_createCoolDownTimer.elapsed() >= time) {
     m_createCoolDownTimer.restart();
 
     float scale = m_randomScale(m_randomEngine);
-
-    std::generate_n(std::back_inserter(m_corals), 1, [&]() {
-          return createTrash({m_randomDist(m_randomEngine),1.5}, scale);
+    int quantity = (gameData.points/10 + 1) > 3 ? 3 :  (gameData.points/10 + 1);
+    std::generate_n(std::back_inserter(m_corals), quantity, [&]() {
+          return createCorals({m_randomDist(m_randomEngine),m_randomDistY(m_randomEngine)}, scale);
         });
   }
 
@@ -89,7 +89,7 @@ void Corals::update(const Shark &shark, float deltaTime, GameData &gameData) {
       [](const Corals::Coral &a) { return a.m_hit; });
 }
 
-Corals::Coral Corals::createTrash(glm::vec2 translation,
+Corals::Coral Corals::createCorals(glm::vec2 translation,
                                               float scale) {
   Coral coral;
 

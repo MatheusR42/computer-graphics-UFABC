@@ -126,8 +126,15 @@ void Shark::terminateGL() {
   abcg::glDeleteVertexArrays(1, &m_vao);
 }
 
-void Shark::update(const GameData &gameData, float deltaTime) {
-  m_velocity.y = m_velocity.y + deltaTime * .1;
+void Shark::update(const GameData &gameData) {
+    if (m_movimentTimer.elapsed() > 3) {
+        m_velocity.y = m_velocity.y + .1;
+        m_movimentTimer.restart();
+  }
+
+
+  
+  
 
   if (m_movimentCoolDownTimer.elapsed() < 35.0 / 1000.0) {
     return;

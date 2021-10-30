@@ -14,7 +14,7 @@ class Shark {
   void paintGL(const GameData &gameData);
   void terminateGL();
 
-  void update(const GameData &gameData, float deltaTime);
+  void update(const GameData &gameData);
   void setRotation(float rotation) { m_rotation = rotation; }
 
  private:
@@ -40,6 +40,7 @@ class Shark {
 
   abcg::ElapsedTimer m_trailBlinkTimer;
   abcg::ElapsedTimer m_movimentCoolDownTimer;
+  abcg::ElapsedTimer m_movimentTimer;
 };
 
 #endif

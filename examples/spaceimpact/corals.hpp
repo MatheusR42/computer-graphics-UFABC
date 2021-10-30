@@ -46,13 +46,15 @@ class Corals {
 
   std::default_random_engine m_randomEngine;
   std::uniform_real_distribution<float> m_randomDist{-1.0f, 1.0f};
+  std::uniform_real_distribution<float> m_randomDistY{1.3f, 1.7f};
   std::uniform_real_distribution<float> m_randomCreateTime{0.9f, 2.0f};
-  std::uniform_real_distribution<float> m_randomScale{0.15f, .35f};
+  std::uniform_real_distribution<float> m_randomScale{0.05f, .15f};
 
-  Corals::Coral createTrash(glm::vec2 translation = glm::vec2(0),
+  Corals::Coral createCorals(glm::vec2 translation = glm::vec2(0),
                                      float scale = 0.25f);
 
   abcg::ElapsedTimer m_createCoolDownTimer;
+  abcg::ElapsedTimer m_movimentTimer;
 };
 
 #endif

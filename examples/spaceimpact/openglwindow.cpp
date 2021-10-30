@@ -72,7 +72,7 @@ void OpenGLWindow::update() {
     return;
   }
 
-  m_shark.update(m_gameData, deltaTime);
+  m_shark.update(m_gameData);
   m_starLayers.update(m_shark, deltaTime);
   m_corals.update(m_shark, deltaTime, m_gameData);
 
@@ -163,7 +163,7 @@ void OpenGLWindow::checkCollisions() {
     const auto distance{
         glm::distance(m_shark.m_translation, coralTranslation)};
 
-    if (distance < m_shark.m_scale * 0.9f + coral.m_scale * 0.85f) {
+    if (distance < m_shark.m_scale * 0.6f + coral.m_scale * 0.6f) {
       m_gameData.m_state = State::GameOver;
       m_restartWaitTimer.restart();
     }
