@@ -47,20 +47,6 @@ by  **Matheus Araujo**      *<https://github.com/MatheusR42>*   matheus.victor@a
                 MCTA008-17 ♦ Computação Gráfica 
                 Prof. Bruno Augusto Dorta Marques
 ```
-=============
-
-## ABCg
-Development framework accompanying the course MCTA008-17 Computer Graphics at [UFABC](https://www.ufabc.edu.br/).
-
-### Credits
-Developed by Harlen Batagelo.
-
-### License
-
-ABCg is licensed under the MIT License. See [LICENSE](https://github.com/hbatagelo/abcg/blob/main/LICENSE) for more information.
-
-=============
-
 ## Game
 Sharkker é um jogo 2D desenvolvido com base no jogo [Asteroids](https://hbatagelo.github.io/abcgapps/asteroids/index.html) utilizado na disciplina de Computação Gráfica MCTA008-17 da UFABC. A ideia inicial era se inspirar nos jogos Frogger (SEGA/Konami, 1981) e Space Impact (Nokia, 2000).
 Foi utilizado o OpenGL como API gráfica, com programação em C++ e framework ABCg também desenvolvido para acompanhamento da disciplina de CG.
@@ -68,6 +54,7 @@ Foi utilizado o OpenGL como API gráfica, com programação em C++ e framework A
 O objetivo do jogo é guiar adiante um tubarão pelo vasto oceano, enquanto grandes fragmentos de corais tentam atingí-lo.
 Conforme o animal avança e desvia dos obstáculos, são somados pontos ao canto superior esquerdo da tela.
 Caso o tubarão colida com algum coral, ele se machucará e perderá uma de suas três vidas, indicadas no canto superior esquerdo. Ao chegar à zero, o jogo acaba.
+
 ![Sharkker](public/Sharkker.png)
 
 Conforme o tubarão avança, o nível de dificuldade aumenta, com maior geração de corais e maior velocidade. Porém, essa dificuldade é limitada à um nível justo de jogabilidade.
@@ -128,3 +115,16 @@ Já as camadas de bolhas, seus gradientes e mecânicas foram herdadas das stars 
 ![Collision](public/Shark_3_Hurt.png)
 ----
 
+=============
+
+## ABCg
+Development framework accompanying the course MCTA008-17 Computer Graphics at [UFABC](https://www.ufabc.edu.br/).
+
+### Credits
+Developed by Harlen Batagelo.
+
+### License
+
+ABCg is licensed under the MIT License. See [LICENSE](https://github.com/hbatagelo/abcg/blob/main/LICENSE) for more information.
+
+=============
