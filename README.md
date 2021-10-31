@@ -29,26 +29,36 @@
                                                         (#  
 ```
 #                            SHARKKER
-<https://matheusr42.github.io/computer-graphics-UFABC/sharkker/>
-    <https://github.com/MatheusR42/computer-graphics-UFABC>
-                        Release 2021/10/31
+
+https://matheusr42.github.io/computer-graphics-UFABC/sharkker/
+
+https://github.com/MatheusR42/computer-graphics-UFABC
+
+Release 2021/10/31
 
 by  **Matheus Araujo**      *<https://github.com/MatheusR42>*   matheus.victor@aluno.ufabc.edu.br
+
 &&  **Giovanne Galdino**    *<https://linktr.ee/galdino.gio>*   giovanne.galdino@aluno.ufabc.edu.br
 
-                            UFABC
+```
+                             UFABC
                     Univesidade Federal do ABC
                     
                 MCTA008-17 ♦ Computação Gráfica 
                 Prof. Bruno Augusto Dorta Marques
-
+```
 =============
+
 ## ABCg
 Development framework accompanying the course MCTA008-17 Computer Graphics at [UFABC](https://www.ufabc.edu.br/).
+
 ### Credits
- Developed by Harlen Batagelo.
+Developed by Harlen Batagelo.
+
 ### License
+
 ABCg is licensed under the MIT License. See [LICENSE](https://github.com/hbatagelo/abcg/blob/main/LICENSE) for more information.
+
 =============
 
 ## Game
@@ -80,17 +90,21 @@ Assim como a nave de Asteroids, o animal é desenhado com vértices que se ligam
 Abaixo, vemos como se deu o passo-a-passo de sua criação:
 
 ![0 - Shark's Draft](public/Shark_0_Draft.jpeg)
+
 ![1 - Shark's Project](public/Shark_1_Project.jpeg)
+
 ![2 - Shark's Sharkker](public/Shark_2_Sharkker.png)
 
 ### Corals
 Os corais são gerados com um número aleatório de vértices entre 50 e 70.
 Possuem também certa aleatoriedade na posição nos quais são gerados na parte superior da tela, nas suas velocidades de rotação, tamanho e intensidade de cor. Após passarem completamente pela borda inferior da tela um ponto é contabilizado e o caral é destruido para liberar espaço na memória.
+
 ![Corals](public/Sharkker_Corals.png)
 
 ### Bubbles and Ocean
 A cor do oceano, ao fundo de todos os objetos, foi baseada justamente na cor "Ocean Blue" #006994 (de palheta R000 G105 B148). Porém, há um leve escurecimento para melhor contraste com os outros componentes do jogo.
 Já as camadas de bolhas, seus gradientes e mecânicas foram herdadas das stars do jogo Asteroids.
+
 ![Bubbles and Ocean](public/Sharkker_Bubbles_Ocean.png)
 
 ## Features
