@@ -87,7 +87,7 @@ Possuem também certa aleatoriedade na posição nos quais são gerados na parte
 ### Bubbles and Ocean
 A cor do oceano, ao fundo de todos os objetos, foi baseada justamente na cor "Ocean Blue" #006994 (de palheta R000 G105 B148). Porém, há um leve escurecimento para melhor contraste com os outros componentes do jogo.
 Já as camadas de bolhas, seus gradientes e mecânicas foram herdadas das stars do jogo Asteroids.
-![Corals](public/Sharkker_Bubbles_Ocean.PNG)
+![Bubbles and Ocean](public/Sharkker_Bubbles_Ocean.PNG)
 
 ## Features
 • Sistema de pontuação
