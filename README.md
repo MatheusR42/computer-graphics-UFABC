@@ -102,6 +102,7 @@ Já as camadas de bolhas, seus gradientes e mecânicas foram herdadas das stars 
 • Display do título do jogo, game over e créditos
 • Tubarão criado manualmente
 • Corais criados aleatoriamente com movimento rotacional e em direção ao player
+
 ![Collision](public/Shark_3_Hurt.png)
 ----
 
