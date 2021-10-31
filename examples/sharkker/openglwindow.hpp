@@ -32,7 +32,7 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   Shark m_shark;
   BubbleLayers m_bubbleLayers;
 
-  abcg::ElapsedTimer m_restartWaitTimer;
+  abcg::ElapsedTimer m_Timer;
 
   ImFont* m_font_final{};
   ImFont* m_font_points{};

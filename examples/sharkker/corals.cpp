@@ -57,15 +57,21 @@ void Corals::terminateGL() {
 }
 
 void Corals::update(const Shark &shark, float deltaTime, GameData &gameData) {
+
+  // random time to create the next generation of corals
   float time = m_randomCreateTime(m_randomEngine) * 0.8;
   
   if (m_createCoolDownTimer.elapsed() >= time) {
     m_createCoolDownTimer.restart();
 
     float scale = m_randomScale(m_randomEngine);
+
+    // quantity of corals increase when you have more points
     int quantity = gameData.points/10 + 1;
     quantity = quantity > 4 ? 4 :  quantity;
 
+
+    // max quantity of corals
     if (gameData.points > 100)  {
       quantity = 5;
     }
@@ -76,15 +82,19 @@ void Corals::update(const Shark &shark, float deltaTime, GameData &gameData) {
   }
 
   for (auto &coral : m_corals) {
+
+    // delete corals after they disappear from screen
     if (coral.m_translation.y < -1.5) {
       coral.m_hit = true;
     }
 
+    // set m_point to prevent count twice the same coral
     if (gameData.m_state == State::Playing && !coral.m_point && coral.m_translation.y < -1.2) {
       coral.m_point = true;
       gameData.points = gameData.points + 1;
     }
     
+    // change the coral position and rotation
     coral.m_translation -= shark.m_velocity * deltaTime;
     coral.m_rotation = glm::wrapAngle(
         coral.m_rotation + coral.m_angularVelocity * deltaTime);

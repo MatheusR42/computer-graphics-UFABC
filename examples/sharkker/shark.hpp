@@ -32,7 +32,7 @@ class Shark {
   GLuint m_vbo{};
   GLuint m_ebo{};
 
-  glm::vec4 m_color{0.6f, 0.6f, 0.6f, 1};
+  glm::vec4 m_color{0.6f, 0.6f, 0.6f, 1};     // Shark color = R153 G153 B153 A255 = Grey
   float m_rotation{};
   float m_scale{0.125f};
   bool m_nodamage{false};

@@ -33,9 +33,11 @@ void OpenGLWindow::initializeGL() {
   if (m_font_points == nullptr) {
     throw abcg::Exception{abcg::Exception::Runtime("Cannot load font file")};
   }
+
   // Create program to render the bubble
   m_bubbleProgram = createProgramFromFile(getAssetsPath() + "bubble.vert",
                                          getAssetsPath() + "bubble.frag");
+                                         
   // Create program to render the other objects
   m_objectsProgram = createProgramFromFile(getAssetsPath() + "objects.vert",
                                            getAssetsPath() + "objects.frag");
@@ -66,9 +68,9 @@ void OpenGLWindow::restart() {
 void OpenGLWindow::update() {
   const float deltaTime{static_cast<float>(getDeltaTime())};
 
-  // Wait 5 seconds before restarting
+  // Wait 8 seconds before restarting
   if (m_gameData.m_state != State::Playing &&
-      m_restartWaitTimer.elapsed() > 5) {
+      m_Timer.elapsed() > 7) {
     restart();
     return;
   }
@@ -108,18 +110,31 @@ void OpenGLWindow::paintUI() {
     ImGui::Begin(" ", nullptr, flags);
     ImGui::PushFont(m_font_final);
 
-    if (m_gameData.m_state == State::GameOver) {
-      ImGui::Text("      Game Over\nContinue a nadar.");
-    } else if (m_gameData.m_state == State::Win) {
-      ImGui::Text("*You Win!*");
-    }
+    // "Game Over" message display
+    if (m_gameData.m_state == State::GameOver && 
+      m_Timer.elapsed() < 4) {
+      ImGui::Text("       Game Over\nContinue a nadar.");
 
-    ImGui::PopFont();
-    ImGui::End();
+    // Display developers name after "Game Over" message
+    }
+    if (m_gameData.m_state == State::GameOver && 
+      m_Timer.elapsed() > 4) {
+      ImGui::Text(" Matheus Araujo\nGiovanne Galdino");
+    }
+     
+    // "Sharkker" inicial message display
+    if (m_gameData.m_state == State::Playing && 
+      m_Timer.elapsed() < 4) {                    // Text display time
+      ImGui::Text("         Sharkker");
+    }
   }
 
+  ImGui::PopFont();
+  ImGui::End();
+  
+  // "Points" Display
   {
-    const auto position{ImVec2((m_viewportWidth - 180),
+    const auto position{ImVec2((16),
                                 (16))};
     ImGui::SetNextWindowSize(ImVec2(190, 100));
     ImGui::SetNextWindowPos(position);
@@ -133,14 +148,14 @@ void OpenGLWindow::paintUI() {
     }
 
     ImGui::PushFont(m_font_points);
-
     ImGui::Text("Points: %d", m_gameData.points);
     ImGui::PopFont();
     ImGui::End();
   }
 
+  // "Lifes" Display
   {
-    const auto position{ImVec2((16),
+    const auto position{ImVec2((m_viewportWidth - 140),
                                 (16))};
     ImGui::SetNextWindowSize(ImVec2(190, 100));
     ImGui::SetNextWindowPos(position);
@@ -154,7 +169,6 @@ void OpenGLWindow::paintUI() {
     }
 
     ImGui::PushFont(m_font_points);
-
     ImGui::Text("Lifes: %d", m_gameData.lifes);
     ImGui::PopFont();
     ImGui::End();
@@ -197,7 +211,7 @@ void OpenGLWindow::checkCollisions() {
 
       if (m_gameData.lifes == 0) {
         m_gameData.m_state = State::GameOver;
-        m_restartWaitTimer.restart();
+        m_Timer.restart();
       }
     }
   }
