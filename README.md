@@ -78,6 +78,7 @@ Não há um final para esse jogo e o objetivo é ir o mais longe possível, soma
 
 ## Comandos
 ← Mover para a esquerda
+
 → Mover para a direita
 
 ## Objetos
@@ -97,7 +98,7 @@ Abaixo, vemos como se deu o passo-a-passo de sua criação:
 
 ### Corals
 Os corais são gerados com um número aleatório de vértices entre 50 e 70.
-Possuem também certa aleatoriedade na posição nos quais são gerados na parte superior da tela, nas suas velocidades de rotação, tamanho e intensidade de cor. Após passarem completamente pela borda inferior da tela um ponto é contabilizado e o caral é destruido para liberar espaço na memória.
+Possuem também certa aleatoriedade na posição nos quais são gerados na parte superior da tela, nas suas velocidades de rotação, tamanho e intensidade de cor. Após passarem completamente pela borda inferior da tela um ponto é contabilizado e o coral é destruido para liberar espaço na memória.
 
 ![Corals](public/Sharkker_Corals.png)
 
@@ -109,12 +110,19 @@ Já as camadas de bolhas, seus gradientes e mecânicas foram herdadas das stars 
 
 ## Features
 • Sistema de pontuação
+
 • Sistema de vidas
+
 • Invencibilidade momentânea ao perder cada uma das duas primeiras vidas
+
 • Aumento de velocidade da tela do jogo conforme progressão
+
 • Aumento da quantidade de corais conforme progressão
+
 • Display do título do jogo, game over e créditos
+
 • Tubarão criado manualmente
+
 • Corais criados aleatoriamente com movimento rotacional e em direção ao player
 
 ![Collision](public/Shark_3_Hurt.png)
