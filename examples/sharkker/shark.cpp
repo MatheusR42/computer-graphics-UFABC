@@ -3,6 +3,7 @@
 #include <glm/gtx/fast_trigonometry.hpp>
 #include <glm/gtx/rotate_vector.hpp>
 
+// Shark
 void Shark::initializeGL(GLuint program) {
   terminateGL();
 
@@ -16,52 +17,45 @@ void Shark::initializeGL(GLuint program) {
   m_translation = glm::vec2{0, -.8f};
   m_velocity = glm::vec2{0, .5f};
 
-  std::array<glm::vec2, 30> positions{
-      // Shark body
-      glm::vec2{-02.5f, +17.5f}, // 0
-      glm::vec2{+02.5f, +17.5f}, // 1
-      glm::vec2{00.0f, -13.0f}, // 2 - Body - Central
-      glm::vec2{-04.5f, +03.5f}, // 3 - Body - Left
-      glm::vec2{+04.5f, +03.5f}, // 4 - Body - Right
-      glm::vec2{-05.0f, +09.5f}, // 5 - Body - "Shoulder" Left
-      glm::vec2{+05.0f, +09.5f}, // 6 - Body - "Shoulder" Right
-      glm::vec2{-06.0f, +04.5f}, // 7
-      glm::vec2{+06.0f, +04.5f}, // 8
-      glm::vec2{-10.0f, +02.5f}, // 9
-      glm::vec2{+10.0f, +02.5f}, // 10
-      glm::vec2{00.1f, -06.5f}, // 11
-      glm::vec2{00.0f, -06.5f}, // 12
-      glm::vec2{00.1f, -08.5f}, // 13
-      glm::vec2{00.0f, -08.5f}, // 14
-      glm::vec2{00.1f, -09.5f}, // 15
-      glm::vec2{00.0f, -09.5f}, // 16
-      glm::vec2{00.1f, -11.5f}, // 17
-      glm::vec2{00.0f, -11.5f}, // 18
-      glm::vec2{-03.0f, -19.5f}, // 19
-      glm::vec2{+03.0f, -19.5f}, // 20
-      glm::vec2{00.0f, -17.5f}, // 21
+  // Shark body
+  std::array<glm::vec2, 17> positions{
+      glm::vec2{-02.5f, +17.5f},          // 0 - Nose - Left
+      glm::vec2{+02.5f, +17.5f},          // 1 - Nose - Right
+      glm::vec2{00.0f, -17.5f},           // 2 - Body - Center Inferior
+      glm::vec2{00.0f, +03.5f},           // 3 - Body - Center
+      glm::vec2{-05.0f, +09.5f},          // 4 - Body - "Shoulder" Left
+      glm::vec2{+05.0f, +09.5f},          // 5 - Body - "Shoulder" Right
+      glm::vec2{-06.0f, +04.5f},          // 6 - Flipper - "Armpit" Left 
+      glm::vec2{+06.0f, +04.5f},          // 7 - Flipper - "Armpit" Right
+      glm::vec2{-10.0f, +02.5f},          // 8 - Flipper - Left 
+      glm::vec2{+10.0f, +02.5f},          // 9 - Flipper - Right
+      glm::vec2{00.0f, -04.5f},           // 10 - Fin - Center
+      glm::vec2{00.0f, -10.5f},           // 11 - Fin - Center Inferior
+      glm::vec2{-04.5f, -07.5f},          // 12 - Fin - Left
+      glm::vec2{04.5f, -07.5f},           // 13 - Fin - Right
+      glm::vec2{00.0f, -11.5f},           // 14 - Tail - Center Inferior
+      glm::vec2{-03.0f, -19.5f},          // 15 - Tail - Left End
+      glm::vec2{00.5f, -17.5f},           // 16 - Tail - Start
       };
 
   // Normalize
   for (auto &position : positions) {
-    position /= glm::vec2{15.0f, 15.0f};
+    position /= glm::vec2{15.0f, 15.0f};  // Shark Size
   }
 
-  const std::array indices{2, 1, 0,
-                            2, 3, 0,
-                            2, 4, 1,
-                            3, 5, 0,
-                            4, 6, 1,
-                            3, 7, 5,
-                            4, 8, 6,
-                            7, 9, 5,
-                            8, 10, 6,
-                            13, 15, 11,
-                            14, 16, 12,
-                            2, 17, 19,
-                            2, 18, 20,
-                            2, 19, 21,
-                            2, 20, 21,
+  // Shark Triangles 
+  const std::array indices{2, 1, 0,       // Body Center
+                            2, 4, 0,      // Body Left
+                            2, 5, 1,      // Body Right
+                            3, 4, 0,      // Shoulder Left
+                            3, 5, 1,      // Shoulder Right
+                            6, 8, 4,      // Flipper Left
+                            7, 9, 5,      // Flipper Right   
+                            11, 12, 10,   // Fin Left                  
+                            11, 13, 10,   // Fin Right                        
+                            3, 6, 4,      // Forearm Left
+                            3, 7, 5,      // Forearm Right
+                            16, 14, 15,   // Tail
                             };
 
   // Generate VBO
@@ -127,42 +121,40 @@ void Shark::terminateGL() {
 }
 
 void Shark::setDamage() {
-  m_nodamage = true;
+  m_nodamage = true;                                      // Shark enters on invincible state when hit
 }
 
 void Shark::update(const GameData &gameData) {
-  auto grey = glm::vec4{0.6f, 0.6f, 0.6f, 1.0f};
-  auto damageColor = glm::vec4{1.0f, 0.0f, 0.0f, 0.1f};
+  auto grey = glm::vec4{0.6f, 0.6f, 0.6f, 1.0f};          // R153 G153 B153 A255
+  auto damageColor = glm::vec4{1.0f, 0.0f, 0.0f, 1.0f};   // R255 G000 B000 A255
 
   if (m_nodamage) {
-    m_color = damageColor;
+    m_color = damageColor;                                // Shark turns Red when hit
   } else {
-    m_color = grey;
+    m_color = grey;                                       // Shark turns Grey when hit
   }
   
-  if (m_movimentTimer.elapsed() > 3) {
-      m_velocity.y = m_velocity.y + .1;
+  if (m_movimentTimer.elapsed() > 3) {                    // Every X seconds the shark accelerates forward
+      m_velocity.y = m_velocity.y + .1;                   // Shark's acceleration
       m_movimentTimer.restart();
   }
 
-  if (m_movimentCoolDownTimer.elapsed() < 35.0 / 1000.0) {
+  if (m_movimentCoolDownTimer.elapsed()< 35.0/1000.0){    // Shark's axial velocity
     return;
   }
-
   m_movimentCoolDownTimer.restart();
 
-  // Rotate
+  // Input Left key
   if (gameData.m_input[static_cast<size_t>(Input::Left)]) {
     if (m_translation.x > -1) {
-      m_translation.x = m_translation.x - .1;
+      m_translation.x = m_translation.x - .06;            // Left key sensibility
     }
-    // m_translation = glm::vec2{-.3f, 0};
   }
 
-  // m_rotation = glm::wrapAngle(m_rotation + 4.0f * deltaTime);
+  // Input Right key
   if (gameData.m_input[static_cast<size_t>(Input::Right)]) {
     if (m_translation.x < 1) {
-      m_translation.x = m_translation.x + .1;
+      m_translation.x = m_translation.x + .06;            // Right key sensibility
     }
   }
 }
