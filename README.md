@@ -30,6 +30,7 @@
 
 #                            SHARKKER
 <https://matheusr42.github.io/computer-graphics-UFABC/sharkker/>
+    <https://github.com/MatheusR42/computer-graphics-UFABC>
                         Release 2021/10/31
 
 by  **Matheus Araujo**      *<https://github.com/MatheusR42>*    
@@ -61,6 +62,9 @@ Caso o tubarão colida com algum coral, ele se machucará e perderá uma de suas
 
 Conforme o tubarão avança, o nível de dificuldade aumenta, com maior geração de corais e maior velocidade. Porém, essa dificuldade é limitada à um nível justo de jogabilidade.
 Não há um final para esse jogo e o objetivo é ir o mais longe possível, somando mais pontos.
+
+## Jogar
+É possível jogar Sharkker a partir do primeiro link deste markdown em WebAssembly no GitHub Pages ou executar o arquivo contido em build\bin\sharkker\sharkker.exe
 
 ## Comandos
 ← Mover para a esquerda
