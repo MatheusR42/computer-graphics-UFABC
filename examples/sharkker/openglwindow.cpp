@@ -113,19 +113,19 @@ void OpenGLWindow::paintUI() {
     // "Game Over" message display
     if (m_gameData.m_state == State::GameOver && 
       m_Timer.elapsed() < 4) {
-      ImGui::Text("          Game Over\nContinue a nadar.");
+      ImGui::Text("       Game Over\nContinue a nadar.");
 
     // Display developers name after "Game Over" message
     }
     if (m_gameData.m_state == State::GameOver && 
       m_Timer.elapsed() > 4) {
-      ImGui::Text("Matheus Araujo\nGiovanne Galdino");
+      ImGui::Text(" Matheus Araujo\nGiovanne Galdino");
     }
      
     // "Sharkker" inicial message display
     if (m_gameData.m_state == State::Playing && 
       m_Timer.elapsed() < 4) {                    // Text display time
-    ImGui::Text("Sharkker");
+      ImGui::Text("         Sharkker");
     }
   }
 
