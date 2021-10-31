@@ -33,8 +33,8 @@
     <https://github.com/MatheusR42/computer-graphics-UFABC>
                         Release 2021/10/31
 
-by  **Matheus Araujo**      *<https://github.com/MatheusR42>*    
-&&  **Giovanne Galdino**    *<https://linktr.ee/galdino.gio>*
+by  **Matheus Araujo**      *<https://github.com/MatheusR42>*   matheus.victor@aluno.ufabc.edu.br
+&&  **Giovanne Galdino**    *<https://linktr.ee/galdino.gio>*   giovanne.galdino@aluno.ufabc.edu.br
 
                             UFABC
                     Univesidade Federal do ABC
