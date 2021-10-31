@@ -64,7 +64,7 @@ Conforme o tubarão avança, o nível de dificuldade aumenta, com maior geraçã
 Não há um final para esse jogo e o objetivo é ir o mais longe possível, somando mais pontos.
 
 ## Jogar
-É possível jogar Sharkker a partir do primeiro link deste markdown em WebAssembly no GitHub Pages ou executar o arquivo contido em build\bin\sharkker\sharkker.exe
+É possível jogar Sharkker a partir do primeiro link deste markdown em WebAssembly no GitHub Pages ou fazer um build seguindo a seguinte documentação: https://hbatagelo.github.io/cg/config.html
 
 ## Comandos
 ← Mover para a esquerda
