@@ -1,4 +1,4 @@
-  
+```
   ██████  ██░ ██  ▄▄▄       ██▀███   ██ ▄█▀ ██ ▄█▀▓█████  ██▀███  
 ▒██    ▒ ▓██░ ██▒▒████▄    ▓██ ▒ ██▒ ██▄█▒  ██▄█▒ ▓█   ▀ ▓██ ▒ ██▒
 ░ ▓██▄   ▒██▀▀██░▒██  ▀█▄  ▓██ ░▄█ ▒▓███▄░ ▓███▄░ ▒███   ▓██ ░▄█ ▒
@@ -27,7 +27,7 @@
                     ((%                              /..@   
                   %                                    ..   
                                                         (#  
-
+```
 #                            SHARKKER
 <https://matheusr42.github.io/computer-graphics-UFABC/sharkker/>
     <https://github.com/MatheusR42/computer-graphics-UFABC>
@@ -85,7 +85,7 @@ Abaixo, vemos como se deu o passo-a-passo de sua criação:
 
 ### Corals
 Os corais são gerados com um número aleatório de vértices entre 50 e 70.
-Possuem também certa aleatoriedade na posição nos quais são gerados na parte superior da tela, nas suas velocidades de rotação, tamanho e intensidade de cor.
+Possuem também certa aleatoriedade na posição nos quais são gerados na parte superior da tela, nas suas velocidades de rotação, tamanho e intensidade de cor. Após passarem completamente pela borda inferior da tela um ponto é contabilizado e o caral é destruido para liberar espaço na memória.
 ![Corals](public/Sharkker_Corals.png)
 
 ### Bubbles and Ocean
