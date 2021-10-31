@@ -57,7 +57,7 @@ Foi utilizado o OpenGL como API gráfica, com programação em C++ e framework A
 O objetivo do jogo é guiar adiante um tubarão pelo vasto oceano, enquanto grandes fragmentos de corais tentam atingí-lo.
 Conforme o animal avança e desvia dos obstáculos, são somados pontos ao canto superior esquerdo da tela.
 Caso o tubarão colida com algum coral, ele se machucará e perderá uma de suas três vidas, indicadas no canto superior esquerdo. Ao chegar à zero, o jogo acaba.
-![Sharkker](public/Sharkker.png)
+![Sharkker](public/Sharkker.PNG)
 
 Conforme o tubarão avança, o nível de dificuldade aumenta, com maior geração de corais e maior velocidade. Porém, essa dificuldade é limitada à um nível justo de jogabilidade.
 Não há um final para esse jogo e o objetivo é ir o mais longe possível, somando mais pontos.
@@ -87,6 +87,7 @@ Possuem também certa aleatoriedade na posição nos quais são gerados na parte
 ### Bubbles and Ocean
 A cor do oceano, ao fundo de todos os objetos, foi baseada justamente na cor "Ocean Blue" #006994 (de palheta R000 G105 B148). Porém, há um leve escurecimento para melhor contraste com os outros componentes do jogo.
 Já as camadas de bolhas, seus gradientes e mecânicas foram herdadas das stars do jogo Asteroids.
+![Corals](public/Sharkker_Bubbles_Ocean.PNG)
 
 ## Features
 • Sistema de pontuação
