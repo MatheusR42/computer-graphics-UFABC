@@ -129,10 +129,10 @@ void OpenGLWindow::paintUI() {
     }
   }
 
-    ImGui::PopFont();
-    ImGui::End();
+  ImGui::PopFont();
+  ImGui::End();
   
-    // "Points" Display
+  // "Points" Display
   {
     const auto position{ImVec2((16),
                                 (16))};
@@ -153,7 +153,7 @@ void OpenGLWindow::paintUI() {
     ImGui::End();
   }
 
-    // "Lifes" Display
+  // "Lifes" Display
   {
     const auto position{ImVec2((m_viewportWidth - 140),
                                 (16))};
