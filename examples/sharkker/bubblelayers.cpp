@@ -1,8 +1,8 @@
-#include "starlayers.hpp"
+#include "bubblelayers.hpp"
 
 #include <cppitertools/itertools.hpp>
 
-void StarLayers::initializeGL(GLuint program, int quantity) {
+void BubbleLayers::initializeGL(GLuint program, int quantity) {
   terminateGL();
 
   // Start pseudo-random number generator
@@ -17,7 +17,7 @@ void StarLayers::initializeGL(GLuint program, int quantity) {
   std::uniform_real_distribution<float> distPos(-1.0f, 1.0f);
   std::uniform_real_distribution<float> distIntensity(0.5f, 1.0f);
 
-  for (auto &&[index, layer] : iter::enumerate(m_starLayers)) {
+  for (auto &&[index, layer] : iter::enumerate(m_bubbleLayers)) {
     layer.m_pointSize = 10.0f / (1.0f + index);
     layer.m_quantity = quantity * (static_cast<int>(index) + 1);
     layer.m_translation = glm::vec2(0);
@@ -60,13 +60,13 @@ void StarLayers::initializeGL(GLuint program, int quantity) {
   }
 }
 
-void StarLayers::paintGL() {
+void BubbleLayers::paintGL() {
   abcg::glUseProgram(m_program);
 
   abcg::glEnable(GL_BLEND);
   abcg::glBlendFunc(GL_ONE, GL_ONE);
 
-  for (const auto &layer : m_starLayers) {
+  for (const auto &layer : m_bubbleLayers) {
     abcg::glBindVertexArray(layer.m_vao);
     abcg::glUniform1f(m_pointSizeLoc, layer.m_pointSize);
 
@@ -87,15 +87,15 @@ void StarLayers::paintGL() {
   abcg::glUseProgram(0);
 }
 
-void StarLayers::terminateGL() {
-  for (auto &layer : m_starLayers) {
+void BubbleLayers::terminateGL() {
+  for (auto &layer : m_bubbleLayers) {
     abcg::glDeleteBuffers(1, &layer.m_vbo);
     abcg::glDeleteVertexArrays(1, &layer.m_vao);
   }
 }
 
-void StarLayers::update(const Shark &shark, float deltaTime) {
-  for (auto &&[index, layer] : iter::enumerate(m_starLayers)) {
+void BubbleLayers::update(const Shark &shark, float deltaTime) {
+  for (auto &&[index, layer] : iter::enumerate(m_bubbleLayers)) {
     const auto layerSpeedScale{1.0f / (index + 2.0f)};
     layer.m_translation -= shark.m_velocity * deltaTime * layerSpeedScale;
 

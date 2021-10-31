@@ -1,5 +1,5 @@
-#ifndef STARLAYERS_HPP_
-#define STARLAYERS_HPP_
+#ifndef BUBBLELAYERS_HPP_
+#define BUBBLELAYERS_HPP_
 
 #include <array>
 #include <random>
@@ -10,7 +10,7 @@
 
 class OpenGLWindow;
 
-class StarLayers {
+class BubbleLayers {
  public:
   void initializeGL(GLuint program, int quantity);
   void paintGL();
@@ -25,7 +25,7 @@ class StarLayers {
   GLint m_pointSizeLoc{};
   GLint m_translationLoc{};
 
-  struct StarLayer {
+  struct BubbleLayer {
     GLuint m_vao{};
     GLuint m_vbo{};
 
@@ -34,7 +34,7 @@ class StarLayers {
     glm::vec2 m_translation{glm::vec2(0)};
   };
 
-  std::array<StarLayer, 5> m_starLayers;
+  std::array<BubbleLayer, 5> m_bubbleLayers;
 
   std::default_random_engine m_randomEngine;
 };

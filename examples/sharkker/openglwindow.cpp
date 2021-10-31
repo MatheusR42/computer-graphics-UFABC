@@ -33,9 +33,9 @@ void OpenGLWindow::initializeGL() {
   if (m_font_points == nullptr) {
     throw abcg::Exception{abcg::Exception::Runtime("Cannot load font file")};
   }
-  // Create program to render the stars
-  m_starsProgram = createProgramFromFile(getAssetsPath() + "stars.vert",
-                                         getAssetsPath() + "stars.frag");
+  // Create program to render the bubble
+  m_bubbleProgram = createProgramFromFile(getAssetsPath() + "bubble.vert",
+                                         getAssetsPath() + "bubble.frag");
   // Create program to render the other objects
   m_objectsProgram = createProgramFromFile(getAssetsPath() + "objects.vert",
                                            getAssetsPath() + "objects.frag");
@@ -58,7 +58,7 @@ void OpenGLWindow::restart() {
   m_gameData.points = 0;
   m_gameData.lifes = 3;
 
-  m_starLayers.initializeGL(m_starsProgram, 25);
+  m_bubbleLayers.initializeGL(m_bubbleProgram, 25);
   m_shark.initializeGL(m_objectsProgram);
   m_corals.initializeGL(m_objectsProgram, 1);
 }
@@ -74,7 +74,7 @@ void OpenGLWindow::update() {
   }
 
   m_shark.update(m_gameData);
-  m_starLayers.update(m_shark, deltaTime);
+  m_bubbleLayers.update(m_shark, deltaTime);
   m_corals.update(m_shark, deltaTime, m_gameData);
 
   if (m_gameData.m_state == State::Playing) {
@@ -88,7 +88,7 @@ void OpenGLWindow::paintGL() {
   abcg::glClear(GL_COLOR_BUFFER_BIT);
   abcg::glViewport(0, 0, m_viewportWidth, m_viewportHeight);
 
-  m_starLayers.paintGL();
+  m_bubbleLayers.paintGL();
   m_corals.paintGL();
   m_shark.paintGL(m_gameData);
 }
@@ -170,12 +170,12 @@ void OpenGLWindow::resizeGL(int width, int height) {
 }
 
 void OpenGLWindow::terminateGL() {
-  abcg::glDeleteProgram(m_starsProgram);
+  abcg::glDeleteProgram(m_bubbleProgram);
   abcg::glDeleteProgram(m_objectsProgram);
 
   m_corals.terminateGL();
   m_shark.terminateGL();
-  m_starLayers.terminateGL();
+  m_bubbleLayers.terminateGL();
 }
 
 void OpenGLWindow::checkCollisions() {

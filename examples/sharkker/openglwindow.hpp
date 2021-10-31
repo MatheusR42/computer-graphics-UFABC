@@ -8,7 +8,7 @@
 #include "abcg.hpp"
 #include "corals.hpp"
 #include "shark.hpp"
-#include "starlayers.hpp"
+#include "bubblelayers.hpp"
 
 class OpenGLWindow : public abcg::OpenGLWindow {
  protected:
@@ -20,7 +20,7 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   void terminateGL() override;
 
  private:
-  GLuint m_starsProgram{};
+  GLuint m_bubbleProgram{};
   GLuint m_objectsProgram{};
 
   int m_viewportWidth{};
@@ -30,7 +30,7 @@ class OpenGLWindow : public abcg::OpenGLWindow {
 
   Corals m_corals;
   Shark m_shark;
-  StarLayers m_starLayers;
+  BubbleLayers m_bubbleLayers;
 
   abcg::ElapsedTimer m_restartWaitTimer;
 

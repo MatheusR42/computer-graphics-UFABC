@@ -6,7 +6,7 @@
 
 class Corals;
 class OpenGLWindow;
-class StarLayers;
+class BubbleLayers;
 
 class Shark {
  public:
@@ -20,7 +20,7 @@ class Shark {
  private:
   friend Corals;
   friend OpenGLWindow;
-  friend StarLayers;
+  friend BubbleLayers;
 
   GLuint m_program{};
   GLint m_translationLoc{};
