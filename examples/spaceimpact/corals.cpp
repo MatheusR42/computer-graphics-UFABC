@@ -102,8 +102,8 @@ Corals::Coral Corals::createCorals(glm::vec2 translation,
   auto &re{m_randomEngine};  // Shortcut
 
   // Randomly choose the number of sides
-  std::uniform_int_distribution<int> randomSides(6, 20);
-  coral.m_polygonSides = 20;
+  std::uniform_int_distribution<int> randomSides(50, 70);
+  coral.m_polygonSides = randomSides(m_randomEngine);
 
   // Choose a random color (actually, a grayscale)
   std::uniform_real_distribution<float> randomIntensity(0.5f, 1.0f);
@@ -127,7 +127,7 @@ Corals::Coral Corals::createCorals(glm::vec2 translation,
   std::vector<glm::vec2> positions(0);
   positions.emplace_back(0, 0);
   const auto step{M_PI * 2 / coral.m_polygonSides};
-  std::uniform_real_distribution<float> randomRadius(0.8f, 1.0f);
+  std::uniform_real_distribution<float> randomRadius(0.5f, 1.0f);
   for (const auto angle : iter::range(0.0, M_PI * 2, step)) {
     const auto radius{randomRadius(re)};
     positions.emplace_back(radius * std::cos(angle), radius * std::sin(angle));

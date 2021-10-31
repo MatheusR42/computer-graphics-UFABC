@@ -15,7 +15,7 @@ class Shark {
   void terminateGL();
 
   void update(const GameData &gameData);
-  void setRotation(float rotation) { m_rotation = rotation; }
+  void setDamage();
 
  private:
   friend Corals;
@@ -39,9 +39,9 @@ class Shark {
   glm::vec2 m_translation{glm::vec2(0)};
   glm::vec2 m_velocity{glm::vec2(0)};
 
-  abcg::ElapsedTimer m_trailBlinkTimer;
   abcg::ElapsedTimer m_movimentCoolDownTimer;
   abcg::ElapsedTimer m_movimentTimer;
+  abcg::ElapsedTimer m_noDamageBlink;
 };
 
 #endif

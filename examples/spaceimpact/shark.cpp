@@ -44,7 +44,7 @@ void Shark::initializeGL(GLuint program) {
 
   // Normalize
   for (auto &position : positions) {
-    position /= glm::vec2{20.0f, 20.0f};
+    position /= glm::vec2{15.0f, 15.0f};
   }
 
   const std::array indices{2, 1, 0,
@@ -126,15 +126,24 @@ void Shark::terminateGL() {
   abcg::glDeleteVertexArrays(1, &m_vao);
 }
 
+void Shark::setDamage() {
+  m_nodamage = true;
+}
+
 void Shark::update(const GameData &gameData) {
-    if (m_movimentTimer.elapsed() > 3) {
-        m_velocity.y = m_velocity.y + .1;
-        m_movimentTimer.restart();
+  auto grey = glm::vec4{0.6f, 0.6f, 0.6f, 1.0f};
+  auto damageColor = glm::vec4{1.0f, 0.0f, 0.0f, 0.1f};
+
+  if (m_nodamage) {
+    m_color = damageColor;
+  } else {
+    m_color = grey;
   }
-
-
   
-  
+  if (m_movimentTimer.elapsed() > 3) {
+      m_velocity.y = m_velocity.y + .1;
+      m_movimentTimer.restart();
+  }
 
   if (m_movimentCoolDownTimer.elapsed() < 35.0 / 1000.0) {
     return;

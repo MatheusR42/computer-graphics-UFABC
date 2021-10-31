@@ -119,7 +119,7 @@ void OpenGLWindow::paintUI() {
   }
 
   {
-    const auto position{ImVec2((m_viewportWidth - 170),
+    const auto position{ImVec2((m_viewportWidth - 180),
                                 (16))};
     ImGui::SetNextWindowSize(ImVec2(190, 100));
     ImGui::SetNextWindowPos(position);
@@ -180,11 +180,10 @@ void OpenGLWindow::terminateGL() {
 
 void OpenGLWindow::checkCollisions() {
   if (m_gameData.m_lifeCooldown.elapsed() < 1) {
-    m_shark.m_nodamage = false;
     return;
   }
 
-  m_shark.m_nodamage = true;
+  m_shark.m_nodamage = false;
 
   for (const auto &coral : m_corals.m_corals) {
     const auto coralTranslation{coral.m_translation};
@@ -192,6 +191,7 @@ void OpenGLWindow::checkCollisions() {
         glm::distance(m_shark.m_translation, coralTranslation)};
 
     if (distance < m_shark.m_scale * 0.6f + coral.m_scale * 0.6f) {
+      m_shark.setDamage();
       m_gameData.lifes--;
       m_gameData.m_lifeCooldown.restart();
 
