@@ -1,6 +1,8 @@
 #ifndef OPENGLWINDOW_HPP_
 #define OPENGLWINDOW_HPP_
 
+#include <imgui.h>
+
 #include <random>
 
 #include "abcg.hpp"
@@ -33,6 +35,11 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   glm::mat4 m_viewMatrix{1.0f};
   glm::mat4 m_projMatrix{1.0f};
   float m_FOV{30.0f};
+
+  ImFont* m_font_final{};
+  ImFont* m_font_points{};
+  
+    void restart();
 
   void randomizeStar(glm::vec3 &position, glm::vec3 &rotation);
   void update();
