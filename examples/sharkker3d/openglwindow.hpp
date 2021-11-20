@@ -15,7 +15,7 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   void terminateGL() override;
 
  private:
-  static const int m_numStars{500};
+  static const int m_numStars{0};
 
   GLuint m_program{};
 
@@ -25,9 +25,14 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   std::default_random_engine m_randomEngine;
 
   Model m_model;
+  Model m_modelShark;
 
   std::array<glm::vec3, m_numStars> m_starPositions;
   std::array<glm::vec3, m_numStars> m_starRotations;
+  
+  glm::vec3 m_sharkPosition;
+  glm::vec3 m_sharkRotation;
+
   float m_angle{};
 
   glm::mat4 m_viewMatrix{1.0f};

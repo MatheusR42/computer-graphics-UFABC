@@ -17,13 +17,28 @@ void OpenGLWindow::initializeGL() {
 
   // Load model
   m_model.loadObj(getAssetsPath() + "box.obj");
+  m_modelShark.loadObj(getAssetsPath() + "bunny.obj");
 
   m_model.setupVAO(m_program);
+  m_modelShark.setupVAO(m_program);
 
   // Camera at (0,0,0) and looking towards the negative z
   m_viewMatrix =
       glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f),
                   glm::vec3(0.0f, 1.0f, 0.0f));
+
+  std::uniform_real_distribution<float> distPosXY(-20.0f, 20.0f);
+  std::uniform_real_distribution<float> distPosZ(-100.0f, 0.0f);
+
+  m_sharkPosition = glm::vec3(0.0f, 0.0f,
+                       -20.0f);
+
+  //  Get random rotation axis
+  std::uniform_real_distribution<float> distRotAxis(-1.0f, 1.0f);
+
+  m_sharkRotation = glm::normalize(glm::vec3(distRotAxis(m_randomEngine),
+                                      distRotAxis(m_randomEngine),
+                                      distRotAxis(m_randomEngine)));
 
   // Setup stars
   for (const auto index : iter::range(m_numStars)) {
@@ -93,6 +108,17 @@ void OpenGLWindow::paintGL() {
     m_model.render();
   }
 
+  // Compute model matrix of the current star
+  glm::mat4 modelMatrix{1.0f};
+
+  modelMatrix = glm::translate(modelMatrix, m_sharkPosition);
+  modelMatrix = glm::scale(modelMatrix, glm::vec3(0.2f));
+  modelMatrix = glm::rotate(modelMatrix, m_angle, m_sharkRotation);
+
+  // Set uniform variable
+  abcg::glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &modelMatrix[0][0]);
+  m_modelShark.render();
+
   abcg::glUseProgram(0);
 }
 
@@ -148,6 +174,7 @@ void OpenGLWindow::resizeGL(int width, int height) {
 
 void OpenGLWindow::terminateGL() {
   m_model.terminateGL();
+  m_modelShark.terminateGL();
   abcg::glDeleteProgram(m_program);
 }
 
