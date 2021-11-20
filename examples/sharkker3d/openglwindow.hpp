@@ -17,7 +17,10 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   void terminateGL() override;
 
  private:
-  static const int m_numStars{10};
+  static const int m_numBubbles{20};
+
+private:
+  static const int m_numCorals{40};
 
   GLuint m_program{};
 
@@ -26,14 +29,18 @@ class OpenGLWindow : public abcg::OpenGLWindow {
 
   std::default_random_engine m_randomEngine;
 
-  Model m_model;
+  Model m_modelBubble;
   Model m_modelShark;
+  Model m_modelCoral;
 
-  std::array<glm::vec3, m_numStars> m_starPositions;
-  std::array<glm::vec3, m_numStars> m_starRotations;
+  std::array<glm::vec3, m_numBubbles> m_bubblePositions;
+  std::array<glm::vec3, m_numBubbles> m_bubbleRotations;
   
   glm::vec3 m_sharkPosition;
   glm::vec3 m_sharkRotation;
+
+  std::array<glm::vec3, m_numCorals> m_coralPositions;
+  std::array<glm::vec3, m_numCorals> m_coralRotations;
 
   float m_angle{};
   float m_sharkAngle{};
@@ -43,14 +50,15 @@ class OpenGLWindow : public abcg::OpenGLWindow {
 
   glm::mat4 m_viewMatrix{1.0f};
   glm::mat4 m_projMatrix{1.0f};
-  float m_FOV{30.0f};
+  float m_FOV{8.0f};
 
   ImFont* m_font_final{};
   ImFont* m_font_points{};
   
     void restart();
 
-  void randomizeStar(glm::vec3 &position, glm::vec3 &rotation);
+  void randomizeBubble(glm::vec3 &position, glm::vec3 &rotation);
+  void randomizeCoral(glm::vec3 &position, glm::vec3 &rotation);
   void update();
 };
 

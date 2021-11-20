@@ -16,11 +16,13 @@ void OpenGLWindow::initializeGL() {
                                     getAssetsPath() + "depth.frag");
 
   // Load model
-  m_model.loadObj(getAssetsPath() + "bubble.obj");
+  m_modelBubble.loadObj(getAssetsPath() + "bubble.obj");
   m_modelShark.loadObj(getAssetsPath() + "shark.obj");
+  m_modelCoral.loadObj(getAssetsPath() + "coral.obj");
 
-  m_model.setupVAO(m_program);
+  m_modelBubble.setupVAO(m_program);
   m_modelShark.setupVAO(m_program);
+  m_modelCoral.setupVAO(m_program);
 
   // Camera at (0,0,0) and looking towards the negative z
   m_viewMatrix =
@@ -30,20 +32,44 @@ void OpenGLWindow::initializeGL() {
 
   m_sharkPosition = glm::vec3(0.0f, 0.0f, -1.0f);
 
-  // Setup stars
-  for (const auto index : iter::range(m_numStars)) {
-    auto &position{m_starPositions.at(index)};
-    auto &rotation{m_starRotations.at(index)};
+  // Setup bubbles & corals
+  for (const auto index : iter::range(m_numBubbles)) {
+    auto &position{m_bubblePositions.at(index)};
+    auto &rotation{m_bubbleRotations.at(index)};
 
-    randomizeStar(position, rotation);
+    randomizeBubble(position, rotation);
+  }
+  for (const auto index : iter::range(m_numCorals)) {
+    auto &position{m_coralPositions.at(index)};
+    auto &rotation{m_coralRotations.at(index)};
+
+    randomizeCoral(position, rotation);
   }
 }
 
-void OpenGLWindow::randomizeStar(glm::vec3 &position, glm::vec3 &rotation) {
+void OpenGLWindow::randomizeBubble(glm::vec3 &position, glm::vec3 &rotation) {
   // Get random position
   // x and y coordinates in the range [-20, 20]
   // z coordinates in the range [-100, 0]
-  std::uniform_real_distribution<float> distPosXY(-20.0f, 20.0f);
+  std::uniform_real_distribution<float> distPosXY(-8.0f, 8.0f);
+  std::uniform_real_distribution<float> distPosZ(-100.0f, 0.0f);
+
+  position = glm::vec3(distPosXY(m_randomEngine), distPosXY(m_randomEngine),
+                       distPosZ(m_randomEngine));
+
+  //  Get random rotation axis
+  std::uniform_real_distribution<float> distRotAxis(-1.0f, 1.0f);
+
+  rotation = glm::normalize(glm::vec3(distRotAxis(m_randomEngine),
+                                      distRotAxis(m_randomEngine),
+                                      distRotAxis(m_randomEngine)));
+}
+
+void OpenGLWindow::randomizeCoral(glm::vec3 &position, glm::vec3 &rotation) {
+  // Get random position
+  // x and y coordinates in the range [-20, 20]
+  // z coordinates in the range [-100, 0]
+  std::uniform_real_distribution<float> distPosXY(-8.0f, 8.0f);
   std::uniform_real_distribution<float> distPosZ(-100.0f, 0.0f);
 
   position = glm::vec3(distPosXY(m_randomEngine), distPosXY(m_randomEngine),
@@ -81,12 +107,12 @@ void OpenGLWindow::paintGL() {
   abcg::glUniformMatrix4fv(projMatrixLoc, 1, GL_FALSE, &m_projMatrix[0][0]);
   abcg::glUniform4f(colorLoc, 0.0f, 0.6f, 0.8f, 0.5f);  // Bubbles color
 
-  // Render each star
-  for (const auto index : iter::range(m_numStars)) {
-    const auto &position{m_starPositions.at(index)};
-    const auto &rotation{m_starRotations.at(index)};
+  // Render each bubble
+  for (const auto index : iter::range(m_numBubbles)) {
+    const auto &position{m_bubblePositions.at(index)};
+    const auto &rotation{m_bubbleRotations.at(index)};
 
-    // Compute model matrix of the current star
+    // Compute model matrix of the current bubble
     glm::mat4 modelMatrix{1.0f};
     modelMatrix = glm::translate(modelMatrix, position);
     modelMatrix = glm::scale(modelMatrix, glm::vec3(0.2f));
@@ -95,10 +121,27 @@ void OpenGLWindow::paintGL() {
     // Set uniform variable
     abcg::glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &modelMatrix[0][0]);
 
-    m_model.render();
+    m_modelBubble.render();
   }
 
-  // Compute model matrix of the current star
+  // Render each coral
+  for (const auto index : iter::range(m_numCorals)) {
+    const auto &position{m_coralPositions.at(index)};
+    const auto &rotation{m_coralRotations.at(index)};
+
+    // Compute model matrix of the current coral
+    glm::mat4 modelMatrix{1.0f};
+    modelMatrix = glm::translate(modelMatrix, position);
+    modelMatrix = glm::scale(modelMatrix, glm::vec3(0.2f));
+    modelMatrix = glm::rotate(modelMatrix, m_angle, rotation);
+
+    // Set uniform variable
+    abcg::glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &modelMatrix[0][0]);
+
+    m_modelCoral.render();
+  }
+
+  // Compute model matrix of the current bubble
   glm::mat4 modelMatrix{1.0f};
   
   m_sharkRotation = glm::normalize(glm::vec3(m_sharkRotationX,
@@ -172,8 +215,9 @@ void OpenGLWindow::resizeGL(int width, int height) {
 }
 
 void OpenGLWindow::terminateGL() {
-  m_model.terminateGL();
+  m_modelBubble.terminateGL();
   m_modelShark.terminateGL();
+  m_modelCoral.terminateGL();
   abcg::glDeleteProgram(m_program);
 }
 
@@ -182,18 +226,33 @@ void OpenGLWindow::update() {
   const float deltaTime{static_cast<float>(getDeltaTime())};
   m_angle = glm::wrapAngle(m_angle + glm::radians(90.0f) * deltaTime);
 
-  // Update stars
-  for (const auto index : iter::range(m_numStars)) {
-    auto &position{m_starPositions.at(index)};
-    auto &rotation{m_starRotations.at(index)};
+  // Update bubbles
+  for (const auto index : iter::range(m_numBubbles)) {
+    auto &position{m_bubblePositions.at(index)};
+    auto &rotation{m_bubbleRotations.at(index)};
 
     // Z coordinate increases by 10 units per second
     position.z += deltaTime * 10.0f;
 
-    // If this star is behind the camera, select a new random position and
+    // If this bubble is behind the camera, select a new random position and
     // orientation, and move it back to -100
     if (position.z > 0.1f) {
-      randomizeStar(position, rotation);
+      randomizeBubble(position, rotation);
+      position.z = -100.0f;  // Back to -100
+    }
+  }
+    // Update corals
+  for (const auto index : iter::range(m_numCorals)) {
+    auto &position{m_coralPositions.at(index)};
+    auto &rotation{m_coralRotations.at(index)};
+
+    // Z coordinate increases by 10 units per second
+    position.z += deltaTime * 10.0f;
+
+    // If this coral is behind the camera, select a new random position and
+    // orientation, and move it back to -100
+    if (position.z > 0.1f) {
+      randomizeCoral(position, rotation);
       position.z = -100.0f;  // Back to -100
     }
   }
