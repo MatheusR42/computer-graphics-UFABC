@@ -5,6 +5,22 @@
 #include <cppitertools/itertools.hpp>
 #include <glm/gtx/fast_trigonometry.hpp>
 
+// void OpenGLWindow::handleEvent(SDL_Event &event) {
+//   // Keyboard events
+//   if (event.type == SDL_KEYDOWN) {
+//     if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_a)
+//       m_gameData.m_input.set(static_cast<size_t>(Input::Left));
+//     if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d)
+//       m_gameData.m_input.set(static_cast<size_t>(Input::Right));
+//   }
+//   if (event.type == SDL_KEYUP) {
+//     if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_a)
+//       m_gameData.m_input.reset(static_cast<size_t>(Input::Left));
+//     if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d)
+//       m_gameData.m_input.reset(static_cast<size_t>(Input::Right));
+//   }
+// }
+
 void OpenGLWindow::initializeGL() {
   abcg::glClearColor(0, 0.32, 0.492, 1);      // Background color (Sea) R000 G081 B125
 
@@ -100,14 +116,12 @@ void OpenGLWindow::paintGL() {
 
   // Compute model matrix of the current star
   glm::mat4 modelMatrix{1.0f};
-  
-  m_sharkRotation = glm::normalize(glm::vec3(m_sharkRotationX,
-                                      m_sharkRotationY,
-                                      m_sharkRotationZ));
 
   modelMatrix = glm::translate(modelMatrix, m_sharkPosition);
   modelMatrix = glm::scale(modelMatrix, glm::vec3(0.2f));
-  modelMatrix = glm::rotate(modelMatrix, glm::wrapAngle(glm::radians(m_sharkAngle)), m_sharkRotation);
+  modelMatrix = glm::rotate(modelMatrix, glm::wrapAngle(glm::radians(m_sharkAngleX)), glm::vec3(1.f, 0.f, 0.f));
+  modelMatrix = glm::rotate(modelMatrix, glm::wrapAngle(glm::radians(m_sharkAngleY)), glm::vec3(0.f, 1.f, 0.f));
+  modelMatrix = glm::rotate(modelMatrix, glm::wrapAngle(glm::radians(m_sharkAngleZ)), glm::vec3(0.f, 0.f, 1.f));
 
   // Set uniform variable
   abcg::glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &modelMatrix[0][0]);
@@ -157,10 +171,9 @@ void OpenGLWindow::paintUI() {
       ImGui::PopItemWidth();
     }
 
-    ImGui::SliderFloat("Angle", &m_sharkAngle, -0.0f, 360.0f, "%.0f degrees");
-    ImGui::SliderFloat("X", &m_sharkRotationX, -100.0f, 100.0f, "%.0f degrees");
-    ImGui::SliderFloat("Y", &m_sharkRotationY, -100.0f, 100.0f, "%.0f degrees");
-    ImGui::SliderFloat("Z", &m_sharkRotationZ, -100.0f, 100.0f, "%.0f degrees");
+    ImGui::SliderFloat("X", &m_sharkAngleX, -360.0f, 360.0f, "%.0f degrees");
+    ImGui::SliderFloat("Y", &m_sharkAngleY, -360.0f, 360.0f, "%.0f degrees");
+    ImGui::SliderFloat("Z", &m_sharkAngleZ, -360.0f, 360.0f, "%.0f degrees");
 
     ImGui::End();
   }

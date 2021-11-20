@@ -36,10 +36,9 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   glm::vec3 m_sharkRotation;
 
   float m_angle{};
-  float m_sharkAngle{};
-  float m_sharkRotationX{};
-  float m_sharkRotationY{};
-  float m_sharkRotationZ{};
+  float m_sharkAngleX{90.0f};
+  float m_sharkAngleY{184.0f};
+  float m_sharkAngleZ{0.0f};
 
   glm::mat4 m_viewMatrix{1.0f};
   glm::mat4 m_projMatrix{1.0f};
