@@ -6,7 +6,7 @@
 #include <glm/gtx/fast_trigonometry.hpp>
 
 void OpenGLWindow::initializeGL() {
-  abcg::glClearColor(0, 0, 0, 1);
+  abcg::glClearColor(0, 0.32, 0.492, 1);      // Background color (Sea) R000 G081 B125
 
   // Enable depth buffering
   abcg::glEnable(GL_DEPTH_TEST);
@@ -16,8 +16,8 @@ void OpenGLWindow::initializeGL() {
                                     getAssetsPath() + "depth.frag");
 
   // Load model
-  m_model.loadObj(getAssetsPath() + "box.obj");
-  m_modelShark.loadObj(getAssetsPath() + "bunny.obj");
+  m_model.loadObj(getAssetsPath() + "bubble.obj");
+  m_modelShark.loadObj(getAssetsPath() + "shark.obj");
 
   m_model.setupVAO(m_program);
   m_modelShark.setupVAO(m_program);
@@ -89,7 +89,7 @@ void OpenGLWindow::paintGL() {
   // Set uniform variables used by every scene object
   abcg::glUniformMatrix4fv(viewMatrixLoc, 1, GL_FALSE, &m_viewMatrix[0][0]);
   abcg::glUniformMatrix4fv(projMatrixLoc, 1, GL_FALSE, &m_projMatrix[0][0]);
-  abcg::glUniform4f(colorLoc, 1.0f, 1.0f, 1.0f, 1.0f);  // White
+  abcg::glUniform4f(colorLoc, 0.0f, 0.6f, 0.8f, 0.5f);  // Bubbles color
 
   // Render each star
   for (const auto index : iter::range(m_numStars)) {
@@ -126,7 +126,7 @@ void OpenGLWindow::paintUI() {
   abcg::OpenGLWindow::paintUI();
 
   {
-    const auto widgetSize{ImVec2(218, 62)};
+    const auto widgetSize{ImVec2(218, -62)};
     ImGui::SetNextWindowPos(ImVec2(m_viewportWidth - widgetSize.x - 5, 5));
     ImGui::SetNextWindowSize(widgetSize);
     ImGui::Begin("Widget window", nullptr, ImGuiWindowFlags_NoDecoration);
