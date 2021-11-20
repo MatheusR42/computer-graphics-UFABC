@@ -27,18 +27,8 @@ void OpenGLWindow::initializeGL() {
       glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f),
                   glm::vec3(0.0f, 1.0f, 0.0f));
 
-  std::uniform_real_distribution<float> distPosXY(-20.0f, 20.0f);
-  std::uniform_real_distribution<float> distPosZ(-100.0f, 0.0f);
 
-  m_sharkPosition = glm::vec3(0.0f, 0.0f,
-                       -20.0f);
-
-  //  Get random rotation axis
-  std::uniform_real_distribution<float> distRotAxis(-1.0f, 1.0f);
-
-  m_sharkRotation = glm::normalize(glm::vec3(distRotAxis(m_randomEngine),
-                                      distRotAxis(m_randomEngine),
-                                      distRotAxis(m_randomEngine)));
+  m_sharkPosition = glm::vec3(0.0f, 0.0f, -1.0f);
 
   // Setup stars
   for (const auto index : iter::range(m_numStars)) {
@@ -110,10 +100,14 @@ void OpenGLWindow::paintGL() {
 
   // Compute model matrix of the current star
   glm::mat4 modelMatrix{1.0f};
+  
+  m_sharkRotation = glm::normalize(glm::vec3(m_sharkRotationX,
+                                      m_sharkRotationY,
+                                      m_sharkRotationZ));
 
   modelMatrix = glm::translate(modelMatrix, m_sharkPosition);
   modelMatrix = glm::scale(modelMatrix, glm::vec3(0.2f));
-  modelMatrix = glm::rotate(modelMatrix, m_angle, m_sharkRotation);
+  modelMatrix = glm::rotate(modelMatrix, glm::wrapAngle(glm::radians(m_sharkAngle)), m_sharkRotation);
 
   // Set uniform variable
   abcg::glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &modelMatrix[0][0]);
@@ -162,6 +156,11 @@ void OpenGLWindow::paintUI() {
       }
       ImGui::PopItemWidth();
     }
+
+    ImGui::SliderFloat("Angle", &m_sharkAngle, -0.0f, 360.0f, "%.0f degrees");
+    ImGui::SliderFloat("X", &m_sharkRotationX, -100.0f, 100.0f, "%.0f degrees");
+    ImGui::SliderFloat("Y", &m_sharkRotationY, -100.0f, 100.0f, "%.0f degrees");
+    ImGui::SliderFloat("Z", &m_sharkRotationZ, -100.0f, 100.0f, "%.0f degrees");
 
     ImGui::End();
   }
