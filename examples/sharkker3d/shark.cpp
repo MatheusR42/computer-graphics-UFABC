@@ -29,23 +29,11 @@ void Shark::update(const GameData &gameData) {
   }
   m_movimentCoolDownTimer.restart();
 
-
-  if (m_angleZ < m_angleZBase - 10.0f) {
-    m_shakeDirection = 'R';
-  } else if (m_angleZ > m_angleZBase + 10.0f){
-    m_shakeDirection = 'L';
-  }
-
-  if (m_shakeDirection == 'R') {
-    m_angleZ = m_angleZ + 2;
-  } else {
-    m_angleZ = m_angleZ - 2;
-  }
-
   // Input Left key
   if (gameData.m_input[static_cast<size_t>(Input::Left)]) {
     if (m_positionX > -1) {
       m_positionX = m_positionX - .02;            // Left key sensibility
+      m_angleY = 30.0f;
     }
   }
 
@@ -53,6 +41,7 @@ void Shark::update(const GameData &gameData) {
   if (gameData.m_input[static_cast<size_t>(Input::Right)]) {
     if (m_positionX < 1) {
       m_positionX = m_positionX + .02;            // Right key sensibility
+      m_angleY = -30.0f;
     }
   }
 
@@ -60,6 +49,7 @@ void Shark::update(const GameData &gameData) {
   if (gameData.m_input[static_cast<size_t>(Input::Up)]) {
     if (m_positionY < 1) {
       m_positionY = m_positionY + .02;            // Up key sensibility
+      m_angleX = 26.0f;
     }
   }
 
@@ -67,6 +57,29 @@ void Shark::update(const GameData &gameData) {
   if (gameData.m_input[static_cast<size_t>(Input::Down)]) {
     if (m_positionY < 1) {
       m_positionY = m_positionY - .02;            // Down key sensibility
+      m_angleX = -26.0f;
     }
+  }
+
+  if (!gameData.m_input[static_cast<size_t>(Input::Up)] && !gameData.m_input[static_cast<size_t>(Input::Down)]) {
+      m_angleX = 0.0f;
+  }
+
+  if (!gameData.m_input[static_cast<size_t>(Input::Left)] && !gameData.m_input[static_cast<size_t>(Input::Right)]) {
+      if (m_angleY <= -30.0f || m_angleY >= 30.0f) {
+        m_angleY = 0.0f;
+      }
+
+      if (m_angleY < m_angleYBase - 10.0f) {
+        m_shakeDirection = 'R';
+      } else if (m_angleY > m_angleYBase + 10.0f){
+        m_shakeDirection = 'L';
+      }
+
+      if (m_shakeDirection == 'R') {
+        m_angleY = m_angleY + 2;
+      } else {
+        m_angleY = m_angleY - 2;
+      }
   }
 }

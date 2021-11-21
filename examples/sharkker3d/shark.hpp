@@ -20,10 +20,10 @@ class Shark {
   float m_positionY{0.0f};
   float m_positionZ{-3.0f};
 
-  float m_angleX{90.0f};
-  float m_angleY{180.0f};
-  float m_angleZBase{180.0f};
-  float m_angleZ{180.0f};
+  float m_angleYBase{0.0f};
+  float m_angleX{0.0f};
+  float m_angleY{0.0f};
+  float m_angleZ{0.0f};
   
   bool m_nodamage{false};
   char m_shakeDirection{'L'};
