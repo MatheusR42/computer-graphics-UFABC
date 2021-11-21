@@ -105,10 +105,10 @@ void OpenGLWindow::paintGL() {
   // Set uniform variables used by every scene object
   abcg::glUniformMatrix4fv(viewMatrixLoc, 1, GL_FALSE, &m_viewMatrix[0][0]);
   abcg::glUniformMatrix4fv(projMatrixLoc, 1, GL_FALSE, &m_projMatrix[0][0]);
-  abcg::glUniform4f(colorLoc, 0.0f, 0.6f, 0.8f, 0.5f);  // Bubbles color
 
   // Render each bubble
   for (const auto index : iter::range(m_numBubbles)) {
+    abcg::glUniform4f(colorLoc, 0.0f, 0.6f, 0.8f, 0.5f);  // Bubbles color
     const auto &position{m_bubblePositions.at(index)};
     const auto &rotation{m_bubbleRotations.at(index)};
 
@@ -126,6 +126,7 @@ void OpenGLWindow::paintGL() {
 
   // Render each coral
   for (const auto index : iter::range(m_numCorals)) {
+    abcg::glUniform4f(colorLoc, 1.0f, 0.6f, 0.6f, 0.5f);  // Corals color
     const auto &position{m_coralPositions.at(index)};
     const auto &rotation{m_coralRotations.at(index)};
 
@@ -143,7 +144,7 @@ void OpenGLWindow::paintGL() {
 
   // Compute model matrix of the current bubble
   glm::mat4 modelMatrix{1.0f};
-  
+  abcg::glUniform4f(colorLoc, 0.6f, 0.6f, 0.6f, 0.5f);  // Shark color
   m_sharkRotation = glm::normalize(glm::vec3(m_sharkRotationX,
                                       m_sharkRotationY,
                                       m_sharkRotationZ));
