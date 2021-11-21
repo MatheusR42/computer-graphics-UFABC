@@ -14,10 +14,10 @@ void Shark::update(const GameData &gameData) {
   //   m_color = grey;                                       // Shark turns Grey when hit
   // }
   
-  if (m_movimentTimer.elapsed() > 3) {                    // Every X seconds the shark accelerates forward
-      m_positionY = m_positionY + .1;                   // Shark's acceleration
-      m_movimentTimer.restart();
-  }
+  // if (m_movimentTimer.elapsed() > 3) {                    // Every X seconds the shark accelerates forward
+  //     m_positionY = m_positionY + .1;                   // Shark's acceleration
+  //     m_movimentTimer.restart();
+  // }
 
   if (m_movimentCoolDownTimer.elapsed() < 35.0/1000.0){    // Shark's axial velocity
     return;
@@ -27,14 +27,28 @@ void Shark::update(const GameData &gameData) {
   // Input Left key
   if (gameData.m_input[static_cast<size_t>(Input::Left)]) {
     if (m_positionX > -1) {
-      m_positionX = m_positionX - .06;            // Left key sensibility
+      m_positionX = m_positionX - .02;            // Left key sensibility
     }
   }
 
   // Input Right key
   if (gameData.m_input[static_cast<size_t>(Input::Right)]) {
     if (m_positionX < 1) {
-      m_positionX = m_positionX + .06;            // Right key sensibility
+      m_positionX = m_positionX + .02;            // Right key sensibility
+    }
+  }
+
+  // Input Up key
+  if (gameData.m_input[static_cast<size_t>(Input::Up)]) {
+    if (m_positionY < 1) {
+      m_positionY = m_positionY + .02;            // Up key sensibility
+    }
+  }
+
+  // Input Down key
+  if (gameData.m_input[static_cast<size_t>(Input::Down)]) {
+    if (m_positionY < 1) {
+      m_positionY = m_positionY - .02;            // Down key sensibility
     }
   }
 }
