@@ -94,7 +94,7 @@ void OpenGLWindow::randomizeCoral(glm::vec3 &position, glm::vec3 &rotation) {
   // Get random position
   // x and y coordinates in the range [-20, 20]
   // z coordinates in the range [-100, 0]
-  std::uniform_real_distribution<float> distPosXY(-8.0f, 8.0f);
+  std::uniform_real_distribution<float> distPosXY(-0.5f, 0.5f);
   std::uniform_real_distribution<float> distPosZ(-100.0f, 0.0f);
 
   position = glm::vec3(distPosXY(m_randomEngine), distPosXY(m_randomEngine),
@@ -158,7 +158,7 @@ void OpenGLWindow::paintGL() {
     // Compute model matrix of the current coral
     glm::mat4 modelMatrix{1.0f};
     modelMatrix = glm::translate(modelMatrix, position);
-    modelMatrix = glm::scale(modelMatrix, glm::vec3(0.6f));
+    modelMatrix = glm::scale(modelMatrix, glm::vec3(0.2f));
     modelMatrix = glm::rotate(modelMatrix, m_angle, rotation);
 
     // Set uniform variable
@@ -320,7 +320,7 @@ void OpenGLWindow::update() {
 
     // If this coral is behind the camera, select a new random position and
     // orientation, and move it back to -100
-    if (position.z > -10.0f) {
+    if (position.z > -4.0f) {
       randomizeCoral(position, rotation);
       position.z = -100.0f;  // Back to -100
     }
