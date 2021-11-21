@@ -8,6 +8,7 @@
 #include "abcg.hpp"
 #include "model.hpp"
 #include "shark.hpp"
+#include "gamedata.hpp"
 
 class OpenGLWindow : public abcg::OpenGLWindow {
  protected:
@@ -17,12 +18,18 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   void paintUI() override;
   void resizeGL(int width, int height) override;
   void terminateGL() override;
+  void checkCollisions();
+
+  abcg::ElapsedTimer m_Timer;
+
+  Model m_corals;
+  Shark m_shark;
 
  private:
-  static const int m_numBubbles{20};
+  static const int m_numBubbles{200};
 
 private:
-  static const int m_numCorals{40};
+  static const int m_numCorals{20};
 
   GLuint m_program{};
 
@@ -39,7 +46,6 @@ private:
   std::array<glm::vec3, m_numBubbles> m_bubbleRotations;
   
   GameData m_gameData;
-  Shark m_shark;
 
   std::array<glm::vec3, m_numCorals> m_coralPositions;
   std::array<glm::vec3, m_numCorals> m_coralRotations;

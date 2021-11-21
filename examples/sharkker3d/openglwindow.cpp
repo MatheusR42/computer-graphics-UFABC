@@ -2,6 +2,8 @@
 
 #include <imgui.h>
 
+#include "abcg.hpp"
+
 #include <cppitertools/itertools.hpp>
 #include <glm/gtx/fast_trigonometry.hpp>
 
@@ -135,9 +137,9 @@ void OpenGLWindow::paintGL() {
     const auto &rotation{m_bubbleRotations.at(index)};
 
     // Compute model matrix of the current bubble
-    glm::mat4 modelMatrix{1.0f};
+    glm::mat4 modelMatrix{0.3f};
     modelMatrix = glm::translate(modelMatrix, position);
-    modelMatrix = glm::scale(modelMatrix, glm::vec3(0.2f));
+    modelMatrix = glm::scale(modelMatrix, glm::vec3(0.05f));
     modelMatrix = glm::rotate(modelMatrix, m_angle, rotation);
 
     // Set uniform variable
@@ -165,7 +167,7 @@ void OpenGLWindow::paintGL() {
   }
 
   // Compute model matrix of the current bubble
-  glm::mat4 modelMatrix{1.0f};
+  glm::mat4 modelMatrix{10.0f};
 
   auto position = glm::vec3(m_shark.m_positionX / 100.0f, m_shark.m_positionY / 100.0f, m_shark.m_positionZ / 100.0f);
   modelMatrix = glm::translate(modelMatrix, position);
@@ -185,53 +187,92 @@ void OpenGLWindow::paintGL() {
 void OpenGLWindow::paintUI() {
   abcg::OpenGLWindow::paintUI();
 
+{
+    const auto size{ImVec2(340, 85)};
+    const auto position{ImVec2((m_viewportWidth - size.x) / 2.0f,
+                               (m_viewportHeight - size.y) / 2.0f)};
+    ImGui::SetNextWindowPos(position);
+    ImGui::SetNextWindowSize(size);
+    ImGuiWindowFlags flags{ImGuiWindowFlags_NoBackground |
+                           ImGuiWindowFlags_NoTitleBar |
+                           ImGuiWindowFlags_NoInputs};
+    ImGui::Begin(" ", nullptr, flags);
+    ImGui::PushFont(m_font_final);
+
+    // "Game Over" message display
+    if (m_gameData.m_state == State::GameOver && 
+      m_Timer.elapsed() < 4) {
+      ImGui::Text("       Game Over\nContinue a nadar.");
+
+    // Display developers name after "Game Over" message
+    }
+    if (m_gameData.m_state == State::GameOver && 
+      m_Timer.elapsed() > 4) {
+      ImGui::Text(" Matheus Araujo\nGiovanne Galdino");
+    }
+     
+    // "Sharkker" inicial message display
+    if (m_gameData.m_state == State::Playing && 
+      m_Timer.elapsed() < 4) {                    // Text display time
+      ImGui::Text("         Sharkker");
+    }
+  }
+
+  ImGui::PopFont();
+  ImGui::End();
+  
+  // "Points" Display
   {
-    const auto widgetSize{ImVec2(218, -62)};
-    ImGui::SetNextWindowPos(ImVec2(m_viewportWidth - widgetSize.x - 5, 5));
-    ImGui::SetNextWindowSize(widgetSize);
-    ImGui::Begin("Widget window", nullptr, ImGuiWindowFlags_NoDecoration);
+    const auto position{ImVec2((16),
+                                (16))};
+    ImGui::SetNextWindowSize(ImVec2(190, 100));
+    ImGui::SetNextWindowPos(position);
+    auto flags{ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize};
+    ImGui::Begin("points", nullptr, flags);
 
-    {
-      ImGui::PushItemWidth(120);
-      static std::size_t currentIndex{};
-      const std::vector<std::string> comboItems{"Perspective", "Orthographic"};
-
-      if (ImGui::BeginCombo("Projection",
-                            comboItems.at(currentIndex).c_str())) {
-        for (const auto index : iter::range(comboItems.size())) {
-          const bool isSelected{currentIndex == index};
-          if (ImGui::Selectable(comboItems.at(index).c_str(), isSelected))
-            currentIndex = index;
-          if (isSelected) ImGui::SetItemDefaultFocus();
-        }
-        ImGui::EndCombo();
-      }
-      ImGui::PopItemWidth();
-
-      ImGui::PushItemWidth(170);
-      const auto aspect{static_cast<float>(m_viewportWidth) /
-                        static_cast<float>(m_viewportHeight)};
-      if (currentIndex == 0) {
-        m_projMatrix =
-            glm::perspective(glm::radians(m_FOV), aspect, 0.01f, 100.0f);
-
-        ImGui::SliderFloat("FOV", &m_FOV, 5.0f, 179.0f, "%.0f degrees");
-      } else {
-        m_projMatrix = glm::ortho(-20.0f * aspect, 20.0f * aspect, -20.0f,
-                                  20.0f, 0.01f, 100.0f);
-      }
-      ImGui::PopItemWidth();
+    // Menu Bar
+    if (ImGui::BeginMenuBar()) {
+      // File menu
+      ImGui::EndMenuBar();
     }
 
-    ImGui::SliderFloat("X", &m_shark.m_angleX, -360.0f, 360.0f, "%.0f degrees");
-    ImGui::SliderFloat("Y", &m_shark.m_angleY, -360.0f, 360.0f, "%.0f degrees");
-    ImGui::SliderFloat("Z", &m_shark.m_angleZ, -360.0f, 360.0f, "%.0f degrees");
-
-    ImGui::SliderFloat("position X", &m_shark.m_positionX, -100.0f, 100.0f, "%.0f degrees");
-    ImGui::SliderFloat("position Y", &m_shark.m_positionY, -100.0f, 100.0f, "%.0f degrees");
-    ImGui::SliderFloat("position Z", &m_shark.m_positionZ, -100.0f, 100.0f, "%.0f degrees");
-
+    ImGui::PushFont(m_font_points);
+    ImGui::Text("Points: %d", m_gameData.points);
+    ImGui::PopFont();
     ImGui::End();
+  }
+
+  // "Lifes" Display
+  {
+    const auto position{ImVec2((m_viewportWidth - 140),
+                                (16))};
+    ImGui::SetNextWindowSize(ImVec2(190, 100));
+    ImGui::SetNextWindowPos(position);
+    auto flags{ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize};
+    ImGui::Begin("lifes", nullptr, flags);
+
+    // Menu Bar
+    if (ImGui::BeginMenuBar()) {
+      // File menu
+      ImGui::EndMenuBar();
+    }
+
+    ImGui::PushFont(m_font_points);
+    ImGui::Text("Lifes: %d", m_gameData.lifes);
+    ImGui::PopFont();
+    ImGui::End();
+  }
+
+  {
+    const auto widgetSize{ImVec2(218, -62)};
+    ImGui::Begin("Widget window", nullptr, ImGuiWindowFlags_NoDecoration);
+
+    const auto aspect{static_cast<float>(m_viewportWidth) /
+                        static_cast<float>(m_viewportHeight)};
+
+    m_projMatrix = glm::perspective(glm::radians(m_FOV), aspect, 0.01f, 100.0f);
+
+   ImGui::End();
   }
 }
 
@@ -262,7 +303,7 @@ void OpenGLWindow::update() {
 
     // If this bubble is behind the camera, select a new random position and
     // orientation, and move it back to -100
-    if (position.z > 0.1f) {
+    if (position.z > -1.0f) {
       randomizeBubble(position, rotation);
       position.z = -100.0f;  // Back to -100
     }
@@ -272,12 +313,12 @@ void OpenGLWindow::update() {
     auto &position{m_coralPositions.at(index)};
     auto &rotation{m_coralRotations.at(index)};
 
-    // Z coordinate increases by 10 units per second
-    position.z += deltaTime * 10.0f;
+    // Z coordinate increases by 20 units per second
+    position.z += deltaTime * 20.0f;
 
     // If this coral is behind the camera, select a new random position and
     // orientation, and move it back to -100
-    if (position.z > 0.1f) {
+    if (position.z > -10.0f) {
       randomizeCoral(position, rotation);
       position.z = -100.0f;  // Back to -100
     }
