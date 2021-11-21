@@ -44,7 +44,7 @@ void OpenGLWindow::initializeGL() {
 
   // Load model
   m_modelBubble.loadObj(getAssetsPath() + "bubble.obj");
-  m_modelShark.loadObj(getAssetsPath() + "shark.obj");
+  m_modelShark.loadObj(getAssetsPath() + "shark-text.obj");
   m_modelCoral.loadObj(getAssetsPath() + "coral.obj");
 
   m_modelBubble.setupVAO(m_program);
@@ -172,10 +172,10 @@ void OpenGLWindow::paintGL() {
 
   auto position = glm::vec3(m_shark.m_positionX / 100.0f, m_shark.m_positionY / 100.0f, m_shark.m_positionZ / 100.0f);
   modelMatrix = glm::translate(modelMatrix, position);
+  modelMatrix = glm::rotate(modelMatrix, glm::radians(m_shark.m_angleX), glm::vec3(1.f, 0.f, 0.f));
+  modelMatrix = glm::rotate(modelMatrix, glm::radians(m_shark.m_angleY), glm::vec3(0.f, 1.f, 0.f));
+  modelMatrix = glm::rotate(modelMatrix, glm::radians(m_shark.m_angleZ), glm::vec3(0.f, 0.f, 1.f));
   modelMatrix = glm::scale(modelMatrix, glm::vec3(0.001f));
-  modelMatrix = glm::rotate(modelMatrix, glm::wrapAngle(glm::radians(m_shark.m_angleX)), glm::vec3(1.f, 0.f, 0.f));
-  modelMatrix = glm::rotate(modelMatrix, glm::wrapAngle(glm::radians(m_shark.m_angleY)), glm::vec3(0.f, 1.f, 0.f));
-  modelMatrix = glm::rotate(modelMatrix, glm::wrapAngle(glm::radians(m_shark.m_angleZ)), glm::vec3(0.f, 0.f, 1.f));
 
   // Set uniform variable
   abcg::glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &modelMatrix[0][0]);
