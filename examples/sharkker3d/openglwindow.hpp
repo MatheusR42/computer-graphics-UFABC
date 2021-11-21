@@ -7,9 +7,11 @@
 
 #include "abcg.hpp"
 #include "model.hpp"
+#include "shark.hpp"
 
 class OpenGLWindow : public abcg::OpenGLWindow {
  protected:
+  void handleEvent(SDL_Event& event) override;
   void initializeGL() override;
   void paintGL() override;
   void paintUI() override;
@@ -29,16 +31,13 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   Model m_model;
   Model m_modelShark;
 
+  GameData m_gameData;
+  Shark m_shark;
+
   std::array<glm::vec3, m_numStars> m_starPositions;
   std::array<glm::vec3, m_numStars> m_starRotations;
   
-  glm::vec3 m_sharkPosition;
-  glm::vec3 m_sharkRotation;
-
   float m_angle{};
-  float m_sharkAngleX{90.0f};
-  float m_sharkAngleY{184.0f};
-  float m_sharkAngleZ{0.0f};
 
   glm::mat4 m_viewMatrix{1.0f};
   glm::mat4 m_projMatrix{1.0f};
@@ -47,7 +46,7 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   ImFont* m_font_final{};
   ImFont* m_font_points{};
   
-    void restart();
+  void restart();
 
   void randomizeStar(glm::vec3 &position, glm::vec3 &rotation);
   void update();

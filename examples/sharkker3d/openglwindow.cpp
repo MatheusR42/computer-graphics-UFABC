@@ -5,21 +5,29 @@
 #include <cppitertools/itertools.hpp>
 #include <glm/gtx/fast_trigonometry.hpp>
 
-// void OpenGLWindow::handleEvent(SDL_Event &event) {
-//   // Keyboard events
-//   if (event.type == SDL_KEYDOWN) {
-//     if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_a)
-//       m_gameData.m_input.set(static_cast<size_t>(Input::Left));
-//     if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d)
-//       m_gameData.m_input.set(static_cast<size_t>(Input::Right));
-//   }
-//   if (event.type == SDL_KEYUP) {
-//     if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_a)
-//       m_gameData.m_input.reset(static_cast<size_t>(Input::Left));
-//     if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d)
-//       m_gameData.m_input.reset(static_cast<size_t>(Input::Right));
-//   }
-// }
+void OpenGLWindow::handleEvent(SDL_Event &event) {
+  // Keyboard events
+  if (event.type == SDL_KEYDOWN) {
+    if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_a)
+      m_gameData.m_input.set(static_cast<size_t>(Input::Left));
+    if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d)
+      m_gameData.m_input.set(static_cast<size_t>(Input::Right));
+    if (event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_w)
+      m_gameData.m_input.set(static_cast<size_t>(Input::Up));
+    if (event.key.keysym.sym == SDLK_DOWN || event.key.keysym.sym == SDLK_s)
+      m_gameData.m_input.set(static_cast<size_t>(Input::Down));
+  }
+  if (event.type == SDL_KEYUP) {
+    if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_a)
+      m_gameData.m_input.reset(static_cast<size_t>(Input::Left));
+    if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d)
+      m_gameData.m_input.reset(static_cast<size_t>(Input::Right));
+    if (event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_w)
+      m_gameData.m_input.reset(static_cast<size_t>(Input::Up));
+    if (event.key.keysym.sym == SDLK_DOWN || event.key.keysym.sym == SDLK_s)
+      m_gameData.m_input.reset(static_cast<size_t>(Input::Down));
+  }
+}
 
 void OpenGLWindow::initializeGL() {
   abcg::glClearColor(0, 0.32, 0.492, 1);      // Background color (Sea) R000 G081 B125
@@ -42,9 +50,6 @@ void OpenGLWindow::initializeGL() {
   m_viewMatrix =
       glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f),
                   glm::vec3(0.0f, 1.0f, 0.0f));
-
-
-  m_sharkPosition = glm::vec3(0.0f, 0.0f, -1.0f);
 
   // Setup stars
   for (const auto index : iter::range(m_numStars)) {
@@ -117,11 +122,12 @@ void OpenGLWindow::paintGL() {
   // Compute model matrix of the current star
   glm::mat4 modelMatrix{1.0f};
 
-  modelMatrix = glm::translate(modelMatrix, m_sharkPosition);
+  auto position = glm::vec3(m_shark.m_positionX / 100.0f, m_shark.m_positionY / 100.0f, m_shark.m_positionZ / 100.0f);
+  modelMatrix = glm::translate(modelMatrix, position);
   modelMatrix = glm::scale(modelMatrix, glm::vec3(0.2f));
-  modelMatrix = glm::rotate(modelMatrix, glm::wrapAngle(glm::radians(m_sharkAngleX)), glm::vec3(1.f, 0.f, 0.f));
-  modelMatrix = glm::rotate(modelMatrix, glm::wrapAngle(glm::radians(m_sharkAngleY)), glm::vec3(0.f, 1.f, 0.f));
-  modelMatrix = glm::rotate(modelMatrix, glm::wrapAngle(glm::radians(m_sharkAngleZ)), glm::vec3(0.f, 0.f, 1.f));
+  modelMatrix = glm::rotate(modelMatrix, glm::wrapAngle(glm::radians(m_shark.m_angleX)), glm::vec3(1.f, 0.f, 0.f));
+  modelMatrix = glm::rotate(modelMatrix, glm::wrapAngle(glm::radians(m_shark.m_angleY)), glm::vec3(0.f, 1.f, 0.f));
+  modelMatrix = glm::rotate(modelMatrix, glm::wrapAngle(glm::radians(m_shark.m_angleZ)), glm::vec3(0.f, 0.f, 1.f));
 
   // Set uniform variable
   abcg::glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &modelMatrix[0][0]);
@@ -171,9 +177,13 @@ void OpenGLWindow::paintUI() {
       ImGui::PopItemWidth();
     }
 
-    ImGui::SliderFloat("X", &m_sharkAngleX, -360.0f, 360.0f, "%.0f degrees");
-    ImGui::SliderFloat("Y", &m_sharkAngleY, -360.0f, 360.0f, "%.0f degrees");
-    ImGui::SliderFloat("Z", &m_sharkAngleZ, -360.0f, 360.0f, "%.0f degrees");
+    ImGui::SliderFloat("X", &m_shark.m_angleX, -360.0f, 360.0f, "%.0f degrees");
+    ImGui::SliderFloat("Y", &m_shark.m_angleY, -360.0f, 360.0f, "%.0f degrees");
+    ImGui::SliderFloat("Z", &m_shark.m_angleZ, -360.0f, 360.0f, "%.0f degrees");
+
+    ImGui::SliderFloat("position X", &m_shark.m_positionX, -100.0f, 100.0f, "%.0f degrees");
+    ImGui::SliderFloat("position Y", &m_shark.m_positionY, -100.0f, 100.0f, "%.0f degrees");
+    ImGui::SliderFloat("position Z", &m_shark.m_positionZ, -100.0f, 100.0f, "%.0f degrees");
 
     ImGui::End();
   }
