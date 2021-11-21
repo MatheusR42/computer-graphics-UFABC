@@ -8,39 +8,47 @@
 ░ ░▒  ░ ░ ▒ ░▒░ ░  ▒   ▒▒ ░  ░▒ ░ ▒░░ ░▒ ▒░░ ░▒ ▒░ ░ ░  ░  ░▒ ░ ▒░
 ░  ░  ░   ░  ░░ ░  ░   ▒     ░░   ░ ░ ░░ ░ ░ ░░ ░    ░     ░░   ░ 
       ░   ░  ░  ░      ░  ░   ░     ░  ░   ░  ░      ░  ░   ░     
-   (                                                        
-    /(                                                      
-   #///#                         #/&                        
-     .//%                         #///&  .#&#((((#&%.       
-      #//%                        .&///////((///////////#   
-      *///%                    &////*..(////////#/((///#(%  
-      ,////%              .%///(//%.,@.................*//,.
-      #///(////((//////////////((/(..(@&/.................,.
-     #////(.#//////////////////#/(,...*/@@@ ,*///,,..,*%/*.%
-    ////%      #/////////////////*....../.*@@@@@@@@@@@@@(.# 
-  (//#          ,(#//////////////...........**/., *.#/...%  
-,*                  #////////////*......................(   
-                     /////(((((///....................#     
-                          %////#.....................%      
-                        %///& /%,................#....%     
-                      #//&             ,.,,..      (...&    
-                    ((%                              /..@   
-                  %                                    ..   
-                                                        (#  
+                                                            
+                    %                              .,. . *, 
+                    %%                 .,(&%*///(*(#*(,*//% 
+                   #%%&           ,,,***,*  ....*(*#%%&&&&  
+                   #%%%&///((*/****//..../*.,,,,,,,/%%%%%   
+                  #(((((((///*//*,...,(%%%%&%&@@@@@&&%%#    
+  \           .(##%#%##(((((..,*,*((%&&@@@@@@@@@@@@@&      
+   %        *####%%%%%(#####*//((((&@@@@@@@@@@@@@&@@        
+   %&     //(/%/%%((&&/&&(/#/(/%*(/.., .,  .(**@,@          
+   %%  %(((#%(((&(&(@&#((//((&(%(((&(&/(%((&&%&&&&%%%       
+   &%##%%%&&&&&&%&%&&&&@&&%%%&%%%&&&&&&&&&&&&&&&&&@         
+   && &&@&&&&&%%%%&%%###%&%%%%&&&&%&&&&&&&&&/               
+  %@  (@   &&&&%%%#((#(@@&&&&&&&&&&&&                       
+ %            &((((@           &&&&&@                       
+           #%&@                 &&&&@                       
+        %@                       @&@                        
+                                                            
+
 ```
-#                            SHARKKER
+_____/\\\\\\\\\\___/\\\\\\\\\\\\____        
+ ___/\\\///////\\\_\/\\\////////\\\__       
+  __\///______/\\\__\/\\\______\//\\\_      
+   _________/\\\//___\/\\\_______\/\\\_     
+    ________\////\\\__\/\\\_______\/\\\_    
+     ___________\//\\\_\/\\\_______\/\\\_   
+      __/\\\______/\\\__\/\\\_______/\\\__  
+       _\///\\\\\\\\\/___\/\\\\\\\\\\\\/___ 
+        ___\/////////_____\////////////_____
 
-
-## SHARKKER 2D
-https://matheusr42.github.io/computer-graphics-UFABC/sharkker/
+#                            SHARKKER SAGA
 
 ## SHARKKER 3D
 https://matheusr42.github.io/computer-graphics-UFABC/sharkker3d/
+Release 2021/11/21
 
+## SHARKKER 2D
+https://matheusr42.github.io/computer-graphics-UFABC/sharkker/
+Release 2021/10/31
 
 https://github.com/MatheusR42/computer-graphics-UFABC
 
-Release 2021/10/31
 
 by  **Matheus Araujo**      *<https://github.com/MatheusR42>*   matheus.victor@aluno.ufabc.edu.br
 
@@ -54,16 +62,14 @@ by  **Matheus Araujo**      *<https://github.com/MatheusR42>*   matheus.victor@a
                 Prof. Bruno Augusto Dorta Marques
 ```
 ## Game
-Sharkker é um jogo 2D desenvolvido com base no jogo [Asteroids](https://hbatagelo.github.io/abcgapps/asteroids/index.html) utilizado na disciplina de Computação Gráfica MCTA008-17 da UFABC. A ideia inicial era se inspirar nos jogos Frogger (SEGA/Konami, 1981) e Space Impact (Nokia, 2000).
+Sharkker 3D é um jogo tridimensional desenvolvido com base em sua versão 2D [Sharkker](https://matheusr42.github.io/computer-graphics-UFABC/sharkker/) e na aplicação [Starfield](https://hbatagelo.github.io/cg/starfield.html) utilizada na disciplina de Computação Gráfica MCTA008-17 da UFABC. 
 Foi utilizado o OpenGL como API gráfica, com programação em C++ e framework ABCg também desenvolvido para acompanhamento da disciplina de CG.
 
 O objetivo do jogo é guiar adiante um tubarão pelo vasto oceano, enquanto grandes fragmentos de corais tentam atingí-lo.
 Conforme o animal avança e desvia dos obstáculos, são somados pontos ao canto superior esquerdo da tela.
-Caso o tubarão colida com algum coral, ele se machucará e perderá uma de suas três vidas, indicadas no canto superior esquerdo. Ao chegar à zero, o jogo acaba.
+Caso o tubarão colida com algum coral, ele se machucará e perderá uma de suas três vidas, indicadas no canto superior direito. Ao chegar à zero, o jogo acaba.
 
-
-![Sharkker Blender](public/blender.png)
-![Sharkker](public/Sharkker.png)
+![Sharkker3D](public/3D_Sharkker.png)
 
 Conforme o tubarão avança, o nível de dificuldade aumenta, com maior geração de corais e maior velocidade. Porém, essa dificuldade é limitada à um nível justo de jogabilidade.
 Não há um final para esse jogo e o objetivo é ir o mais longe possível, somando mais pontos.
@@ -76,32 +82,38 @@ Não há um final para esse jogo e o objetivo é ir o mais longe possível, soma
 
 → Mover para a direita
 
+↑ Mover para cima
+
+↓ Mover para baixo
+
+
 ## Objetos
 ### Shark
 Sharkker acompanha a trajetória de um tubarão tigre *(Galeocerdo cuvier)*, comum em toda a costa brasileira. Esse tipo de esqualo pode chegar até 9 metros de comprimento. O jogo se desenvolve em algum lugar entre o litoral nordestino continental e a ilha de Fernando de Noronha. 
 Pouco se sabe sobre a motivação do animal, seu passado e seus objetivos. Não conhecemos a personalidade dele, seu nível de agressidade ou o porquê ele está naquela situação.
 A cultura humana nos leva à acreditar que tubarões são animais perigosos e violentos. Porém, vemos seu habitat ser constantemente ameaçado. Então, que escolha eles têm?
 
-Assim como a nave de Asteroids, o animal é desenhado com vértices que se ligam em vários triângulos.
-Abaixo, vemos como se deu o passo-a-passo de sua criação:
+O modelo 3D em formato .obj do animal foi gratuitamente baixado em [Free3D](https://free3d.com/3d-model/shark-v5--166344.html).
 
-![0 - Shark's Draft](public/Shark_0_Draft.jpeg)
+![Shark - Blender](public/blender.png)
 
-![1 - Shark's Project](public/Shark_1_Project.jpeg)
+Conforme movimenta-se, é possível enxergar vários ângulos do tubarão.
 
-![2 - Shark's Sharkker](public/Shark_2_Sharkker.png)
+![Shark - Centered](public/3D_Shark_Centered.png)
+![Shark - Left](public/3D_Shark_Left.png) ![Shark - Up](public/3D_Shark_Up.png) ![Shark - Down](public/3D_Shark_Down.png) ![Shark - Up](public/3D_Shark_DiagonalUpperRight.png)
 
 ### Corals
-Os corais são gerados com um número aleatório de vértices entre 50 e 70.
-Possuem também certa aleatoriedade na posição nos quais são gerados na parte superior da tela, nas suas velocidades de rotação, tamanho e intensidade de cor. Após passarem completamente pela borda inferior da tela um ponto é contabilizado e o coral é destruido para liberar espaço na memória.
+Os corais são gerados em uma posição aleatória ao final do eixo de profundidade do espaço do jogo e seguem em direção ao tubarão. Ao passarem por ele, soma-se um ponto para cada coral, eles são reaproveitados e posicionados de forma aleatória nas distâncias iniciais novamente.
 
-![Corals](public/Sharkker_Corals.png)
+O modelo 3D em formato .obj dos corais foi gratuitamente baixado em [3dmdb](https://3dmdb.com/en/3d-model/spike-ball-by-fabanafabana/8963728/).
+
+![Corals](public/3D_Sharkker_SharkkCorals.png)
 
 ### Bubbles and Ocean
 A cor do oceano, ao fundo de todos os objetos, foi baseada justamente na cor "Ocean Blue" #006994 (de palheta R000 G105 B148). Porém, há um leve escurecimento para melhor contraste com os outros componentes do jogo.
-Já as camadas de bolhas, seus gradientes e mecânicas foram herdadas das stars do jogo Asteroids.
+A mecânica das bolhas foi herdada do código de Starfield e, assim como os corais, é gerada aleatóriamente ao final do ângulo de visão e segue em direção ao tubarão. Ao passar por ele, são reaproveitadas e posicionadas de forma aleatória nas distâncias iniciais novamente.
 
-![Bubbles and Ocean](public/Sharkker_Bubbles_Ocean.png)
+![Bubbles and Ocean](public/3D_Sharkker_Bubbles.png)
 
 ## Features
 • Sistema de pontuação
@@ -110,17 +122,12 @@ Já as camadas de bolhas, seus gradientes e mecânicas foram herdadas das stars 
 
 • Invencibilidade momentânea ao perder cada uma das duas primeiras vidas
 
-• Aumento de velocidade da tela do jogo conforme progressão
-
-• Aumento da quantidade de corais conforme progressão
-
 • Display do título do jogo, game over e créditos
 
-• Tubarão criado manualmente
+• Tubarão realiza movimentos conforme nada e recebe comandos do jogador.
 
-• Corais criados aleatoriamente com movimento rotacional e em direção ao player
+• Corais com movimento rotacional e que progridem em direção ao player de posições aleatórios
 
-![Collision](public/Shark_3_Hurt.png)
 ----
 
 =============
