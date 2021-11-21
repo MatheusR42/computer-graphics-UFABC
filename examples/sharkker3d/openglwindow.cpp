@@ -2,8 +2,11 @@
 
 #include <imgui.h>
 
+#include "abcg.hpp"
+
 #include <cppitertools/itertools.hpp>
 #include <glm/gtx/fast_trigonometry.hpp>
+
 
 void OpenGLWindow::handleEvent(SDL_Event &event) {
   // Keyboard events
@@ -201,6 +204,7 @@ void OpenGLWindow::terminateGL() {
 }
 
 void OpenGLWindow::update() {
+  m_shark.update(m_gameData);
   // Animate angle by 90 degrees per second
   const float deltaTime{static_cast<float>(getDeltaTime())};
   m_angle = glm::wrapAngle(m_angle + glm::radians(90.0f) * deltaTime);
