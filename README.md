@@ -23,20 +23,8 @@
   %@  (@   &&&&%%%#((#(@@&&&&&&&&&&&&                       
  %            &((((@           &&&&&@                       
            #%&@                 &&&&@                       
-        %@                       @&@                        
-                                                            
-
+        %@                       @&@                                                              
 ```
-_____/\\\\\\\\\\___/\\\\\\\\\\\\____        
- ___/\\\///////\\\_\/\\\////////\\\__       
-  __\///______/\\\__\/\\\______\//\\\_      
-   _________/\\\//___\/\\\_______\/\\\_     
-    ________\////\\\__\/\\\_______\/\\\_    
-     ___________\//\\\_\/\\\_______\/\\\_   
-      __/\\\______/\\\__\/\\\_______/\\\__  
-       _\///\\\\\\\\\/___\/\\\\\\\\\\\\/___ 
-        ___\/////////_____\////////////_____
-
 #                            SHARKKER SAGA
 
 ## SHARKKER 3D
@@ -129,9 +117,6 @@ A mecânica das bolhas foi herdada do código de Starfield e, assim como os cora
 • Corais com movimento rotacional e que progridem em direção ao player de posições aleatórios
 
 ----
-
-=============
-
 ## ABCg
 Development framework accompanying the course MCTA008-17 Computer Graphics at [UFABC](https://www.ufabc.edu.br/).
 
@@ -141,5 +126,3 @@ Developed by Harlen Batagelo.
 ### License
 
 ABCg is licensed under the MIT License. See [LICENSE](https://github.com/hbatagelo/abcg/blob/main/LICENSE) for more information.
-
-=============
