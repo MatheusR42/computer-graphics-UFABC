@@ -57,7 +57,7 @@ void OpenGLWindow::initializeGL() {
 
   // Load model
   m_modelBubble.loadObj(getAssetsPath() + "bubble.obj");
-  m_modelShark.loadObj(getAssetsPath() + "shark-text.obj");
+  m_modelShark.loadObj(getAssetsPath() + "shark.obj");
   m_modelCoral.loadObj(getAssetsPath() + "coral.obj");
 
   m_modelBubble.setupVAO(m_program);
@@ -90,7 +90,7 @@ void OpenGLWindow::randomizeBubble(glm::vec3 &position, glm::vec3 &rotation) {
   // x and y coordinates in the range [-20, 20]
   // z coordinates in the range [-100, 0]
   std::uniform_real_distribution<float> distPosXY(-8.0f, 8.0f);
-  std::uniform_real_distribution<float> distPosZ(-100.0f, 0.0f);
+  std::uniform_real_distribution<float> distPosZ(-100.0f, -50.0f);
 
   position = glm::vec3(distPosXY(m_randomEngine), distPosXY(m_randomEngine),
                        distPosZ(m_randomEngine));
@@ -107,7 +107,7 @@ void OpenGLWindow::randomizeCoral(glm::vec3 &position, glm::vec3 &rotation) {
   // Get random position
   // x and y coordinates in the range [-20, 20]
   // z coordinates in the range [-100, 0]
-  std::uniform_real_distribution<float> distPosXY(-0.5f, 0.5f);
+  std::uniform_real_distribution<float> distPosXY(-0.3f, 0.3f);
   std::uniform_real_distribution<float> distPosZ(-100.0f, 0.0f);
 
   position = glm::vec3(distPosXY(m_randomEngine), distPosXY(m_randomEngine),
@@ -171,7 +171,7 @@ void OpenGLWindow::paintGL() {
     // Compute model matrix of the current coral
     glm::mat4 modelMatrix{1.0f};
     modelMatrix = glm::translate(modelMatrix, position);
-    modelMatrix = glm::scale(modelMatrix, glm::vec3(.7f));
+    modelMatrix = glm::scale(modelMatrix, glm::vec3(.2f));
     modelMatrix = glm::rotate(modelMatrix, m_angle, rotation);
 
     // Set uniform variable
@@ -292,12 +292,14 @@ void OpenGLWindow::restart() {
   m_shark.m_positionX = 0.0f;
   m_shark.m_positionY = 0.0f;
 
+  std::uniform_real_distribution<float> distPosZ(-100.0f, -50.0f);
+
   for (const auto index : iter::range(m_numCorals)) {
     auto &position{m_coralPositions.at(index)};
     auto &rotation{m_coralRotations.at(index)};
 
     randomizeCoral(position, rotation);
-    position.z = -100.0f;  // Back to -100
+    position.z = distPosZ(m_randomEngine);  
   }
 }
 
@@ -372,11 +374,15 @@ void OpenGLWindow::checkCollisions() {
 
   for (const auto index : iter::range(m_numCorals)) {
     auto &position{m_coralPositions.at(index)};
-    auto sharkTranslation = glm::vec3(m_shark.m_positionX, m_shark.m_positionY, m_shark.m_positionZ);
+    auto coralTranslation = glm::vec2(position.x, position.y);
+    auto sharkTranslation = glm::vec2(m_shark.m_positionX, m_shark.m_positionY);
     const auto distance{
-        glm::distance(sharkTranslation, position)};
+        glm::distance(sharkTranslation, coralTranslation)};
 
-    if (distance < 1.1f && m_gameData.m_state == State::Playing) {
+    const auto distanceZ{
+        glm::distance(m_shark.m_positionZ, position.z)};
+
+    if (distance < .15f && distanceZ < 4.0f && m_gameData.m_state == State::Playing && m_gameData.m_lifeCooldown.elapsed() > 1) {
       m_shark.setDamage();
       m_gameData.lifes--;
       m_gameData.m_lifeCooldown.restart();

@@ -31,7 +31,7 @@ void Shark::update(const GameData &gameData) {
 
   // Input Left key
   if (gameData.m_input[static_cast<size_t>(Input::Left)]) {
-    if (m_positionX > -1) {
+    if (m_positionX > -.18f) {
       m_positionX = m_positionX - .02;            // Left key sensibility
       m_angleY = 30.0f;
     }
@@ -39,7 +39,7 @@ void Shark::update(const GameData &gameData) {
 
   // Input Right key
   if (gameData.m_input[static_cast<size_t>(Input::Right)]) {
-    if (m_positionX < 1) {
+    if (m_positionX < .18f) {
       m_positionX = m_positionX + .02;            // Right key sensibility
       m_angleY = -30.0f;
     }
@@ -47,7 +47,7 @@ void Shark::update(const GameData &gameData) {
 
   // Input Up key
   if (gameData.m_input[static_cast<size_t>(Input::Up)]) {
-    if (m_positionY < 1) {
+    if (m_positionY < .18f) {
       m_positionY = m_positionY + .02;            // Up key sensibility
       m_angleX = 26.0f;
     }
@@ -55,7 +55,7 @@ void Shark::update(const GameData &gameData) {
 
   // Input Down key
   if (gameData.m_input[static_cast<size_t>(Input::Down)]) {
-    if (m_positionY < 1) {
+    if (m_positionY > -.18f) {
       m_positionY = m_positionY - .02;            // Down key sensibility
       m_angleX = -26.0f;
     }
