@@ -6,6 +6,7 @@
 
 class OpenGLWindow;
 
+
 class Shark {
  public:
   void setDamage();
@@ -21,9 +22,12 @@ class Shark {
 
   float m_angleX{90.0f};
   float m_angleY{180.0f};
-  float m_angleZ{0.0f};
+  float m_angleZBase{180.0f};
+  float m_angleZ{180.0f};
   
   bool m_nodamage{false};
+  char m_shakeDirection{'L'};
+
   
   // GLuint m_program{};
 
@@ -32,6 +36,8 @@ class Shark {
 
   abcg::ElapsedTimer m_movimentCoolDownTimer;
   abcg::ElapsedTimer m_movimentTimer;
+  abcg::ElapsedTimer m_shakeCoolDownTimer;
+  abcg::ElapsedTimer m_shakeTimer;
   // abcg::ElapsedTimer m_noDamageBlink;
 };
 
