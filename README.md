@@ -30,7 +30,13 @@
 ```
 #                            SHARKKER
 
+
+## SHARKKER 2D
 https://matheusr42.github.io/computer-graphics-UFABC/sharkker/
+
+## SHARKKER 3D
+https://matheusr42.github.io/computer-graphics-UFABC/sharkker3d/
+
 
 https://github.com/MatheusR42/computer-graphics-UFABC
 
@@ -55,6 +61,8 @@ O objetivo do jogo é guiar adiante um tubarão pelo vasto oceano, enquanto gran
 Conforme o animal avança e desvia dos obstáculos, são somados pontos ao canto superior esquerdo da tela.
 Caso o tubarão colida com algum coral, ele se machucará e perderá uma de suas três vidas, indicadas no canto superior esquerdo. Ao chegar à zero, o jogo acaba.
 
+
+![Sharkker Blender](public/blender.png)
 ![Sharkker](public/Sharkker.png)
 
 Conforme o tubarão avança, o nível de dificuldade aumenta, com maior geração de corais e maior velocidade. Porém, essa dificuldade é limitada à um nível justo de jogabilidade.
