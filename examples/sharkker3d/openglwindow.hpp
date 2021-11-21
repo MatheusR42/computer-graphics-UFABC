@@ -58,6 +58,11 @@ private:
 
   ImFont* m_font_final{};
   ImFont* m_font_points{};
+
+
+  // shark
+  abcg::ElapsedTimer m_movimentCoolDownTimer;
+  abcg::ElapsedTimer m_movimentTimer;
   
   void restart();
 
