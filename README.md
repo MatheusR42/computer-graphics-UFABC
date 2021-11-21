@@ -108,13 +108,15 @@ A mecânica das bolhas foi herdada do código de Starfield e, assim como os cora
 
 • Sistema de vidas
 
-• Invencibilidade momentânea ao perder cada uma das duas primeiras vidas
-
 • Display do título do jogo, game over e créditos
 
 • Tubarão realiza movimentos conforme nada e recebe comandos do jogador.
 
 • Corais com movimento rotacional e que progridem em direção ao player de posições aleatórios
+
+• Além de ficar vermelho, o tubarão recebe invencibilidade momentânea ao perder cada uma das duas primeiras vidas 
+
+![Shark - Hurt](public/3D_Shark_Hurt_.png)
 
 ----
 ## ABCg
