@@ -38,6 +38,19 @@ void OpenGLWindow::initializeGL() {
   // Enable depth buffering
   abcg::glEnable(GL_DEPTH_TEST);
 
+// Load a new font
+  ImGuiIO &io{ImGui::GetIO()};
+  const auto filename{getAssetsPath() + "Findet-Nemo.ttf"};
+  m_font_final = io.Fonts->AddFontFromFileTTF(filename.c_str(), 30.0f);
+  if (m_font_final == nullptr) {
+    throw abcg::Exception{abcg::Exception::Runtime("Cannot load font file")};
+  }
+
+  m_font_points = io.Fonts->AddFontFromFileTTF(filename.c_str(), 28.0f);
+  if (m_font_points == nullptr) {
+    throw abcg::Exception{abcg::Exception::Runtime("Cannot load font file")};
+  }
+  
   // Create program
   m_program = createProgramFromFile(getAssetsPath() + "depth.vert",
                                     getAssetsPath() + "depth.frag");
@@ -158,7 +171,7 @@ void OpenGLWindow::paintGL() {
     // Compute model matrix of the current coral
     glm::mat4 modelMatrix{1.0f};
     modelMatrix = glm::translate(modelMatrix, position);
-    modelMatrix = glm::scale(modelMatrix, glm::vec3(0.2f));
+    modelMatrix = glm::scale(modelMatrix, glm::vec3(.7f));
     modelMatrix = glm::rotate(modelMatrix, m_angle, rotation);
 
     // Set uniform variable
@@ -265,15 +278,26 @@ void OpenGLWindow::paintUI() {
   }
 
   {
-    const auto widgetSize{ImVec2(218, -62)};
-    ImGui::Begin("Widget window", nullptr, ImGuiWindowFlags_NoDecoration);
-
     const auto aspect{static_cast<float>(m_viewportWidth) /
                         static_cast<float>(m_viewportHeight)};
 
     m_projMatrix = glm::perspective(glm::radians(m_FOV), aspect, 0.01f, 100.0f);
+  }
+}
 
-   ImGui::End();
+void OpenGLWindow::restart() {
+  m_gameData.m_state = State::Playing;
+  m_gameData.points = 0;
+  m_gameData.lifes = 3;
+  m_shark.m_positionX = 0.0f;
+  m_shark.m_positionY = 0.0f;
+
+  for (const auto index : iter::range(m_numCorals)) {
+    auto &position{m_coralPositions.at(index)};
+    auto &rotation{m_coralRotations.at(index)};
+
+    randomizeCoral(position, rotation);
+    position.z = -100.0f;  // Back to -100
   }
 }
 
@@ -290,6 +314,13 @@ void OpenGLWindow::terminateGL() {
 }
 
 void OpenGLWindow::update() {
+  // Wait 8 seconds before restarting
+  if (m_gameData.m_state != State::Playing &&
+      m_Timer.elapsed() > 7) {
+    restart();
+    return;
+  }
+
   m_shark.update(m_gameData);
   // Animate angle by 90 degrees per second
   const float deltaTime{static_cast<float>(getDeltaTime())};
@@ -321,8 +352,39 @@ void OpenGLWindow::update() {
     // If this coral is behind the camera, select a new random position and
     // orientation, and move it back to -100
     if (position.z > -4.0f) {
+      m_gameData.points += 1;
       randomizeCoral(position, rotation);
       position.z = -100.0f;  // Back to -100
+    }
+  }
+
+  if (m_gameData.m_state == State::Playing) {
+    checkCollisions();
+  }
+}
+
+void OpenGLWindow::checkCollisions() {
+  if (m_gameData.m_lifeCooldown.elapsed() < 1) {
+    return;
+  }
+
+  m_shark.m_nodamage = false;
+
+  for (const auto index : iter::range(m_numCorals)) {
+    auto &position{m_coralPositions.at(index)};
+    auto sharkTranslation = glm::vec3(m_shark.m_positionX, m_shark.m_positionY, m_shark.m_positionZ);
+    const auto distance{
+        glm::distance(sharkTranslation, position)};
+
+    if (distance < 1.1f && m_gameData.m_state == State::Playing) {
+      m_shark.setDamage();
+      m_gameData.lifes--;
+      m_gameData.m_lifeCooldown.restart();
+
+      if (m_gameData.lifes == 0) {
+        m_gameData.m_state = State::GameOver;
+        m_Timer.restart();
+      }
     }
   }
 }

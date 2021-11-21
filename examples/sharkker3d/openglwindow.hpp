@@ -29,7 +29,7 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   static const int m_numBubbles{200};
 
 private:
-  static const int m_numCorals{20};
+  static const int m_numCorals{1};
 
   GLuint m_program{};
 
