@@ -354,7 +354,10 @@ void OpenGLWindow::update() {
     // If this coral is behind the camera, select a new random position and
     // orientation, and move it back to -100
     if (position.z > -4.0f) {
-      m_gameData.points += 1;
+      if (m_gameData.m_state == State::Playing) {
+        m_gameData.points += 1;
+      }
+
       randomizeCoral(position, rotation);
       position.z = -100.0f;  // Back to -100
     }
