@@ -116,7 +116,7 @@ A mecânica das bolhas foi herdada do código de Starfield e, assim como os cora
 
 • Além de ficar vermelho, o tubarão recebe invencibilidade momentânea ao perder cada uma das duas primeiras vidas 
 
-![Shark - Hurt](public/3D_Shark_Hurt_.png)
+![Shark - Hurt](public/3D_Shark_Hurt.png)
 
 ----
 ## ABCg
