@@ -180,20 +180,29 @@ void OpenGLWindow::paintGL() {
     m_modelCoral.render();
   }
 
-  // Compute model matrix of the current bubble
-  glm::mat4 modelMatrix{10.0f};
+  if (m_gameData.m_state == State::Playing) {
+    // Compute model matrix of the current bubble
+    glm::mat4 modelMatrix{10.0f};
 
-  auto position = glm::vec3(m_shark.m_positionX / 100.0f, m_shark.m_positionY / 100.0f, m_shark.m_positionZ / 100.0f);
-  modelMatrix = glm::translate(modelMatrix, position);
-  modelMatrix = glm::rotate(modelMatrix, glm::radians(m_shark.m_angleX), glm::vec3(1.f, 0.f, 0.f));
-  modelMatrix = glm::rotate(modelMatrix, glm::radians(m_shark.m_angleY), glm::vec3(0.f, 1.f, 0.f));
-  modelMatrix = glm::rotate(modelMatrix, glm::radians(m_shark.m_angleZ), glm::vec3(0.f, 0.f, 1.f));
-  modelMatrix = glm::scale(modelMatrix, glm::vec3(0.001f));
+    auto position = glm::vec3(m_shark.m_positionX / 100.0f, m_shark.m_positionY / 100.0f, m_shark.m_positionZ / 100.0f);
+    modelMatrix = glm::translate(modelMatrix, position);
+    modelMatrix = glm::rotate(modelMatrix, glm::radians(m_shark.m_angleX), glm::vec3(1.f, 0.f, 0.f));
+    modelMatrix = glm::rotate(modelMatrix, glm::radians(m_shark.m_angleY), glm::vec3(0.f, 1.f, 0.f));
+    modelMatrix = glm::rotate(modelMatrix, glm::radians(m_shark.m_angleZ), glm::vec3(0.f, 0.f, 1.f));
+    modelMatrix = glm::scale(modelMatrix, glm::vec3(0.001f));
 
-  // Set uniform variable
-  abcg::glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &modelMatrix[0][0]);
-  abcg::glUniform4f(colorLoc, 0.6f, 0.6f, 0.6f, 0.5f);  // Shark color
-  m_modelShark.render();
+    // Set uniform variable
+    abcg::glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &modelMatrix[0][0]);
+    
+    // Shark color
+    if (!m_shark.m_nodamage) {
+      abcg::glUniform4f(colorLoc, 0.6f, 0.6f, 0.6f, 0.5f);
+    } else {
+      abcg::glUniform4f(colorLoc, 1.0f, 0.0f, 0.0f, 0.5f);
+    }
+    
+    m_modelShark.render();
+  }
 
   abcg::glUseProgram(0);
 }
@@ -354,7 +363,10 @@ void OpenGLWindow::update() {
     // If this coral is behind the camera, select a new random position and
     // orientation, and move it back to -100
     if (position.z > -4.0f) {
-      m_gameData.points += 1;
+      if (m_gameData.m_state == State::Playing) {
+        m_gameData.points += 1;
+      }
+
       randomizeCoral(position, rotation);
       position.z = -100.0f;  // Back to -100
     }
