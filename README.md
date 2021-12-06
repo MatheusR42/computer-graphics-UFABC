@@ -125,6 +125,10 @@ Development framework accompanying the course MCTA008-17 Computer Graphics at [U
 ### Credits
 Developed by Harlen Batagelo.
 
+Shark Model: 
+https://www.cgtrader.com/free-3d-models/animals/fish/low-poly-style-shark
+
+
 ### License
 
 ABCg is licensed under the MIT License. See [LICENSE](https://github.com/hbatagelo/abcg/blob/main/LICENSE) for more information.
