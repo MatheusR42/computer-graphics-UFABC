@@ -6,9 +6,12 @@
 
 #include <cppitertools/itertools.hpp>
 #include <glm/gtx/fast_trigonometry.hpp>
+#include <glm/gtc/matrix_inverse.hpp>
 
+// From https://github.com/AirGuanZ/imgui-filebrowser
+#include "imfilebrowser.h"
 
-void OpenGLWindow::handleEvent(SDL_Event &event) {
+void OpenGLWindow::handleEvent(SDL_Event& event) {
   // Keyboard events
   if (event.type == SDL_KEYDOWN) {
     if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_a)
@@ -38,7 +41,7 @@ void OpenGLWindow::initializeGL() {
   // Enable depth buffering
   abcg::glEnable(GL_DEPTH_TEST);
 
-// Load a new font
+  // Load a new font
   ImGuiIO &io{ImGui::GetIO()};
   const auto filename{getAssetsPath() + "Findet-Nemo.ttf"};
   m_font_final = io.Fonts->AddFontFromFileTTF(filename.c_str(), 30.0f);
@@ -51,18 +54,17 @@ void OpenGLWindow::initializeGL() {
     throw abcg::Exception{abcg::Exception::Runtime("Cannot load font file")};
   }
   
-  // Create program
-  m_program = createProgramFromFile(getAssetsPath() + "depth.vert",
-                                    getAssetsPath() + "depth.frag");
+  // Create programs
+  for (const auto& name : m_shaderNames) {
+    const auto program{createProgramFromFile(getAssetsPath() + name + ".vert",
+                                             getAssetsPath() + name + ".frag")};
+    m_programs.push_back(program);
+  }
 
   // Load model
   m_modelBubble.loadObj(getAssetsPath() + "bubble.obj");
   m_modelShark.loadObj(getAssetsPath() + "shark.obj");
   m_modelCoral.loadObj(getAssetsPath() + "coral.obj");
-
-  m_modelBubble.setupVAO(m_program);
-  m_modelShark.setupVAO(m_program);
-  m_modelCoral.setupVAO(m_program);
 
   // Camera at (0,0,0) and looking towards the negative z
   m_viewMatrix =
@@ -129,24 +131,45 @@ void OpenGLWindow::paintGL() {
 
   abcg::glViewport(0, 0, m_viewportWidth, m_viewportHeight);
 
-  abcg::glUseProgram(m_program);
+  // Use currently selected program
+  const auto program{m_programs.at(m_currentProgramIndex)};
+  abcg::glUseProgram(program);
 
-  // Get location of uniform variables (could be precomputed)
-  const GLint viewMatrixLoc{
-      abcg::glGetUniformLocation(m_program, "viewMatrix")};
-  const GLint projMatrixLoc{
-      abcg::glGetUniformLocation(m_program, "projMatrix")};
+  // Get location of uniform variables
+  const GLint viewMatrixLoc{abcg::glGetUniformLocation(program, "viewMatrix")};
+  const GLint projMatrixLoc{abcg::glGetUniformLocation(program, "projMatrix")};
   const GLint modelMatrixLoc{
-      abcg::glGetUniformLocation(m_program, "modelMatrix")};
-  const GLint colorLoc{abcg::glGetUniformLocation(m_program, "color")};
+      abcg::glGetUniformLocation(program, "modelMatrix")};
+  const GLint normalMatrixLoc{
+      abcg::glGetUniformLocation(program, "normalMatrix")};
+  const GLint lightDirLoc{
+      abcg::glGetUniformLocation(program, "lightDirWorldSpace")};
+  const GLint shininessLoc{abcg::glGetUniformLocation(program, "shininess")};
+  const GLint IaLoc{abcg::glGetUniformLocation(program, "Ia")};
+  const GLint IdLoc{abcg::glGetUniformLocation(program, "Id")};
+  const GLint IsLoc{abcg::glGetUniformLocation(program, "Is")};
+  const GLint KaLoc{abcg::glGetUniformLocation(program, "Ka")};
+  const GLint KdLoc{abcg::glGetUniformLocation(program, "Kd")};
+  const GLint KsLoc{abcg::glGetUniformLocation(program, "Ks")};
 
   // Set uniform variables used by every scene object
   abcg::glUniformMatrix4fv(viewMatrixLoc, 1, GL_FALSE, &m_viewMatrix[0][0]);
   abcg::glUniformMatrix4fv(projMatrixLoc, 1, GL_FALSE, &m_projMatrix[0][0]);
 
+  const auto lightDirRotated{m_trackBallLight.getRotation() * m_lightDir};
+  abcg::glUniform4fv(lightDirLoc, 1, &lightDirRotated.x);
+  abcg::glUniform1f(shininessLoc, m_shininess);
+  abcg::glUniform4fv(IaLoc, 1, &m_Ia.x);
+  abcg::glUniform4fv(IdLoc, 1, &m_Id.x);
+  abcg::glUniform4fv(IsLoc, 1, &m_Is.x);
+  abcg::glUniform4fv(KaLoc, 1, &m_Ka.x);
+  abcg::glUniform4fv(KdLoc, 1, &m_Kd.x);
+  abcg::glUniform4fv(KsLoc, 1, &m_Ks.x);
+
   // Render each bubble
   for (const auto index : iter::range(m_numBubbles)) {
-    abcg::glUniform4f(colorLoc, 0.0f, 0.6f, 0.8f, 0.5f);  // Bubbles color
+    // TODO Bubbles color
+    // abcg::glUniform4f(colorLoc, 0.0f, 0.6f, 0.8f, 0.5f);  
     const auto &position{m_bubblePositions.at(index)};
     const auto &rotation{m_bubbleRotations.at(index)};
 
@@ -159,12 +182,18 @@ void OpenGLWindow::paintGL() {
     // Set uniform variable
     abcg::glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &modelMatrix[0][0]);
 
+    const auto modelViewMatrix{glm::mat3(m_viewMatrix * modelMatrix)};
+    glm::mat3 normalMatrix{glm::inverseTranspose(modelViewMatrix)};
+    abcg::glUniformMatrix3fv(normalMatrixLoc, 1, GL_FALSE, &normalMatrix[0][0]);
+
     m_modelBubble.render();
   }
 
   // Render each coral
   for (const auto index : iter::range(m_numCorals)) {
-    abcg::glUniform4f(colorLoc, 1.0f, 0.6f, 0.6f, 0.5f);  // Corals color
+    // TODO Corals color
+    // abcg::glUniform4f(colorLoc, 1.0f, 0.6f, 0.6f, 0.5f);
+
     const auto &position{m_coralPositions.at(index)};
     const auto &rotation{m_coralRotations.at(index)};
 
@@ -177,8 +206,19 @@ void OpenGLWindow::paintGL() {
     // Set uniform variable
     abcg::glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &modelMatrix[0][0]);
 
+    const auto modelViewMatrix{glm::mat3(m_viewMatrix * modelMatrix)};
+    glm::mat3 normalMatrix{glm::inverseTranspose(modelViewMatrix)};
+    abcg::glUniformMatrix3fv(normalMatrixLoc, 1, GL_FALSE, &normalMatrix[0][0]);
+
     m_modelCoral.render();
   }
+
+  // Set uniform variables of the current object
+  abcg::glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m_modelMatrix[0][0]);
+
+  const auto modelViewMatrix{glm::mat3(m_viewMatrix * m_modelMatrix)};
+  glm::mat3 normalMatrix{glm::inverseTranspose(modelViewMatrix)};
+  abcg::glUniformMatrix3fv(normalMatrixLoc, 1, GL_FALSE, &normalMatrix[0][0]);
 
   if (m_gameData.m_state == State::Playing) {
     // Compute model matrix of the current bubble
@@ -194,12 +234,12 @@ void OpenGLWindow::paintGL() {
     // Set uniform variable
     abcg::glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &modelMatrix[0][0]);
     
-    // Shark color
-    if (!m_shark.m_nodamage) {
-      abcg::glUniform4f(colorLoc, 0.6f, 0.6f, 0.6f, 0.5f);
-    } else {
-      abcg::glUniform4f(colorLoc, 1.0f, 0.0f, 0.0f, 0.5f);
-    }
+    // TODO change Shark color
+    // if (!m_shark.m_nodamage) {
+    //   abcg::glUniform4f(colorLoc, 0.6f, 0.6f, 0.6f, 0.5f);
+    // } else {
+    //   abcg::glUniform4f(colorLoc, 1.0f, 0.0f, 0.0f, 0.5f);
+    // }
     
     m_modelShark.render();
   }
@@ -210,7 +250,7 @@ void OpenGLWindow::paintGL() {
 void OpenGLWindow::paintUI() {
   abcg::OpenGLWindow::paintUI();
 
-{
+  {
     const auto size{ImVec2(340, 85)};
     const auto position{ImVec2((m_viewportWidth - size.x) / 2.0f,
                                (m_viewportHeight - size.y) / 2.0f)};
@@ -291,7 +331,81 @@ void OpenGLWindow::paintUI() {
                         static_cast<float>(m_viewportHeight)};
 
     m_projMatrix = glm::perspective(glm::radians(m_FOV), aspect, 0.01f, 100.0f);
+
   }
+
+
+  // TODO remover esse select
+  // Create a window for the other widgets
+  {
+    const auto widgetSize{ImVec2(222, 30)};
+    ImGui::SetNextWindowPos(ImVec2(m_viewportWidth - widgetSize.x - 5, 5));
+    ImGui::SetNextWindowSize(widgetSize);
+    ImGui::Begin("Widget window", nullptr, ImGuiWindowFlags_NoDecoration);
+
+    // Shader combo box
+    {
+      static std::size_t currentIndex{};
+
+      ImGui::PushItemWidth(120);
+      if (ImGui::BeginCombo("Shader", m_shaderNames.at(currentIndex))) {
+        for (const auto index : iter::range(m_shaderNames.size())) {
+          const bool isSelected{currentIndex == index};
+          if (ImGui::Selectable(m_shaderNames.at(index), isSelected))
+            currentIndex = index;
+          if (isSelected) ImGui::SetItemDefaultFocus();
+        }
+        ImGui::EndCombo();
+      }
+      ImGui::PopItemWidth();
+
+      // Set up VAO if shader program has changed
+      if (static_cast<int>(currentIndex) != m_currentProgramIndex) {
+        m_currentProgramIndex = currentIndex;
+        m_modelShark.setupVAO(m_programs.at(m_currentProgramIndex));
+        m_modelBubble.setupVAO(m_programs.at(m_currentProgramIndex));
+        m_modelCoral.setupVAO(m_programs.at(m_currentProgramIndex));
+      }
+    }
+
+    ImGui::End();
+  }
+
+  // Create window for light sources
+  // if (m_currentProgramIndex < 3) {
+  //   const auto widgetSize{ImVec2(222, 244)};
+  //   ImGui::SetNextWindowPos(ImVec2(m_viewportWidth - widgetSize.x - 5,
+  //                                  m_viewportHeight - widgetSize.y - 5));
+  //   ImGui::SetNextWindowSize(widgetSize);
+  //   ImGui::Begin(" ", nullptr, ImGuiWindowFlags_NoDecoration);
+
+  //   ImGui::Text("Light properties");
+
+  //   // Slider to control light properties
+  //   ImGui::PushItemWidth(widgetSize.x - 36);
+  //   ImGui::ColorEdit3("Ia", &m_Ia.x, ImGuiColorEditFlags_Float);
+  //   ImGui::ColorEdit3("Id", &m_Id.x, ImGuiColorEditFlags_Float);
+  //   ImGui::ColorEdit3("Is", &m_Is.x, ImGuiColorEditFlags_Float);
+  //   ImGui::PopItemWidth();
+
+  //   ImGui::Spacing();
+
+  //   ImGui::Text("Material properties");
+
+  //   // Slider to control material properties
+  //   ImGui::PushItemWidth(widgetSize.x - 36);
+  //   ImGui::ColorEdit3("Ka", &m_Ka.x, ImGuiColorEditFlags_Float);
+  //   ImGui::ColorEdit3("Kd", &m_Kd.x, ImGuiColorEditFlags_Float);
+  //   ImGui::ColorEdit3("Ks", &m_Ks.x, ImGuiColorEditFlags_Float);
+  //   ImGui::PopItemWidth();
+
+  //   // Slider to control the specular shininess
+  //   ImGui::PushItemWidth(widgetSize.x - 16);
+  //   ImGui::SliderFloat("", &m_shininess, 0.0f, 500.0f, "shininess: %.1f");
+  //   ImGui::PopItemWidth();
+
+  //   ImGui::End();
+  // }
 }
 
 void OpenGLWindow::restart() {
@@ -321,7 +435,9 @@ void OpenGLWindow::terminateGL() {
   m_modelBubble.terminateGL();
   m_modelShark.terminateGL();
   m_modelCoral.terminateGL();
-  abcg::glDeleteProgram(m_program);
+  for (const auto& program : m_programs) {
+    abcg::glDeleteProgram(program);
+  }
 }
 
 void OpenGLWindow::update() {

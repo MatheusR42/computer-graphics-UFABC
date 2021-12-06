@@ -7,6 +7,7 @@ void main() {
   if (gl_FrontFacing) {
     outColor = fragColor;
   } else {
-    outColor = vec4(fragColor.r * 0.5, 0, 0, fragColor.a);
+    float i = (fragColor.r + fragColor.g + fragColor.b) / 3.0;
+    outColor = vec4(i, 0, 0, 1.0);
   }
 }
