@@ -17,7 +17,7 @@ out vec3 fragN;
 void main() {
   vec3 P = (viewMatrix * modelMatrix * vec4(inPosition, 1.0)).xyz;
   vec3 N = normalMatrix * inNormal;
-  vec3 L = -(viewMatrix * lightDirWorldSpace).xyz;
+  vec3 L = -(viewMatrix * lightDirWorldSpace * 0.5).xyz;
 
   fragL = L;
   fragV = -P;
