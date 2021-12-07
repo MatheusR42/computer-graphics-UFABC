@@ -74,21 +74,28 @@ private:
   abcg::ElapsedTimer m_movimentTimer;
 
   // Shaders
-  std::vector<const char*> m_shaderNames{"blinnphong", "phong", "gouraud",
-                                         "normal", "depth"};
+  std::vector<const char*> m_shaderNames{
+      "normalmapping", "texture", "blinnphong", "phong",
+      "gouraud",       "normal",  "depth"};
   std::vector<GLuint> m_programs;
-  int m_currentProgramIndex{-1};
+  int m_currentProgramIndex{};
+
+  // Mapping mode
+  // 0: triplanar; 1: cylindrical; 2: spherical; 3: from mesh
+  int m_mappingMode{};
 
   // Light and material properties
   glm::vec4 m_lightDir{-1.0f, -1.0f, -1.0f, 0.0f};
-  glm::vec4 m_Ia{1.0f, 1.0f, 1.0f, 1.0f};
-  glm::vec4 m_Id{1.0f, 1.0f, 1.0f, 1.0f};
-  glm::vec4 m_Is{1.0f, 1.0f, 1.0f, 1.0f};
+  glm::vec4 m_Ia{1.0f};
+  glm::vec4 m_Id{1.0f};
+  glm::vec4 m_Is{1.0f};
   glm::vec4 m_Ka{0.1f, 0.1f, 0.1f, 1.0f};
   glm::vec4 m_Kd{0.7f, 0.7f, 0.7f, 1.0f};
   glm::vec4 m_Ks{1.0f, 1.0f, 1.0f, 1.0f};
-  float m_shininess{25.0f};
+  float m_shininess{3.0f};
 
+
+  void loadModel(std::string_view path);
   void restart();
 
   void randomizeBubble(glm::vec3 &position, glm::vec3 &rotation);

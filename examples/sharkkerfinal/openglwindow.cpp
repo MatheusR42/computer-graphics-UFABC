@@ -53,11 +53,11 @@ void OpenGLWindow::initializeGL() {
   if (m_font_points == nullptr) {
     throw abcg::Exception{abcg::Exception::Runtime("Cannot load font file")};
   }
-  
+
   // Create programs
   for (const auto& name : m_shaderNames) {
-    const auto program{createProgramFromFile(getAssetsPath() + name + ".vert",
-                                             getAssetsPath() + name + ".frag")};
+    const auto path{getAssetsPath() + "shaders/" + name};
+    const auto program{createProgramFromFile(path + ".vert", path + ".frag")};
     m_programs.push_back(program);
   }
 
@@ -65,6 +65,19 @@ void OpenGLWindow::initializeGL() {
   m_modelBubble.loadObj(getAssetsPath() + "bubble.obj");
   m_modelShark.loadObj(getAssetsPath() + "shark.obj");
   m_modelCoral.loadObj(getAssetsPath() + "coral.obj");
+
+  m_modelBubble.setupVAO(m_programs.at(m_currentProgramIndex));
+  m_modelShark.setupVAO(m_programs.at(m_currentProgramIndex));
+  m_modelCoral.setupVAO(m_programs.at(m_currentProgramIndex));
+
+    // Use material properties from the loaded model
+  m_Ka = m_modelShark.getKa();
+  m_Kd = m_modelShark.getKd();
+  m_Ks = m_modelShark.getKs();
+  m_shininess = m_modelShark.getShininess();
+
+  // loadModel(getAssetsPath() + "shark.obj");
+  m_mappingMode = 3;  // "From mesh" option
 
   // Camera at (0,0,0) and looking towards the negative z
   m_viewMatrix =
@@ -123,6 +136,19 @@ void OpenGLWindow::randomizeCoral(glm::vec3 &position, glm::vec3 &rotation) {
                                       distRotAxis(m_randomEngine)));
 }
 
+// void OpenGLWindow::loadModel(std::string_view path) {
+//   m_model.terminateGL();
+
+//   m_model.loadObj(path);
+//   m_model.setupVAO(m_programs.at(m_currentProgramIndex));
+
+  // // Use material properties from the loaded model
+  // m_Ka = m_model.getKa();
+  // m_Kd = m_model.getKd();
+  // m_Ks = m_model.getKs();
+  // m_shininess = m_model.getShininess();
+// }
+
 void OpenGLWindow::paintGL() {
   update();
 
@@ -151,21 +177,34 @@ void OpenGLWindow::paintGL() {
   const GLint KaLoc{abcg::glGetUniformLocation(program, "Ka")};
   const GLint KdLoc{abcg::glGetUniformLocation(program, "Kd")};
   const GLint KsLoc{abcg::glGetUniformLocation(program, "Ks")};
+  const GLint diffuseTexLoc{abcg::glGetUniformLocation(program, "diffuseTex")};
+  const GLint normalTexLoc{abcg::glGetUniformLocation(program, "normalTex")};
+  const GLint mappingModeLoc{
+      abcg::glGetUniformLocation(program, "mappingMode")};
 
   // Set uniform variables used by every scene object
   abcg::glUniformMatrix4fv(viewMatrixLoc, 1, GL_FALSE, &m_viewMatrix[0][0]);
   abcg::glUniformMatrix4fv(projMatrixLoc, 1, GL_FALSE, &m_projMatrix[0][0]);
+  abcg::glUniform1i(diffuseTexLoc, 0);
+  abcg::glUniform1i(normalTexLoc, 1);
+  abcg::glUniform1i(mappingModeLoc, m_mappingMode);
 
   const auto lightDirRotated{m_trackBallLight.getRotation() * m_lightDir};
   abcg::glUniform4fv(lightDirLoc, 1, &lightDirRotated.x);
-  abcg::glUniform1f(shininessLoc, m_shininess);
   abcg::glUniform4fv(IaLoc, 1, &m_Ia.x);
   abcg::glUniform4fv(IdLoc, 1, &m_Id.x);
   abcg::glUniform4fv(IsLoc, 1, &m_Is.x);
+  
+  abcg::glUniform1f(shininessLoc, m_shininess);
   abcg::glUniform4fv(KaLoc, 1, &m_Ka.x);
   abcg::glUniform4fv(KdLoc, 1, &m_Kd.x);
   abcg::glUniform4fv(KsLoc, 1, &m_Ks.x);
 
+  // abcg::glUniform1f(shininessLoc, m_shininess);
+  // abcg::glUniform4fv(KaLoc, 1, &m_Ka.x);
+  // abcg::glUniform4fv(KdLoc, 1, &m_Kd.x);
+  // abcg::glUniform4fv(KsLoc, 1, &m_Ks.x);
+  
   // Render each bubble
   for (const auto index : iter::range(m_numBubbles)) {
     // TODO Bubbles color
@@ -334,45 +373,8 @@ void OpenGLWindow::paintUI() {
 
   }
 
-
-  // TODO remover esse select
-  // Create a window for the other widgets
-  {
-    const auto widgetSize{ImVec2(222, 30)};
-    ImGui::SetNextWindowPos(ImVec2(m_viewportWidth - widgetSize.x - 5, 5));
-    ImGui::SetNextWindowSize(widgetSize);
-    ImGui::Begin("Widget window", nullptr, ImGuiWindowFlags_NoDecoration);
-
-    // Shader combo box
-    {
-      static std::size_t currentIndex{};
-
-      ImGui::PushItemWidth(120);
-      if (ImGui::BeginCombo("Shader", m_shaderNames.at(currentIndex))) {
-        for (const auto index : iter::range(m_shaderNames.size())) {
-          const bool isSelected{currentIndex == index};
-          if (ImGui::Selectable(m_shaderNames.at(index), isSelected))
-            currentIndex = index;
-          if (isSelected) ImGui::SetItemDefaultFocus();
-        }
-        ImGui::EndCombo();
-      }
-      ImGui::PopItemWidth();
-
-      // Set up VAO if shader program has changed
-      if (static_cast<int>(currentIndex) != m_currentProgramIndex) {
-        m_currentProgramIndex = currentIndex;
-        m_modelShark.setupVAO(m_programs.at(m_currentProgramIndex));
-        m_modelBubble.setupVAO(m_programs.at(m_currentProgramIndex));
-        m_modelCoral.setupVAO(m_programs.at(m_currentProgramIndex));
-      }
-    }
-
-    ImGui::End();
-  }
-
   // Create window for light sources
-  // if (m_currentProgramIndex < 3) {
+  // if (m_currentProgramIndex < 4) {
   //   const auto widgetSize{ImVec2(222, 244)};
   //   ImGui::SetNextWindowPos(ImVec2(m_viewportWidth - widgetSize.x - 5,
   //                                  m_viewportHeight - widgetSize.y - 5));
