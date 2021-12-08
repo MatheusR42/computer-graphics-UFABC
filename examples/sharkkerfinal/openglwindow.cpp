@@ -109,7 +109,7 @@ void OpenGLWindow::randomizeBubble(glm::vec3 &position, glm::vec3 &rotation) {
   // x and y coordinates in the range [-20, 20]
   // z coordinates in the range [-100, 0]
   std::uniform_real_distribution<float> distPosXY(-8.0f, 8.0f);
-  std::uniform_real_distribution<float> distPosZ(-100.0f, -50.0f);
+  std::uniform_real_distribution<float> distPosZ(-80.0f, 0.0f);
 
   position = glm::vec3(distPosXY(m_randomEngine), distPosXY(m_randomEngine),
                        distPosZ(m_randomEngine));
@@ -536,7 +536,7 @@ void OpenGLWindow::update() {
     // orientation, and move it back to -100
     if (position.z > -1.0f) {
       randomizeBubble(position, rotation);
-      position.z = -100.0f;  // Back to -100
+      // position.z = -100.0f;  // Back to -100
     }
   }
     // Update corals

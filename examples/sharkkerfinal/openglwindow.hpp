@@ -27,7 +27,7 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   Shark m_shark;
 
  private:
-  static const int m_numBubbles{200};
+  static const int m_numBubbles{250};
 
 private:
   static const int m_numCorals{10};
