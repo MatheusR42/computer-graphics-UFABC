@@ -358,81 +358,81 @@ void OpenGLWindow::paintGL() {
 void OpenGLWindow::paintUI() {
   abcg::OpenGLWindow::paintUI();
 
-  // {
-  //   const auto size{ImVec2(340, 85)};
-  //   const auto position{ImVec2((m_viewportWidth - size.x) / 2.0f,
-  //                              (m_viewportHeight - size.y) / 2.0f)};
-  //   ImGui::SetNextWindowPos(position);
-  //   ImGui::SetNextWindowSize(size);
-  //   ImGuiWindowFlags flags{ImGuiWindowFlags_NoBackground |
-  //                          ImGuiWindowFlags_NoTitleBar |
-  //                          ImGuiWindowFlags_NoInputs};
-  //   ImGui::Begin(" ", nullptr, flags);
-  //   ImGui::PushFont(m_font_final);
+  {
+    const auto size{ImVec2(340, 85)};
+    const auto position{ImVec2((m_viewportWidth - size.x) / 2.0f,
+                               (m_viewportHeight - size.y) / 2.0f)};
+    ImGui::SetNextWindowPos(position);
+    ImGui::SetNextWindowSize(size);
+    ImGuiWindowFlags flags{ImGuiWindowFlags_NoBackground |
+                           ImGuiWindowFlags_NoTitleBar |
+                           ImGuiWindowFlags_NoInputs};
+    ImGui::Begin(" ", nullptr, flags);
+    ImGui::PushFont(m_font_final);
 
-  //   // "Game Over" message display
-  //   if (m_gameData.m_state == State::GameOver && 
-  //     m_Timer.elapsed() < 4) {
-  //     ImGui::Text("       Game Over\nContinue a nadar.");
+    // "Game Over" message display
+    if (m_gameData.m_state == State::GameOver && 
+      m_Timer.elapsed() < 4) {
+      ImGui::Text("       Game Over\nContinue a nadar.");
 
-  //   // Display developers name after "Game Over" message
-  //   }
-  //   if (m_gameData.m_state == State::GameOver && 
-  //     m_Timer.elapsed() > 4) {
-  //     ImGui::Text(" Matheus Araujo\nGiovanne Galdino");
-  //   }
+    // Display developers name after "Game Over" message
+    }
+    if (m_gameData.m_state == State::GameOver && 
+      m_Timer.elapsed() > 4) {
+      ImGui::Text(" Matheus Araujo\nGiovanne Galdino");
+    }
      
-  //   // "Sharkker" inicial message display
-  //   if (m_gameData.m_state == State::Playing && 
-  //     m_Timer.elapsed() < 4) {                    // Text display time
-  //     ImGui::Text("         Sharkker");
-  //   }
-  // }
+    // "Sharkker" inicial message display
+    if (m_gameData.m_state == State::Playing && 
+      m_Timer.elapsed() < 4) {                    // Text display time
+      ImGui::Text("         Sharkker");
+    }
+  }
 
-  // ImGui::PopFont();
-  // ImGui::End();
+  ImGui::PopFont();
+  ImGui::End();
   
-  // // "Points" Display
-  // {
-  //   const auto position{ImVec2((16),
-  //                               (16))};
-  //   ImGui::SetNextWindowSize(ImVec2(190, 100));
-  //   ImGui::SetNextWindowPos(position);
-  //   auto flags{ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize};
-  //   ImGui::Begin("points", nullptr, flags);
+  // "Points" Display
+  {
+    const auto position{ImVec2((16),
+                                (16))};
+    ImGui::SetNextWindowSize(ImVec2(190, 100));
+    ImGui::SetNextWindowPos(position);
+    auto flags{ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize};
+    ImGui::Begin("points", nullptr, flags);
 
-  //   // Menu Bar
-  //   if (ImGui::BeginMenuBar()) {
-  //     // File menu
-  //     ImGui::EndMenuBar();
-  //   }
+    // Menu Bar
+    if (ImGui::BeginMenuBar()) {
+      // File menu
+      ImGui::EndMenuBar();
+    }
 
-  //   ImGui::PushFont(m_font_points);
-  //   ImGui::Text("Points: %d", m_gameData.points);
-  //   ImGui::PopFont();
-  //   ImGui::End();
-  // }
+    ImGui::PushFont(m_font_points);
+    ImGui::Text("Points: %d", m_gameData.points);
+    ImGui::PopFont();
+    ImGui::End();
+  }
 
-  // // "Lifes" Display
-  // {
-  //   const auto position{ImVec2((m_viewportWidth - 140),
-  //                               (16))};
-  //   ImGui::SetNextWindowSize(ImVec2(190, 100));
-  //   ImGui::SetNextWindowPos(position);
-  //   auto flags{ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize};
-  //   ImGui::Begin("lifes", nullptr, flags);
+  // "Lifes" Display
+  {
+    const auto position{ImVec2((m_viewportWidth - 140),
+                                (16))};
+    ImGui::SetNextWindowSize(ImVec2(190, 100));
+    ImGui::SetNextWindowPos(position);
+    auto flags{ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize};
+    ImGui::Begin("lifes", nullptr, flags);
 
-  //   // Menu Bar
-  //   if (ImGui::BeginMenuBar()) {
-  //     // File menu
-  //     ImGui::EndMenuBar();
-  //   }
+    // Menu Bar
+    if (ImGui::BeginMenuBar()) {
+      // File menu
+      ImGui::EndMenuBar();
+    }
 
-  //   ImGui::PushFont(m_font_points);
-  //   ImGui::Text("Lifes: %d", m_gameData.lifes);
-  //   ImGui::PopFont();
-  //   ImGui::End();
-  // }
+    ImGui::PushFont(m_font_points);
+    ImGui::Text("Lifes: %d", m_gameData.lifes);
+    ImGui::PopFont();
+    ImGui::End();
+  }
 
   {
     const auto aspect{static_cast<float>(m_viewportWidth) /
@@ -443,40 +443,40 @@ void OpenGLWindow::paintUI() {
   }
 
   // Create window for light sources
-  if (m_currentProgramIndex < 4) {
-    const auto widgetSize{ImVec2(222, 244)};
-    ImGui::SetNextWindowPos(ImVec2(m_viewportWidth - widgetSize.x - 5,
-                                   m_viewportHeight - widgetSize.y - 5));
-    ImGui::SetNextWindowSize(widgetSize);
-    ImGui::Begin(" ", nullptr, ImGuiWindowFlags_NoDecoration);
+  // if (m_currentProgramIndex < 4) {
+  //   const auto widgetSize{ImVec2(222, 244)};
+  //   ImGui::SetNextWindowPos(ImVec2(m_viewportWidth - widgetSize.x - 5,
+  //                                  m_viewportHeight - widgetSize.y - 5));
+  //   ImGui::SetNextWindowSize(widgetSize);
+  //   ImGui::Begin(" ", nullptr, ImGuiWindowFlags_NoDecoration);
 
-    ImGui::Text("Light properties");
+  //   ImGui::Text("Light properties");
 
-    // Slider to control light properties
-    ImGui::PushItemWidth(widgetSize.x - 36);
-    ImGui::ColorEdit3("Ia", &m_Ia.x, ImGuiColorEditFlags_Float);
-    ImGui::ColorEdit3("Id", &m_Id.x, ImGuiColorEditFlags_Float);
-    ImGui::ColorEdit3("Is", &m_Is.x, ImGuiColorEditFlags_Float);
-    ImGui::PopItemWidth();
+  //   // Slider to control light properties
+  //   ImGui::PushItemWidth(widgetSize.x - 36);
+  //   ImGui::ColorEdit3("Ia", &m_Ia.x, ImGuiColorEditFlags_Float);
+  //   ImGui::ColorEdit3("Id", &m_Id.x, ImGuiColorEditFlags_Float);
+  //   ImGui::ColorEdit3("Is", &m_Is.x, ImGuiColorEditFlags_Float);
+  //   ImGui::PopItemWidth();
 
-    ImGui::Spacing();
+  //   ImGui::Spacing();
 
-    ImGui::Text("Material properties");
+  //   ImGui::Text("Material properties");
 
-    // Slider to control material properties
-    ImGui::PushItemWidth(widgetSize.x - 36);
-    ImGui::ColorEdit3("Ka", &m_Ka.x, ImGuiColorEditFlags_Float);
-    ImGui::ColorEdit3("Kd", &m_Kd.x, ImGuiColorEditFlags_Float);
-    ImGui::ColorEdit3("Ks", &m_Ks.x, ImGuiColorEditFlags_Float);
-    ImGui::PopItemWidth();
+  //   // Slider to control material properties
+  //   ImGui::PushItemWidth(widgetSize.x - 36);
+  //   ImGui::ColorEdit3("Ka", &m_Ka.x, ImGuiColorEditFlags_Float);
+  //   ImGui::ColorEdit3("Kd", &m_Kd.x, ImGuiColorEditFlags_Float);
+  //   ImGui::ColorEdit3("Ks", &m_Ks.x, ImGuiColorEditFlags_Float);
+  //   ImGui::PopItemWidth();
 
-    // Slider to control the specular shininess
-    ImGui::PushItemWidth(widgetSize.x - 16);
-    ImGui::SliderFloat("", &m_shininess, 0.0f, 500.0f, "shininess: %.1f");
-    ImGui::PopItemWidth();
+  //   // Slider to control the specular shininess
+  //   ImGui::PushItemWidth(widgetSize.x - 16);
+  //   ImGui::SliderFloat("", &m_shininess, 0.0f, 500.0f, "shininess: %.1f");
+  //   ImGui::PopItemWidth();
 
-    ImGui::End();
-  }
+  //   ImGui::End();
+  // }
 }
 
 void OpenGLWindow::restart() {
