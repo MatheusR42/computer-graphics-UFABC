@@ -135,6 +135,15 @@ void Model::createBuffers() {
   abcg::glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
+void Model::loadCubeTexture(const std::string& path) {
+  if (!std::filesystem::exists(path)) return;
+
+  abcg::glDeleteTextures(1, &m_cubeTexture);
+  m_cubeTexture = abcg::opengl::loadCubemap(
+      {path + "Sea_px.png", path + "Sea_nx.png", path + "Sea_py.png",
+       path + "Sea_ny.png", path + "Sea_pz.png", path + "Sea_nz.png"});
+}
+
 void Model::loadDiffuseTexture(std::string_view path) {
   if (!std::filesystem::exists(path)) return;
 
