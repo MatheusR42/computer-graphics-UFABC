@@ -581,7 +581,7 @@ void OpenGLWindow::checkCollisions() {
     const auto distanceZ{
         glm::distance(m_shark.m_positionZ, position.z)};
 
-    if (distance < .15f && distanceZ < 4.0f && m_gameData.m_state == State::Playing && m_gameData.m_lifeCooldown.elapsed() > 1) {
+    if (distance < .14f && distanceZ < 4.0f && m_gameData.m_state == State::Playing && m_gameData.m_lifeCooldown.elapsed() > 1) {
       m_shark.setDamage();
       m_gameData.lifes--;
       m_gameData.m_lifeCooldown.restart();
