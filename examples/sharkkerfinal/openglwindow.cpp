@@ -66,6 +66,7 @@ void OpenGLWindow::initializeGL() {
   m_modelShark.loadObj(getAssetsPath() + "shark.obj");
   m_modelCoral.loadObj(getAssetsPath() + "coral.obj");
 
+  m_currentProgramIndex = 1;
   m_modelBubble.setupVAO(m_programs.at(m_currentProgramIndex));
   m_modelShark.setupVAO(m_programs.at(m_currentProgramIndex));
   m_modelCoral.setupVAO(m_programs.at(m_currentProgramIndex));
@@ -77,7 +78,7 @@ void OpenGLWindow::initializeGL() {
   m_shininess = m_modelShark.getShininess();
 
   // loadModel(getAssetsPath() + "shark.obj");
-  m_mappingMode = 3;  // "From mesh" option
+ 
 
   // Camera at (0,0,0) and looking towards the negative z
   m_viewMatrix =
@@ -151,6 +152,9 @@ void OpenGLWindow::randomizeCoral(glm::vec3 &position, glm::vec3 &rotation) {
 
 void OpenGLWindow::paintGL() {
   update();
+  m_currentProgramIndex = 1;
+  m_mappingMode = 3;  // "From mesh" option
+
 
   // Clear color buffer and depth buffer
   abcg::glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -289,81 +293,81 @@ void OpenGLWindow::paintGL() {
 void OpenGLWindow::paintUI() {
   abcg::OpenGLWindow::paintUI();
 
-  {
-    const auto size{ImVec2(340, 85)};
-    const auto position{ImVec2((m_viewportWidth - size.x) / 2.0f,
-                               (m_viewportHeight - size.y) / 2.0f)};
-    ImGui::SetNextWindowPos(position);
-    ImGui::SetNextWindowSize(size);
-    ImGuiWindowFlags flags{ImGuiWindowFlags_NoBackground |
-                           ImGuiWindowFlags_NoTitleBar |
-                           ImGuiWindowFlags_NoInputs};
-    ImGui::Begin(" ", nullptr, flags);
-    ImGui::PushFont(m_font_final);
+  // {
+  //   const auto size{ImVec2(340, 85)};
+  //   const auto position{ImVec2((m_viewportWidth - size.x) / 2.0f,
+  //                              (m_viewportHeight - size.y) / 2.0f)};
+  //   ImGui::SetNextWindowPos(position);
+  //   ImGui::SetNextWindowSize(size);
+  //   ImGuiWindowFlags flags{ImGuiWindowFlags_NoBackground |
+  //                          ImGuiWindowFlags_NoTitleBar |
+  //                          ImGuiWindowFlags_NoInputs};
+  //   ImGui::Begin(" ", nullptr, flags);
+  //   ImGui::PushFont(m_font_final);
 
-    // "Game Over" message display
-    if (m_gameData.m_state == State::GameOver && 
-      m_Timer.elapsed() < 4) {
-      ImGui::Text("       Game Over\nContinue a nadar.");
+  //   // "Game Over" message display
+  //   if (m_gameData.m_state == State::GameOver && 
+  //     m_Timer.elapsed() < 4) {
+  //     ImGui::Text("       Game Over\nContinue a nadar.");
 
-    // Display developers name after "Game Over" message
-    }
-    if (m_gameData.m_state == State::GameOver && 
-      m_Timer.elapsed() > 4) {
-      ImGui::Text(" Matheus Araujo\nGiovanne Galdino");
-    }
+  //   // Display developers name after "Game Over" message
+  //   }
+  //   if (m_gameData.m_state == State::GameOver && 
+  //     m_Timer.elapsed() > 4) {
+  //     ImGui::Text(" Matheus Araujo\nGiovanne Galdino");
+  //   }
      
-    // "Sharkker" inicial message display
-    if (m_gameData.m_state == State::Playing && 
-      m_Timer.elapsed() < 4) {                    // Text display time
-      ImGui::Text("         Sharkker");
-    }
-  }
+  //   // "Sharkker" inicial message display
+  //   if (m_gameData.m_state == State::Playing && 
+  //     m_Timer.elapsed() < 4) {                    // Text display time
+  //     ImGui::Text("         Sharkker");
+  //   }
+  // }
 
-  ImGui::PopFont();
-  ImGui::End();
+  // ImGui::PopFont();
+  // ImGui::End();
   
-  // "Points" Display
-  {
-    const auto position{ImVec2((16),
-                                (16))};
-    ImGui::SetNextWindowSize(ImVec2(190, 100));
-    ImGui::SetNextWindowPos(position);
-    auto flags{ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize};
-    ImGui::Begin("points", nullptr, flags);
+  // // "Points" Display
+  // {
+  //   const auto position{ImVec2((16),
+  //                               (16))};
+  //   ImGui::SetNextWindowSize(ImVec2(190, 100));
+  //   ImGui::SetNextWindowPos(position);
+  //   auto flags{ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize};
+  //   ImGui::Begin("points", nullptr, flags);
 
-    // Menu Bar
-    if (ImGui::BeginMenuBar()) {
-      // File menu
-      ImGui::EndMenuBar();
-    }
+  //   // Menu Bar
+  //   if (ImGui::BeginMenuBar()) {
+  //     // File menu
+  //     ImGui::EndMenuBar();
+  //   }
 
-    ImGui::PushFont(m_font_points);
-    ImGui::Text("Points: %d", m_gameData.points);
-    ImGui::PopFont();
-    ImGui::End();
-  }
+  //   ImGui::PushFont(m_font_points);
+  //   ImGui::Text("Points: %d", m_gameData.points);
+  //   ImGui::PopFont();
+  //   ImGui::End();
+  // }
 
-  // "Lifes" Display
-  {
-    const auto position{ImVec2((m_viewportWidth - 140),
-                                (16))};
-    ImGui::SetNextWindowSize(ImVec2(190, 100));
-    ImGui::SetNextWindowPos(position);
-    auto flags{ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize};
-    ImGui::Begin("lifes", nullptr, flags);
+  // // "Lifes" Display
+  // {
+  //   const auto position{ImVec2((m_viewportWidth - 140),
+  //                               (16))};
+  //   ImGui::SetNextWindowSize(ImVec2(190, 100));
+  //   ImGui::SetNextWindowPos(position);
+  //   auto flags{ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize};
+  //   ImGui::Begin("lifes", nullptr, flags);
 
-    // Menu Bar
-    if (ImGui::BeginMenuBar()) {
-      // File menu
-      ImGui::EndMenuBar();
-    }
+  //   // Menu Bar
+  //   if (ImGui::BeginMenuBar()) {
+  //     // File menu
+  //     ImGui::EndMenuBar();
+  //   }
 
-    ImGui::PushFont(m_font_points);
-    ImGui::Text("Lifes: %d", m_gameData.lifes);
-    ImGui::PopFont();
-    ImGui::End();
-  }
+  //   ImGui::PushFont(m_font_points);
+  //   ImGui::Text("Lifes: %d", m_gameData.lifes);
+  //   ImGui::PopFont();
+  //   ImGui::End();
+  // }
 
   {
     const auto aspect{static_cast<float>(m_viewportWidth) /
@@ -371,6 +375,111 @@ void OpenGLWindow::paintUI() {
 
     m_projMatrix = glm::perspective(glm::radians(m_FOV), aspect, 0.01f, 100.0f);
 
+  }
+
+  // Create main window widget
+  {
+    auto widgetSize{ImVec2(222, 190)};
+
+    if (!m_model.isUVMapped()) {
+      // Add extra space for static text
+      widgetSize.y += 26;
+    }
+
+    ImGui::SetNextWindowPos(ImVec2(m_viewportWidth - widgetSize.x - 5, 5));
+    ImGui::SetNextWindowSize(widgetSize);
+    auto flags{ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDecoration};
+    ImGui::Begin("Widget window", nullptr, flags);
+
+    // Slider will be stretched horizontally
+    ImGui::PushItemWidth(widgetSize.x - 16);
+    ImGui::SliderInt("", &m_trianglesToDraw, 0, m_model.getNumTriangles(),
+                     "%d triangles");
+    ImGui::PopItemWidth();
+
+    static bool faceCulling{};
+    ImGui::Checkbox("Back-face culling", &faceCulling);
+
+    if (faceCulling) {
+      abcg::glEnable(GL_CULL_FACE);
+    } else {
+      abcg::glDisable(GL_CULL_FACE);
+    }
+
+    // CW/CCW combo box
+    {
+      static std::size_t currentIndex{};
+      std::vector<std::string> comboItems{"CCW", "CW"};
+
+      ImGui::PushItemWidth(120);
+      if (ImGui::BeginCombo("Front face",
+                            comboItems.at(currentIndex).c_str())) {
+        for (auto index : iter::range(comboItems.size())) {
+          const bool isSelected{currentIndex == index};
+          if (ImGui::Selectable(comboItems.at(index).c_str(), isSelected))
+            currentIndex = index;
+          if (isSelected) ImGui::SetItemDefaultFocus();
+        }
+        ImGui::EndCombo();
+      }
+      ImGui::PopItemWidth();
+
+      if (currentIndex == 0) {
+        abcg::glFrontFace(GL_CCW);
+      } else {
+        abcg::glFrontFace(GL_CW);
+      }
+    }
+
+    // Shader combo box
+    {
+      static std::size_t currentIndex{};
+
+      ImGui::PushItemWidth(120);
+      if (ImGui::BeginCombo("Shader", m_shaderNames.at(currentIndex))) {
+        for (auto index : iter::range(m_shaderNames.size())) {
+          const bool isSelected{currentIndex == index};
+          if (ImGui::Selectable(m_shaderNames.at(index), isSelected))
+            currentIndex = index;
+          if (isSelected) ImGui::SetItemDefaultFocus();
+        }
+        ImGui::EndCombo();
+      }
+      ImGui::PopItemWidth();
+
+      // Set up VAO if shader program has changed
+      if (static_cast<int>(currentIndex) != m_currentProgramIndex) {
+        m_currentProgramIndex = currentIndex;
+        m_modelCoral.setupVAO(m_programs.at(m_currentProgramIndex));
+      }
+    }
+
+    // if (!m_model.isUVMapped()) {
+    //   ImGui::TextColored(ImVec4(1, 1, 0, 1), "Mesh has no UV coords.");
+    // }
+
+    // // UV mapping box
+    // {
+    //   std::vector<std::string> comboItems{"Triplanar", "Cylindrical",
+    //                                       "Spherical"};
+
+    //   if (m_model.isUVMapped()) comboItems.emplace_back("From mesh");
+
+    //   ImGui::PushItemWidth(120);
+    //   if (ImGui::BeginCombo("UV mapping",
+    //                         comboItems.at(m_mappingMode).c_str())) {
+    //     for (auto index : iter::range(comboItems.size())) {
+    //       const bool isSelected{m_mappingMode == static_cast<int>(index)};
+    //       if (ImGui::Selectable(comboItems.at(index).c_str(), isSelected))
+    //         m_mappingMode = index;
+    //       if (isSelected) ImGui::SetItemDefaultFocus();
+    //     }
+    //     ImGui::EndCombo();
+    //   }
+    //   ImGui::PopItemWidth();
+    // }
+
+    ImGui::End();
   }
 
   // Create window for light sources
