@@ -28,17 +28,9 @@
                   %                                    ..   
                                                         (#  
 ```
-#                            SHARKKER
+# SHARKKER 2D
 
-
-## SHARKKER 2D
 https://matheusr42.github.io/computer-graphics-UFABC/sharkker/
-
-## SHARKKER 3D
-https://matheusr42.github.io/computer-graphics-UFABC/sharkker3d/
-
-
-https://github.com/MatheusR42/computer-graphics-UFABC
 
 Release 2021/10/31
 
@@ -62,8 +54,8 @@ Conforme o animal avança e desvia dos obstáculos, são somados pontos ao canto
 Caso o tubarão colida com algum coral, ele se machucará e perderá uma de suas três vidas, indicadas no canto superior esquerdo. Ao chegar à zero, o jogo acaba.
 
 
-![Sharkker Blender](public/blender.png)
-![Sharkker](public/Sharkker.png)
+![Sharkker Blender](../../public/blender.png)
+![Sharkker](../../public/Sharkker.png)
 
 Conforme o tubarão avança, o nível de dificuldade aumenta, com maior geração de corais e maior velocidade. Porém, essa dificuldade é limitada à um nível justo de jogabilidade.
 Não há um final para esse jogo e o objetivo é ir o mais longe possível, somando mais pontos.
@@ -85,23 +77,23 @@ A cultura humana nos leva à acreditar que tubarões são animais perigosos e vi
 Assim como a nave de Asteroids, o animal é desenhado com vértices que se ligam em vários triângulos.
 Abaixo, vemos como se deu o passo-a-passo de sua criação:
 
-![0 - Shark's Draft](public/Shark_0_Draft.jpeg)
+![0 - Shark's Draft](../../public/Shark_0_Draft.jpeg)
 
-![1 - Shark's Project](public/Shark_1_Project.jpeg)
+![1 - Shark's Project](../../public/Shark_1_Project.jpeg)
 
-![2 - Shark's Sharkker](public/Shark_2_Sharkker.png)
+![2 - Shark's Sharkker](../../public/Shark_2_Sharkker.png)
 
 ### Corals
 Os corais são gerados com um número aleatório de vértices entre 50 e 70.
 Possuem também certa aleatoriedade na posição nos quais são gerados na parte superior da tela, nas suas velocidades de rotação, tamanho e intensidade de cor. Após passarem completamente pela borda inferior da tela um ponto é contabilizado e o coral é destruido para liberar espaço na memória.
 
-![Corals](public/Sharkker_Corals.png)
+![Corals](../../public/Sharkker_Corals.png)
 
 ### Bubbles and Ocean
 A cor do oceano, ao fundo de todos os objetos, foi baseada justamente na cor "Ocean Blue" #006994 (de palheta R000 G105 B148). Porém, há um leve escurecimento para melhor contraste com os outros componentes do jogo.
 Já as camadas de bolhas, seus gradientes e mecânicas foram herdadas das stars do jogo Asteroids.
 
-![Bubbles and Ocean](public/Sharkker_Bubbles_Ocean.png)
+![Bubbles and Ocean](../../public/Sharkker_Bubbles_Ocean.png)
 
 ## Features
 • Sistema de pontuação
@@ -120,7 +112,7 @@ Já as camadas de bolhas, seus gradientes e mecânicas foram herdadas das stars 
 
 • Corais criados aleatoriamente com movimento rotacional e em direção ao player
 
-![Collision](public/Shark_3_Hurt.png)
+![Collision](../../public/Shark_3_Hurt.png)
 ----
 
 =============
