@@ -28,17 +28,9 @@
                   %                                    ..   
                                                         (#  
 ```
-#                            SHARKKER
+# SHARKKER 2D
 
-
-## SHARKKER 2D
 https://matheusr42.github.io/computer-graphics-UFABC/sharkker/
-
-## SHARKKER 3D
-https://matheusr42.github.io/computer-graphics-UFABC/sharkker3d/
-
-
-https://github.com/MatheusR42/computer-graphics-UFABC
 
 Release 2021/10/31
 

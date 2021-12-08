@@ -25,17 +25,10 @@
            #%&@                 &&&&@                       
         %@                       @&@                                                              
 ```
-#                            SHARKKER SAGA
+#                            SHARKKER FINAL
 
-## SHARKKER 3D
-https://matheusr42.github.io/computer-graphics-UFABC/sharkker3d/
-Release 2021/11/21
-
-## SHARKKER 2D
-https://matheusr42.github.io/computer-graphics-UFABC/sharkker/
-Release 2021/10/31
-
-https://github.com/MatheusR42/computer-graphics-UFABC
+https://matheusr42.github.io/computer-graphics-UFABC/sharkkerfinal/
+Release 2021/12/08
 
 
 by  **Matheus Araujo**      *<https://github.com/MatheusR42>*   matheus.victor@aluno.ufabc.edu.br
@@ -57,7 +50,7 @@ O objetivo do jogo é guiar adiante um tubarão pelo vasto oceano, enquanto gran
 Conforme o animal avança e desvia dos obstáculos, são somados pontos ao canto superior esquerdo da tela.
 Caso o tubarão colida com algum coral, ele se machucará e perderá uma de suas três vidas, indicadas no canto superior direito. Ao chegar à zero, o jogo acaba.
 
-![Sharkker3D](public/3D_Sharkker.png)
+![Sharkker3D](../../public/3D_Sharkker.png)
 
 Conforme o tubarão avança, o nível de dificuldade aumenta, com maior geração de corais e maior velocidade. Porém, essa dificuldade é limitada à um nível justo de jogabilidade.
 Não há um final para esse jogo e o objetivo é ir o mais longe possível, somando mais pontos.
@@ -83,25 +76,25 @@ A cultura humana nos leva à acreditar que tubarões são animais perigosos e vi
 
 O modelo 3D em formato .obj do animal foi gratuitamente baixado em [Free3D](https://free3d.com/3d-model/shark-v5--166344.html).
 
-![Shark - Blender](public/blender.png)
+![Shark - Blender](../../public/blender.png)
 
 Conforme movimenta-se, é possível enxergar vários ângulos do tubarão.
 
-![Shark - Centered](public/3D_Shark_Centered.png)
-![Shark - Left](public/3D_Shark_Left.png) ![Shark - Up](public/3D_Shark_Up.png) ![Shark - Down](public/3D_Shark_Down.png) ![Shark - Up](public/3D_Shark_DiagonalUpperRight.png)
+![Shark - Centered](../../public/3D_Shark_Centered.png)
+![Shark - Left](../../public/3D_Shark_Left.png) ![Shark - Up](../../public/3D_Shark_Up.png) ![Shark - Down](../../public/3D_Shark_Down.png) ![Shark - Up](../../public/3D_Shark_DiagonalUpperRight.png)
 
 ### Corals
 Os corais são gerados em uma posição aleatória ao final do eixo de profundidade do espaço do jogo e seguem em direção ao tubarão. Ao passarem por ele, soma-se um ponto para cada coral, eles são reaproveitados e posicionados de forma aleatória nas distâncias iniciais novamente.
 
 O modelo 3D em formato .obj dos corais foi gratuitamente baixado em [3dmdb](https://3dmdb.com/en/3d-model/spike-ball-by-fabanafabana/8963728/).
 
-![Corals](public/3D_Sharkker_SharkkCorals.png)
+![Corals](../../public/3D_Sharkker_SharkkCorals.png)
 
 ### Bubbles and Ocean
 A cor do oceano, ao fundo de todos os objetos, foi baseada justamente na cor "Ocean Blue" #006994 (de palheta R000 G105 B148). Porém, há um leve escurecimento para melhor contraste com os outros componentes do jogo.
 A mecânica das bolhas foi herdada do código de Starfield e, assim como os corais, é gerada aleatóriamente ao final do ângulo de visão e segue em direção ao tubarão. Ao passar por ele, são reaproveitadas e posicionadas de forma aleatória nas distâncias iniciais novamente.
 
-![Bubbles and Ocean](public/3D_Sharkker_Bubbles.png)
+![Bubbles and Ocean](../../public/3D_Sharkker_Bubbles.png)
 
 ## Features
 • Sistema de pontuação
@@ -116,7 +109,7 @@ A mecânica das bolhas foi herdada do código de Starfield e, assim como os cora
 
 • Além de ficar vermelho, o tubarão recebe invencibilidade momentânea ao perder cada uma das duas primeiras vidas 
 
-![Shark - Hurt](public/3D_Shark_Hurt.png)
+![Shark - Hurt](../../public/3D_Shark_Hurt.png)
 
 ----
 ## ABCg

@@ -25,17 +25,10 @@
            #%&@                 &&&&@                       
         %@                       @&@                                                              
 ```
-#                            SHARKKER SAGA
+# SHARKKER 3D
 
-## SHARKKER 3D
 https://matheusr42.github.io/computer-graphics-UFABC/sharkker3d/
 Release 2021/11/21
-
-## SHARKKER 2D
-https://matheusr42.github.io/computer-graphics-UFABC/sharkker/
-Release 2021/10/31
-
-https://github.com/MatheusR42/computer-graphics-UFABC
 
 
 by  **Matheus Araujo**      *<https://github.com/MatheusR42>*   matheus.victor@aluno.ufabc.edu.br
