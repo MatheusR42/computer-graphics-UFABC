@@ -37,6 +37,9 @@ void OpenGLWindow::handleEvent(SDL_Event& event) {
 
 void OpenGLWindow::initializeGL() {
   abcg::glClearColor(0, 0.32, 0.492, 1);      // Background color (Sea) R000 G081 B125
+  
+  // Load cubemap
+  m_model.loadCubeTexture(getAssetsPath() + "maps/cube/");
 
   // Enable depth buffering
   abcg::glEnable(GL_DEPTH_TEST);
