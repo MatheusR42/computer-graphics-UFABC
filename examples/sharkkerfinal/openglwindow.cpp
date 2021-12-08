@@ -306,8 +306,15 @@ void OpenGLWindow::paintGL() {
   abcg::glUniform1i(mappingModeLoc, m_mappingMode);
 
   const auto lightDirRotated{m_trackBallLight.getRotation() * m_lightDir};
+  
   abcg::glUniform4fv(lightDirLoc, 1, &lightDirRotated.x);
-  abcg::glUniform4fv(IaLoc, 1, &m_Ia.x);
+
+  if (!m_shark.m_nodamage) {
+    abcg::glUniform4fv(IaLoc, 1, &m_Ia.x);
+  } else {
+    glm::vec4 m_Ia{0.9f, 0.0f, 0.0f, 0.0f};
+    abcg::glUniform4fv(IaLoc, 1, &m_Ia.x);
+  }
   abcg::glUniform4fv(IdLoc, 1, &m_Id.x);
   abcg::glUniform4fv(IsLoc, 1, &m_Is.x);
   
@@ -341,13 +348,6 @@ void OpenGLWindow::paintGL() {
 
     // Set uniform variable
     abcg::glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &modelMatrix[0][0]);
-    
-    // TODO change Shark color
-    // if (!m_shark.m_nodamage) {
-    //   abcg::glUniform4f(colorLoc, 0.6f, 0.6f, 0.6f, 0.5f);
-    // } else {
-    //   abcg::glUniform4f(colorLoc, 1.0f, 0.0f, 0.0f, 0.5f);
-    // }
     
     m_modelShark.render();
   }
