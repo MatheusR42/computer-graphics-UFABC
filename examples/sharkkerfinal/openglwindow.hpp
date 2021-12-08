@@ -9,7 +9,6 @@
 #include "model.hpp"
 #include "shark.hpp"
 #include "gamedata.hpp"
-#include "trackball.hpp"
 
 class OpenGLWindow : public abcg::OpenGLWindow {
  protected:
@@ -26,10 +25,8 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   Model m_corals;
   Shark m_shark;
 
- private:
-  static const int m_numBubbles{250};
-
 private:
+  static const int m_numBubbles{250};
   static const int m_numCorals{10};
 
   GLuint m_program{};
@@ -51,34 +48,21 @@ private:
   std::array<glm::vec3, m_numCorals> m_coralPositions;
   std::array<glm::vec3, m_numCorals> m_coralRotations;
 
-  float m_angle{};
-
-  Model m_model;
   int m_trianglesToDraw{};
-
-  TrackBall m_trackBallModel;
-  TrackBall m_trackBallLight;
+  float m_angle{};
   float m_zoom{};
+  float m_FOV{8.0f};
 
   glm::mat4 m_modelMatrix{1.0f};
   glm::mat4 m_viewMatrix{1.0f};
   glm::mat4 m_projMatrix{1.0f};
-  float m_FOV{8.0f};
 
   ImFont* m_font_final{};
   ImFont* m_font_points{};
 
-
   // shark
   abcg::ElapsedTimer m_movimentCoolDownTimer;
   abcg::ElapsedTimer m_movimentTimer;
-
-  // Shaders
-  std::vector<const char*> m_shaderNames{
-      "normalmapping", "texture", "blinnphong", "phong",
-      "gouraud",       "normal",  "depth"};
-  std::vector<GLuint> m_programs;
-  int m_currentProgramIndex{1};
 
   // Mapping mode
   // 0: triplanar; 1: cylindrical; 2: spherical; 3: from mesh

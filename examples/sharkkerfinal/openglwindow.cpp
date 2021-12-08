@@ -8,8 +8,6 @@
 #include <glm/gtx/fast_trigonometry.hpp>
 #include <glm/gtc/matrix_inverse.hpp>
 
-// From https://github.com/AirGuanZ/imgui-filebrowser
-#include "imfilebrowser.h"
 
 void OpenGLWindow::handleEvent(SDL_Event& event) {
   // Keyboard events
@@ -38,9 +36,6 @@ void OpenGLWindow::handleEvent(SDL_Event& event) {
 void OpenGLWindow::initializeGL() {
   abcg::glClearColor(0, 0.32, 0.492, 1);      // Background color (Sea) R000 G081 B125
   
-  // Load cubemap
-  m_model.loadCubeTexture(getAssetsPath() + "maps/cube/");
-
   // Enable depth buffering
   abcg::glEnable(GL_DEPTH_TEST);
 
@@ -57,31 +52,18 @@ void OpenGLWindow::initializeGL() {
     throw abcg::Exception{abcg::Exception::Runtime("Cannot load font file")};
   }
 
-  // Create programs
-  for (const auto& name : m_shaderNames) {
-    const auto path{getAssetsPath() + "shaders/" + name};
-    const auto program{createProgramFromFile(path + ".vert", path + ".frag")};
-    m_programs.push_back(program);
-  }
+  const auto path{getAssetsPath() + "shaders/texture"};
+  const auto program{createProgramFromFile(path + ".vert", path + ".frag")};
+  m_program = program;
 
   // Load model
   m_modelBubble.loadObj(getAssetsPath() + "bubble.obj");
   m_modelShark.loadObj(getAssetsPath() + "shark.obj");
   m_modelCoral.loadObj(getAssetsPath() + "coral.obj");
 
-  m_currentProgramIndex = 1;
-  m_modelBubble.setupVAO(m_programs.at(m_currentProgramIndex));
-  m_modelShark.setupVAO(m_programs.at(m_currentProgramIndex));
-  m_modelCoral.setupVAO(m_programs.at(m_currentProgramIndex));
-
-  // Use material properties from the loaded model
-  // m_Ka = m_modelShark.getKa();
-  // m_Kd = m_modelShark.getKd();
-  // m_Ks = m_modelShark.getKs();
-  // m_shininess = m_modelShark.getShininess();
-
-  // loadModel(getAssetsPath() + "shark.obj");
- 
+  m_modelBubble.setupVAO(m_program);
+  m_modelShark.setupVAO(m_program);
+  m_modelCoral.setupVAO(m_program);
 
   // Camera at (0,0,0) and looking towards the negative z
   m_viewMatrix =
@@ -140,21 +122,7 @@ void OpenGLWindow::randomizeCoral(glm::vec3 &position, glm::vec3 &rotation) {
                                       distRotAxis(m_randomEngine)));
 }
 
-// void OpenGLWindow::loadModel(std::string_view path) {
-//   m_model.terminateGL();
-
-//   m_model.loadObj(path);
-//   m_model.setupVAO(m_programs.at(m_currentProgramIndex));
-
-  // // Use material properties from the loaded model
-  // m_Ka = m_model.getKa();
-  // m_Kd = m_model.getKd();
-  // m_Ks = m_model.getKs();
-  // m_shininess = m_model.getShininess();
-// }
-
 void OpenGLWindow::paintGLSpherical() {
-  m_currentProgramIndex = 1;
   m_mappingMode = 2;  // "From mesh" option
 
   // Clear color buffer and depth buffer
@@ -163,29 +131,28 @@ void OpenGLWindow::paintGLSpherical() {
   abcg::glViewport(0, 0, m_viewportWidth, m_viewportHeight);
 
   // Use currently selected program
-  const auto program{m_programs.at(m_currentProgramIndex)};
-  abcg::glUseProgram(program);
+  abcg::glUseProgram(m_program);
 
   // Get location of uniform variables
-  const GLint viewMatrixLoc{abcg::glGetUniformLocation(program, "viewMatrix")};
-  const GLint projMatrixLoc{abcg::glGetUniformLocation(program, "projMatrix")};
+  const GLint viewMatrixLoc{abcg::glGetUniformLocation(m_program, "viewMatrix")};
+  const GLint projMatrixLoc{abcg::glGetUniformLocation(m_program, "projMatrix")};
   const GLint modelMatrixLoc{
-      abcg::glGetUniformLocation(program, "modelMatrix")};
+      abcg::glGetUniformLocation(m_program, "modelMatrix")};
   const GLint normalMatrixLoc{
-      abcg::glGetUniformLocation(program, "normalMatrix")};
+      abcg::glGetUniformLocation(m_program, "normalMatrix")};
   const GLint lightDirLoc{
-      abcg::glGetUniformLocation(program, "lightDirWorldSpace")};
-  const GLint shininessLoc{abcg::glGetUniformLocation(program, "shininess")};
-  const GLint IaLoc{abcg::glGetUniformLocation(program, "Ia")};
-  const GLint IdLoc{abcg::glGetUniformLocation(program, "Id")};
-  const GLint IsLoc{abcg::glGetUniformLocation(program, "Is")};
-  const GLint KaLoc{abcg::glGetUniformLocation(program, "Ka")};
-  const GLint KdLoc{abcg::glGetUniformLocation(program, "Kd")};
-  const GLint KsLoc{abcg::glGetUniformLocation(program, "Ks")};
-  const GLint diffuseTexLoc{abcg::glGetUniformLocation(program, "diffuseTex")};
-  const GLint normalTexLoc{abcg::glGetUniformLocation(program, "normalTex")};
+      abcg::glGetUniformLocation(m_program, "lightDirWorldSpace")};
+  const GLint shininessLoc{abcg::glGetUniformLocation(m_program, "shininess")};
+  const GLint IaLoc{abcg::glGetUniformLocation(m_program, "Ia")};
+  const GLint IdLoc{abcg::glGetUniformLocation(m_program, "Id")};
+  const GLint IsLoc{abcg::glGetUniformLocation(m_program, "Is")};
+  const GLint KaLoc{abcg::glGetUniformLocation(m_program, "Ka")};
+  const GLint KdLoc{abcg::glGetUniformLocation(m_program, "Kd")};
+  const GLint KsLoc{abcg::glGetUniformLocation(m_program, "Ks")};
+  const GLint diffuseTexLoc{abcg::glGetUniformLocation(m_program, "diffuseTex")};
+  const GLint normalTexLoc{abcg::glGetUniformLocation(m_program, "normalTex")};
   const GLint mappingModeLoc{
-      abcg::glGetUniformLocation(program, "mappingMode")};
+      abcg::glGetUniformLocation(m_program, "mappingMode")};
 
   // Set uniform variables used by every scene object
   abcg::glUniformMatrix4fv(viewMatrixLoc, 1, GL_FALSE, &m_viewMatrix[0][0]);
@@ -193,9 +160,7 @@ void OpenGLWindow::paintGLSpherical() {
   abcg::glUniform1i(diffuseTexLoc, 0);
   abcg::glUniform1i(normalTexLoc, 1);
   abcg::glUniform1i(mappingModeLoc, m_mappingMode);
-
-  const auto lightDirRotated{m_trackBallLight.getRotation() * m_lightDir};
-  abcg::glUniform4fv(lightDirLoc, 1, &lightDirRotated.x);
+  abcg::glUniform4fv(lightDirLoc, 1, &m_lightDir.x);
   abcg::glUniform4fv(IaLoc, 1, &m_Ia.x);
   abcg::glUniform4fv(IdLoc, 1, &m_Id.x);
   abcg::glUniform4fv(IsLoc, 1, &m_Is.x);
@@ -205,15 +170,9 @@ void OpenGLWindow::paintGLSpherical() {
   abcg::glUniform4fv(KdLoc, 1, &m_Kd.x);
   abcg::glUniform4fv(KsLoc, 1, &m_Ks.x);
 
-  // abcg::glUniform1f(shininessLoc, m_shininess);
-  // abcg::glUniform4fv(KaLoc, 1, &m_Ka.x);
-  // abcg::glUniform4fv(KdLoc, 1, &m_Kd.x);
-  // abcg::glUniform4fv(KsLoc, 1, &m_Ks.x);
   
   // Render each bubble
   for (const auto index : iter::range(m_numBubbles)) {
-    // TODO Bubbles color
-    // abcg::glUniform4f(colorLoc, 0.0f, 0.6f, 0.8f, 0.5f);  
     const auto &position{m_bubblePositions.at(index)};
     const auto &rotation{m_bubbleRotations.at(index)};
 
@@ -235,9 +194,6 @@ void OpenGLWindow::paintGLSpherical() {
 
   // Render each coral
   for (const auto index : iter::range(m_numCorals)) {
-    // TODO Corals color
-    // abcg::glUniform4f(colorLoc, 1.0f, 0.6f, 0.6f, 0.5f);
-
     const auto &position{m_coralPositions.at(index)};
     const auto &rotation{m_coralRotations.at(index)};
 
@@ -270,33 +226,31 @@ void OpenGLWindow::paintGL() {
 
   paintGLSpherical();
 
-  m_currentProgramIndex = 1;
   m_mappingMode = 3;  // "From mesh" option
 
   // Use currently selected program
-  const auto program{m_programs.at(m_currentProgramIndex)};
-  abcg::glUseProgram(program);
+  abcg::glUseProgram(m_program);
 
   // Get location of uniform variables
-  const GLint viewMatrixLoc{abcg::glGetUniformLocation(program, "viewMatrix")};
-  const GLint projMatrixLoc{abcg::glGetUniformLocation(program, "projMatrix")};
+  const GLint viewMatrixLoc{abcg::glGetUniformLocation(m_program, "viewMatrix")};
+  const GLint projMatrixLoc{abcg::glGetUniformLocation(m_program, "projMatrix")};
   const GLint modelMatrixLoc{
-      abcg::glGetUniformLocation(program, "modelMatrix")};
+      abcg::glGetUniformLocation(m_program, "modelMatrix")};
   const GLint normalMatrixLoc{
-      abcg::glGetUniformLocation(program, "normalMatrix")};
+      abcg::glGetUniformLocation(m_program, "normalMatrix")};
   const GLint lightDirLoc{
-      abcg::glGetUniformLocation(program, "lightDirWorldSpace")};
-  const GLint shininessLoc{abcg::glGetUniformLocation(program, "shininess")};
-  const GLint IaLoc{abcg::glGetUniformLocation(program, "Ia")};
-  const GLint IdLoc{abcg::glGetUniformLocation(program, "Id")};
-  const GLint IsLoc{abcg::glGetUniformLocation(program, "Is")};
-  const GLint KaLoc{abcg::glGetUniformLocation(program, "Ka")};
-  const GLint KdLoc{abcg::glGetUniformLocation(program, "Kd")};
-  const GLint KsLoc{abcg::glGetUniformLocation(program, "Ks")};
-  const GLint diffuseTexLoc{abcg::glGetUniformLocation(program, "diffuseTex")};
-  const GLint normalTexLoc{abcg::glGetUniformLocation(program, "normalTex")};
+      abcg::glGetUniformLocation(m_program, "lightDirWorldSpace")};
+  const GLint shininessLoc{abcg::glGetUniformLocation(m_program, "shininess")};
+  const GLint IaLoc{abcg::glGetUniformLocation(m_program, "Ia")};
+  const GLint IdLoc{abcg::glGetUniformLocation(m_program, "Id")};
+  const GLint IsLoc{abcg::glGetUniformLocation(m_program, "Is")};
+  const GLint KaLoc{abcg::glGetUniformLocation(m_program, "Ka")};
+  const GLint KdLoc{abcg::glGetUniformLocation(m_program, "Kd")};
+  const GLint KsLoc{abcg::glGetUniformLocation(m_program, "Ks")};
+  const GLint diffuseTexLoc{abcg::glGetUniformLocation(m_program, "diffuseTex")};
+  const GLint normalTexLoc{abcg::glGetUniformLocation(m_program, "normalTex")};
   const GLint mappingModeLoc{
-      abcg::glGetUniformLocation(program, "mappingMode")};
+      abcg::glGetUniformLocation(m_program, "mappingMode")};
 
   // Set uniform variables used by every scene object
   abcg::glUniformMatrix4fv(viewMatrixLoc, 1, GL_FALSE, &m_viewMatrix[0][0]);
@@ -304,10 +258,7 @@ void OpenGLWindow::paintGL() {
   abcg::glUniform1i(diffuseTexLoc, 0);
   abcg::glUniform1i(normalTexLoc, 1);
   abcg::glUniform1i(mappingModeLoc, m_mappingMode);
-
-  const auto lightDirRotated{m_trackBallLight.getRotation() * m_lightDir};
-  
-  abcg::glUniform4fv(lightDirLoc, 1, &lightDirRotated.x);
+  abcg::glUniform4fv(lightDirLoc, 1, &m_lightDir.x);
 
   if (!m_shark.m_nodamage) {
     abcg::glUniform4fv(IaLoc, 1, &m_Ia.x);
@@ -439,44 +390,7 @@ void OpenGLWindow::paintUI() {
                         static_cast<float>(m_viewportHeight)};
 
     m_projMatrix = glm::perspective(glm::radians(m_FOV), aspect, 0.01f, 100.0f);
-
   }
-
-  // Create window for light sources
-  // if (m_currentProgramIndex < 4) {
-  //   const auto widgetSize{ImVec2(222, 244)};
-  //   ImGui::SetNextWindowPos(ImVec2(m_viewportWidth - widgetSize.x - 5,
-  //                                  m_viewportHeight - widgetSize.y - 5));
-  //   ImGui::SetNextWindowSize(widgetSize);
-  //   ImGui::Begin(" ", nullptr, ImGuiWindowFlags_NoDecoration);
-
-  //   ImGui::Text("Light properties");
-
-  //   // Slider to control light properties
-  //   ImGui::PushItemWidth(widgetSize.x - 36);
-  //   ImGui::ColorEdit3("Ia", &m_Ia.x, ImGuiColorEditFlags_Float);
-  //   ImGui::ColorEdit3("Id", &m_Id.x, ImGuiColorEditFlags_Float);
-  //   ImGui::ColorEdit3("Is", &m_Is.x, ImGuiColorEditFlags_Float);
-  //   ImGui::PopItemWidth();
-
-  //   ImGui::Spacing();
-
-  //   ImGui::Text("Material properties");
-
-  //   // Slider to control material properties
-  //   ImGui::PushItemWidth(widgetSize.x - 36);
-  //   ImGui::ColorEdit3("Ka", &m_Ka.x, ImGuiColorEditFlags_Float);
-  //   ImGui::ColorEdit3("Kd", &m_Kd.x, ImGuiColorEditFlags_Float);
-  //   ImGui::ColorEdit3("Ks", &m_Ks.x, ImGuiColorEditFlags_Float);
-  //   ImGui::PopItemWidth();
-
-  //   // Slider to control the specular shininess
-  //   ImGui::PushItemWidth(widgetSize.x - 16);
-  //   ImGui::SliderFloat("", &m_shininess, 0.0f, 500.0f, "shininess: %.1f");
-  //   ImGui::PopItemWidth();
-
-  //   ImGui::End();
-  // }
 }
 
 void OpenGLWindow::restart() {
@@ -506,9 +420,7 @@ void OpenGLWindow::terminateGL() {
   m_modelBubble.terminateGL();
   m_modelShark.terminateGL();
   m_modelCoral.terminateGL();
-  for (const auto& program : m_programs) {
-    abcg::glDeleteProgram(program);
-  }
+  abcg::glDeleteProgram(m_program);
 }
 
 void OpenGLWindow::update() {

@@ -5,25 +5,6 @@ void Shark::setDamage() {
 }
 
 void Shark::update(const GameData &gameData) {
-  // auto grey = glm::vec4{0.6f, 0.6f, 0.6f, 1.0f};          // R153 G153 B153 A255
-  // auto damageColor = glm::vec4{1.0f, 0.0f, 0.0f, 1.0f};   // R255 G000 B000 A255
-
-  // if (m_nodamage) {
-  //   m_color = damageColor;                                // Shark turns Red when hit
-  // } else {
-  //   m_color = grey;                                       // Shark turns Grey when hit
-  // }
-  
-
-  // if (m_shakeCoolDownTimer.elapsed() < 20.0/1000.0 || m_angleZ ){
-  //   m_angleZ = m_angleZ + 2;
-  // } else if (m_shakeCoolDownTimer.elapsed() < 40.0/1000.0) {
-  //   m_angleZ = m_angleZ - 2;
-  // } else {
-  //   m_shakeCoolDownTimer.restart();
-  // }
-
-
   if (m_movimentCoolDownTimer.elapsed() < 35.0/1000.0){    // Shark's axial velocity
     return;
   }
