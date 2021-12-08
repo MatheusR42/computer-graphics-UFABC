@@ -89,11 +89,10 @@ private:
   glm::vec4 m_Ia{1.0f};
   glm::vec4 m_Id{1.0f};
   glm::vec4 m_Is{1.0f};
-  glm::vec4 m_Ka{0.1f, 0.1f, 0.1f, 1.0f};
-  glm::vec4 m_Kd{0.7f, 0.7f, 0.7f, 1.0f};
-  glm::vec4 m_Ks{1.0f, 1.0f, 1.0f, 1.0f};
-  float m_shininess{3.0f};
-
+  glm::vec4 m_Ka{0.7f};
+  glm::vec4 m_Kd{0.41f, 0.36f, 0.36f, 1.0f};
+  glm::vec4 m_Ks{0.7f};
+  float m_shininess{265.0f};
 
   void loadModel(std::string_view path);
   void restart();
@@ -101,6 +100,7 @@ private:
   void randomizeBubble(glm::vec3 &position, glm::vec3 &rotation);
   void randomizeCoral(glm::vec3 &position, glm::vec3 &rotation);
   void update();
+  void paintGLSpherical();
 };
 
 #endif
