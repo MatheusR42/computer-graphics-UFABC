@@ -52,7 +52,7 @@ O objetivo do jogo é guiar adiante um desses esqualos pelo vasto oceano, enquan
 Conforme o animal avança e desvia dos obstáculos, são somados pontos ao canto superior esquerdo da tela.
 Caso o tubarão colida com algum coral, ele se machucará e perderá uma de suas três vidas, indicadas no canto superior direito. Ao chegar à zero, o jogo acaba.
 
-![Sharkker](../../public/Final_Sharkker.png)
+![Sharkker](../../public/Final_Sharkker.PNG)
 
 Não há um final para esse jogo e o objetivo é ir o mais longe possível, somando mais pontos.
 
@@ -81,7 +81,7 @@ O modelo 3D em formato .obj do animal foi gratuitamente baixado em [CGTrader](ht
 
 Sua cor foi alterada de forma à manter a tradicional cor acinzentada do tubarão-tigre da série de jogos Sharkker
 
-![Shark - Map](assets/maps/shark_diffuse.png)
+<img src="assets/maps/shark_diffuse.png" width="300" height="300" />
 
 Conforme movimenta-se, é possível enxergar vários ângulos do esqualo.
 
@@ -92,7 +92,7 @@ Os corais são gerados em uma posição aleatória ao final do eixo de profundid
 
 O modelo 3D em formato .obj dos corais foi gratuitamente baixado em [3dmdb](https://3dmdb.com/en/3d-model/spike-ball-by-fabanafabana/8963728/).
 
-![Corals](../../public/File_Sharkker_Corals.png)
+![Corals](../../public/Final_Sharkker_Corals.png)
 
 ### Bubbles and Ocean
 A cor do oceano, ao fundo de todos os objetos, foi baseada justamente na cor "Ocean Blue" #006994 (de palheta R000 G105 B148). Porém, há um leve escurecimento para melhor contraste com os outros componentes do jogo.
@@ -102,7 +102,7 @@ A mecânica das bolhas foi herdada do código de Starfield e, assim como os cora
 
 Houve a tentativa de implementar uma textura ao fundo com o método do Skybox, porém contentou-se em desenvolver o jogo sem ela.
 
-![Ocean Cubemap](../../public/Sea_Cubemap_labeled.png)
+![Ocean Cubemap](../../public/Sea_Cubemap_labeled.PNG)
 
 ## Features
 • Sistema de pontuação
