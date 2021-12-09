@@ -12,13 +12,13 @@
 void OpenGLWindow::handleEvent(SDL_Event& event) {
   // Keyboard events
   if (event.type == SDL_KEYDOWN) {
-    if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_a)
+    if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_a)    // Input Left Key
       m_gameData.m_input.set(static_cast<size_t>(Input::Left));
-    if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d)
+    if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d)   // Input Right Key
       m_gameData.m_input.set(static_cast<size_t>(Input::Right));
-    if (event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_w)
+    if (event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_w)       // Input Up Key
       m_gameData.m_input.set(static_cast<size_t>(Input::Up));
-    if (event.key.keysym.sym == SDLK_DOWN || event.key.keysym.sym == SDLK_s)
+    if (event.key.keysym.sym == SDLK_DOWN || event.key.keysym.sym == SDLK_s)     // Input Down Key
       m_gameData.m_input.set(static_cast<size_t>(Input::Down));
   }
   if (event.type == SDL_KEYUP) {
@@ -33,15 +33,15 @@ void OpenGLWindow::handleEvent(SDL_Event& event) {
   }
 }
 
-void OpenGLWindow::initializeGL() {
-  abcg::glClearColor(0, 0.32, 0.492, 1);      // Background color (Sea) R000 G081 B125
+void OpenGLWindow::initializeGL() { 
+  abcg::glClearColor(0, 0.32, 0.492, 1);                         // Background color (Sea) R000 G081 B125
   
   // Enable depth buffering
   abcg::glEnable(GL_DEPTH_TEST);
 
   // Load a new font
   ImGuiIO &io{ImGui::GetIO()};
-  const auto filename{getAssetsPath() + "Findet-Nemo.ttf"};
+  const auto filename{getAssetsPath() + "Findet-Nemo.ttf"};          // Load "Finding Nemo" font from .ttf (TrueType Font) file
   m_font_final = io.Fonts->AddFontFromFileTTF(filename.c_str(), 30.0f);
   if (m_font_final == nullptr) {
     throw abcg::Exception{abcg::Exception::Runtime("Cannot load font file")};
@@ -57,9 +57,9 @@ void OpenGLWindow::initializeGL() {
   m_program = program;
 
   // Load model
-  m_modelBubble.loadObj(getAssetsPath() + "bubble.obj");
-  m_modelShark.loadObj(getAssetsPath() + "shark.obj");
-  m_modelCoral.loadObj(getAssetsPath() + "coral.obj");
+  m_modelBubble.loadObj(getAssetsPath() + "bubble.obj");          // Load background bubbles from .obj file
+  m_modelShark.loadObj(getAssetsPath() + "shark.obj");            // Load Shark from .obj file
+  m_modelCoral.loadObj(getAssetsPath() + "coral.obj");            // Load Corals/obstacles from .obj file
 
   m_modelBubble.setupVAO(m_program);
   m_modelShark.setupVAO(m_program);
@@ -86,37 +86,33 @@ void OpenGLWindow::initializeGL() {
   }
 }
 
+// Bubble spawn randomizer
 void OpenGLWindow::randomizeBubble(glm::vec3 &position, glm::vec3 &rotation) {
   // Get random position
-  // x and y coordinates in the range [-20, 20]
-  // z coordinates in the range [-100, 0]
-  std::uniform_real_distribution<float> distPosXY(-8.0f, 8.0f);
-  std::uniform_real_distribution<float> distPosZ(-80.0f, 0.0f);
+  std::uniform_real_distribution<float> distPosXY(-8.0f, 8.0f);     // x and y coordinates in the range [-8, 8] (shark's sides/background)
+  std::uniform_real_distribution<float> distPosZ(-80.0f, 0.0f);     // z coordinates in the range [-80, 0]
 
   position = glm::vec3(distPosXY(m_randomEngine), distPosXY(m_randomEngine),
                        distPosZ(m_randomEngine));
 
   //  Get random rotation axis
   std::uniform_real_distribution<float> distRotAxis(-1.0f, 1.0f);
-
   rotation = glm::normalize(glm::vec3(distRotAxis(m_randomEngine),
                                       distRotAxis(m_randomEngine),
                                       distRotAxis(m_randomEngine)));
 }
 
+// Coral spawn randomizer
 void OpenGLWindow::randomizeCoral(glm::vec3 &position, glm::vec3 &rotation) {
-  // Get random position
-  // x and y coordinates in the range [-20, 20]
-  // z coordinates in the range [-100, 0]
-  std::uniform_real_distribution<float> distPosXY(-0.3f, 0.3f);
-  std::uniform_real_distribution<float> distPosZ(-100.0f, 0.0f);
+  // Get random position 
+  std::uniform_real_distribution<float> distPosXY(-0.3f, 0.3f);   // x and y coordinates in the range [-0.3, 0.3] (shark's frontal corridor)
+  std::uniform_real_distribution<float> distPosZ(-100.0f, 0.0f);  // z coordinates in the range [-100, 0]
 
   position = glm::vec3(distPosXY(m_randomEngine), distPosXY(m_randomEngine),
                        distPosZ(m_randomEngine));
 
   //  Get random rotation axis
   std::uniform_real_distribution<float> distRotAxis(-1.0f, 1.0f);
-
   rotation = glm::normalize(glm::vec3(distRotAxis(m_randomEngine),
                                       distRotAxis(m_randomEngine),
                                       distRotAxis(m_randomEngine)));
@@ -184,7 +180,6 @@ void OpenGLWindow::paintGLSpherical() {
 
     // Set uniform variable
     abcg::glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &modelMatrix[0][0]);
-
     const auto modelViewMatrix{glm::mat3(m_viewMatrix * modelMatrix)};
     glm::mat3 normalMatrix{glm::inverseTranspose(modelViewMatrix)};
     abcg::glUniformMatrix3fv(normalMatrixLoc, 1, GL_FALSE, &normalMatrix[0][0]);
@@ -205,7 +200,6 @@ void OpenGLWindow::paintGLSpherical() {
 
     // Set uniform variable
     abcg::glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &modelMatrix[0][0]);
-
     const auto modelViewMatrix{glm::mat3(m_viewMatrix * modelMatrix)};
     glm::mat3 normalMatrix{glm::inverseTranspose(modelViewMatrix)};
     abcg::glUniformMatrix3fv(normalMatrixLoc, 1, GL_FALSE, &normalMatrix[0][0]);
@@ -263,7 +257,7 @@ void OpenGLWindow::paintGL() {
   if (!m_shark.m_nodamage) {
     abcg::glUniform4fv(IaLoc, 1, &m_Ia.x);
   } else {
-    glm::vec4 m_Ia{0.9f, 0.0f, 0.0f, 0.0f};
+    glm::vec4 m_Ia{0.9f, 0.0f, 0.0f, 0.0f};           // Turns shark red when hurt
     abcg::glUniform4fv(IaLoc, 1, &m_Ia.x);
   }
   abcg::glUniform4fv(IdLoc, 1, &m_Id.x);
@@ -273,12 +267,7 @@ void OpenGLWindow::paintGL() {
   abcg::glUniform4fv(KaLoc, 1, &m_Ka.x);
   abcg::glUniform4fv(KdLoc, 1, &m_Kd.x);
   abcg::glUniform4fv(KsLoc, 1, &m_Ks.x);
-
-  // abcg::glUniform1f(shininessLoc, m_shininess);
-  // abcg::glUniform4fv(KaLoc, 1, &m_Ka.x);
-  // abcg::glUniform4fv(KdLoc, 1, &m_Kd.x);
-  // abcg::glUniform4fv(KsLoc, 1, &m_Ks.x);
-  
+ 
   // Set uniform variables of the current object
   abcg::glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m_modelMatrix[0][0]);
 
@@ -332,7 +321,6 @@ void OpenGLWindow::paintUI() {
       m_Timer.elapsed() > 4) {
       ImGui::Text(" Matheus Araujo\nGiovanne Galdino");
     }
-     
     // "Sharkker" inicial message display
     if (m_gameData.m_state == State::Playing && 
       m_Timer.elapsed() < 4) {                    // Text display time
@@ -448,7 +436,6 @@ void OpenGLWindow::update() {
     // orientation, and move it back to -100
     if (position.z > -1.0f) {
       randomizeBubble(position, rotation);
-      // position.z = -100.0f;  // Back to -100
     }
   }
     // Update corals
@@ -475,7 +462,7 @@ void OpenGLWindow::update() {
     checkCollisions();
   }
 }
-
+// Corals as obstacles
 void OpenGLWindow::checkCollisions() {
   if (m_gameData.m_lifeCooldown.elapsed() < 1) {
     return;

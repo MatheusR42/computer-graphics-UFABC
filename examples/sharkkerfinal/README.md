@@ -88,7 +88,8 @@ Conforme movimenta-se, é possível enxergar vários ângulos do esqualo.
 ![Shark](../../public/Final_Shark_Tile.jpg)
 
 ### Corals
-Os corais são gerados em uma posição aleatória ao final do eixo de profundidade do espaço do jogo e seguem em direção ao tubarão. Ao passarem por ele, soma-se um ponto para cada coral, eles são reaproveitados e posicionados de forma aleatória nas distâncias iniciais novamente.
+Os corais são gerados em uma posição aleatória ao final do eixo de profundidade do espaço do jogo e seguem em direção ao tubarão. Ao passarem por ele, soma-se um ponto para cada coral, eles são reaproveitados e posicionados de forma aleatória nas distâncias iniciais novamente. 
+Os corais estão sempre rotacionando em direções aleatórias ao redor de seu próprio eixo.
 
 O modelo 3D em formato .obj dos corais foi gratuitamente baixado em [3dmdb](https://3dmdb.com/en/3d-model/spike-ball-by-fabanafabana/8963728/).
 
@@ -96,7 +97,7 @@ O modelo 3D em formato .obj dos corais foi gratuitamente baixado em [3dmdb](http
 
 ### Bubbles and Ocean
 A cor do oceano, ao fundo de todos os objetos, foi baseada justamente na cor "Ocean Blue" #006994 (de palheta R000 G105 B148). Porém, há um leve escurecimento para melhor contraste com os outros componentes do jogo.
-A mecânica das bolhas foi herdada do código de Starfield e, assim como os corais, é gerada aleatóriamente ao final do ângulo de visão e segue em direção ao tubarão. Ao passar por ele, são reaproveitadas e posicionadas de forma aleatória nas distâncias iniciais novamente.
+A mecânica das bolhas foi herdada do código de Starfield e, assim como os corais, além de estarem sempre rotacionando, são geradas aleatóriamente ao final do ângulo de visão e seguem em direção ao tubarão. Ao passar por ele, são reaproveitadas e posicionadas de forma aleatória nas distâncias iniciais novamente.
 
 ![Bubbles and Ocean](../../public/Final_Sharkker_Bubbles.png)
 
@@ -113,7 +114,7 @@ Houve a tentativa de implementar uma textura ao fundo com o método do Skybox, p
 
 • Tubarão realiza movimentos conforme nada e recebe comandos do jogador.
 
-• Corais e bolhas com movimento rotacional e que progridem em direção ao player de posições aleatórios
+• Corais e bolhas com movimento rotacional e que progridem em direção ao player de posições aleatórias
 
 • Textura, sombreamento e iluminação nos objetos do jogo.
 
